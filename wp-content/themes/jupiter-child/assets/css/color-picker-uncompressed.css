@@ -1,0 +1,192 @@
+/*
+Description:    Color Picker
+Author:         SBH Milano
+*/
+* {
+    -webkit-transition: background-color 250ms ease-in-out;
+       -moz-transition: background-color 250ms ease-in-out;
+         -o-transition: background-color 250ms ease-in-out;
+        -ms-transition: background-color 250ms ease-in-out;
+            transition: background-color 250ms ease-in-out;
+    -webkit-transition: color 250ms ease-in-out;
+       -moz-transition: color 250ms ease-in-out;
+         -o-transition: color 250ms ease-in-out;
+        -ms-transition: color 250ms ease-in-out;
+            transition: color 250ms ease-in-out;
+}
+
+/* Hide Color picker when mobile version */
+.sp-color-wrapper {
+    display: inherit;
+}
+
+@media screen and (max-width: 1040px) {
+    .sp-translate,
+    .sp-color-wrapper {
+        display: none !important;
+    }
+    
+}
+
+@media screen and (max-width: 1100px) {
+	.sp-color-wrapper {
+		position: relative;
+		left: 20px;
+	}
+	.shopping-cart-header {
+		right: 230px !important;
+	}
+}
+
+/* Set color picker selector */
+.sp-color-wrapper svg {
+    width: 300px;
+    left: -70px;
+    position: relative;
+}
+
+.sp-color-wrapper {
+    width: 170px;
+    float: left;
+    overflow: hidden;
+}
+
+.sp-header-right {
+    position: absolute;
+    float: left;
+    right: 0;
+    top: 3px;
+    z-index: 30;
+    overflow: hidden;
+    width: 250px;
+}
+
+.sp-text-color-picker,
+.sp-color-picker {
+    stroke:#fff;
+    stroke-miterlimit:10;
+    stroke-width: 0.1em;
+}
+
+/* Restore button settings on the new class */
+.sp-shop-flat-btn {
+    padding: 13px 50px 14px 50px !important;
+	background-color: transparent !important;
+	border-style: solid !important;
+	line-height: 13px !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+	display: inline-block;
+	vertical-align: middle;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-moz-osx-font-smoothing: grayscale;
+	overflow: hidden;
+	-webkit-transition-duration: 0.3s;
+	transition-duration: 0.3s;
+	-webkit-transition-property: color, background-color;
+	transition-property: color, background-color;
+}
+
+.sp-shop-flat-btn svg {
+    margin-right: 8px;
+}
+
+/* SELECTORS SVG COLOR */
+.cls-1{fill:#abd4d7;}
+.cls-2{fill:#e4d1ac;}
+.cls-3{fill:#e4e5e6;}
+.cls-4{fill:#d1364a;}
+.cls-5{fill:#9d885d;}
+.cls-6{fill:#f07455;}
+.cls-7{fill:#6d6e70;}
+.cls-8{fill:#758e95;}
+.cls-9{fill:#47554b;}
+
+
+
+
+/* BACKGROUND */
+.sp-color-red       { background-color: #d1364a !important; }
+.sp-color-brown     { background-color: #9d885c !important; }
+.sp-color-blue      { background-color: #748e96 !important; }
+.sp-color-orange    { background-color: #f07355 !important; }
+.sp-color-green     { background-color: #46544b !important; }
+.sp-color-gray      { background-color: #6d6e70 !important; }
+
+/* GRID MEDIA CONTENT HOVER */
+.sp-bg-color-red:hover       { background-color: #d1364a !important; }
+.sp-bg-color-brown:hover     { background-color: #9d885c !important; }
+.sp-bg-color-blue:hover      { background-color: #748e96 !important; }
+.sp-bg-color-orange:hover    { background-color: #f07355 !important; }
+.sp-bg-color-green:hover     { background-color: #46544b !important; }
+.sp-bg-color-gray:hover      { background-color: #6d6e70 !important; }
+
+
+
+
+/* FONT */
+.sp-txt-null     { color: #ffffff !important; }
+.sp-txt-blue     { color: #abd4d7 !important; }
+.sp-txt-gray     { color: #e4e5e6 !important; }
+.sp-txt-brown    { color: #e1d1ac !important; }
+
+.sp-txt-null:after     { background-color: #ffffff !important; }
+.sp-txt-blue:after     { background-color: #abd4d7 !important; }
+.sp-txt-gray:after     { background-color: #e4e5e6 !important; }
+.sp-txt-brown:after    { background-color: #e1d1ac !important; }
+
+
+/* SVG */
+.sp-svg-null     { fill: #ffffff !important; }
+.sp-svg-blue     { fill: #abd4d7 !important; }
+.sp-svg-gray     { fill: #e4e5e6 !important; }
+.sp-svg-brown    { fill: #e1d1ac !important; }
+
+/* BUTTONS */
+.sp-btn-null            { border: 2px solid #ffffff !important; color: #ffffff !important; }
+.sp-btn-blue            { border: 2px solid #abd4d7 !important; color: #abd4d7 !important; }
+.sp-btn-gray            { border: 2px solid #e4e5e6 !important; color: #e4e5e6 !important; }
+.sp-btn-brown           { border: 2px solid #e1d1ac !important; color: #e1d1ac !important; }
+.sp-btn-null:hover		{ background-color: #ffffff !important; color: #252525 !important; }
+.sp-btn-blue:hover      { background-color: #abd4d7 !important; color: #252525 !important; }
+.sp-btn-gray:hover      { background-color: #e4e5e6 !important; color: #252525 !important; }
+.sp-btn-brown:hover     { background-color: #e1d1ac !important; color: #252525 !important; }
+.sp-btn-null:hover svg  { fill: #252525 !important; }
+.sp-btn-blue:hover svg  { fill: #252525 !important; }
+.sp-btn-gray:hover svg  { fill: #252525 !important; }
+.sp-btn-brown:hover svg { fill: #252525 !important; }
+
+/* VARIOUS BACKGROUND */
+.sp-bkg-null     { background-color: #ffffff !important; }
+.sp-bkg-blue     { background-color: #abd4d7 !important; }
+.sp-bkg-gray     { background-color: #e4e5e6 !important; }
+.sp-bkg-brown    { background-color: #e1d1ac !important; }
+
+/* BORDER COLOR */
+.sp-brd-null     { border-color: #ffffff !important; color: #ffffff !important; }
+.sp-brd-blue     { border-color: #abd4d7 !important; color: #abd4d7 !important; }
+.sp-brd-gray     { border-color: #e4e5e6 !important; color: #e4e5e6 !important; }
+.sp-brd-brown    { border-color: #e1d1ac !important; color: #e1d1ac !important; }
+
+/* INPUT PLACEHOLDER */
+.sp-inp-null::-webkit-input-placeholder  { color: #ffffff !important; }
+.sp-inp-null:-ms-input-placeholder 		 { color: #ffffff !important; }
+.sp-inp-null:-moz-placeholder 			 { color: #ffffff !important; opacity:  1; }
+.sp-inp-null::-moz-placeholder 			 { color: #ffffff !important; opacity:  1; }
+.sp-inp-blue::-webkit-input-placeholder  { color: #abd4d7 !important; }
+.sp-inp-blue:-ms-input-placeholder 		 { color: #abd4d7 !important; }
+.sp-inp-blue:-moz-placeholder 			 { color: #abd4d7 !important; opacity:  1; }
+.sp-inp-blue::-moz-placeholder 			 { color: #abd4d7 !important; opacity:  1; }
+.sp-inp-gray::-webkit-input-placeholder  { color: #e4e5e6 !important; }
+.sp-inp-gray:-ms-input-placeholder 		 { color: #e4e5e6 !important; }
+.sp-inp-gray:-moz-placeholder 			 { color: #e4e5e6 !important; opacity:  1; }
+.sp-inp-gray::-moz-placeholder 			 { color: #e4e5e6 !important; opacity:  1; }
+.sp-inp-brown::-webkit-input-placeholder { color: #e1d1ac !important; }
+.sp-inp-brown:-ms-input-placeholder 	 { color: #e1d1ac !important; }
+.sp-inp-brown:-moz-placeholder 			 { color: #e1d1ac !important; opacity:  1; }
+.sp-inp-brown::-moz-placeholder 		 { color: #e1d1ac !important; opacity:  1; }
+

@@ -1,0 +1,42 @@
+body.login {
+  /* per ora lascio solo il colore - c'è da cambiare l'immagine di sfondo*/
+  background-color: #d14847;
+  /*background-image: url('login-bg.jpeg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;*/
+}
+
+.login h1 a {
+  background-image: url('login-logo.png');
+}
+
+#loginform {
+    -webkit-border-radius: 4px;
+}
+
+.login label {
+  font-size: 12px;
+  color: #555555;
+}
+
+.login input[type="text"]{
+  background-color: #ffffff;
+  border-color:#dddddd;
+  -webkit-border-radius: 4px;
+}
+
+.login input[type="password"]{
+  background-color: #ffffff;
+  border-color:#dddddd;
+  -webkit-border-radius: 4px;
+}
+
+p#nav a:active, p#nav a:visited, p#nav a:link,
+p#backtoblog a:active, p#backtoblog a:visited, p#backtoblog a:link {
+  color: #fff;
+}
