@@ -89,4 +89,18 @@
 
 	$( document ).on( 'click', '.js-ajax-modal', createModal ); 
 
+	$(window).on('vc_reload', function(){
+		$('.mk-product-loop').each(function(){
+			var id = $(this).attr('id');
+			var el = '#' + id + ' > .products.js-el';
+
+			// Disable VC frontend component init for products loop.
+			$(el).data('init-Grid', true);
+
+			// Init Grid component on shortcode render.
+			var component = new MK.component[ 'Grid' ]( el );
+			component.init();
+		});
+	});
+
 })( jQuery );

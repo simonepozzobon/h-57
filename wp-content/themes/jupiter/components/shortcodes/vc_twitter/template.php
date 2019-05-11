@@ -1,5 +1,5 @@
-<h3 class="mk-fancy-title pattern-style shortcode-heading align-left"><span></span></h3>
 <div class="mk-twitter-shortcode">
+    <h3 class="mk-fancy-title pattern-style shortcode-heading align-left"><span></span></h3>
     <ul class="mk-tweet-list mk-tweet-shortcode">
         <li>
         	<span class="tweet-icon"></span>

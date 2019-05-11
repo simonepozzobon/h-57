@@ -17,5 +17,12 @@ $atts = array(
   'scroll_nav' => $scroll_nav
 );
 
+if ( ! empty( $visibility ) ) {
+	echo '<div class="' . $visibility . '">';
+}
+
 echo mk_get_shortcode_view('mk_imagebox', 'show-as/'.$show_as, true, $atts);  
 
+if ( ! empty( $visibility ) ) {
+	echo '</div>';
+}

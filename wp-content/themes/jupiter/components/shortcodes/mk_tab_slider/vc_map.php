@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Tab Slider", "mk_framework") ,
     "base" => "mk_tab_slider",
+	'html_template' => dirname( __FILE__ ) . '/mk_tab_slider.php',
     'icon' => 'icon-mk-tab-slider vc_mk_element-icon',
     "category" => __('General', 'mk_framework') ,
     'description' => __('Tab based slider.', 'mk_framework') ,
@@ -58,12 +59,13 @@ vc_map(array(
             'type' => 'range'
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Navigation Button Color", "mk_framework") ,
             "param_name" => "button_color",
             "value" => "",
             "description" => __("", "mk_framework")
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

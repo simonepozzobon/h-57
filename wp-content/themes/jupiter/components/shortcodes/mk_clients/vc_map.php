@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Clients", "mk_framework") ,
     "base" => "mk_clients",
+	'html_template' => dirname( __FILE__ ) . '/mk_clients.php',
     'icon' => 'icon-mk-clients vc_mk_element-icon',
     "category" => __('Loops', 'mk_framework') ,
     'description' => __('Shows Clients posts in multiple styles.', 'mk_framework') ,
@@ -115,21 +116,21 @@ vc_map(array(
             "type" => "dropdown"
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Box Background Color", "mk_framework") ,
             "param_name" => "bg_color",
             "value" => "",
             "description" => __("Color of the box containing the client's logo", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Box Hover Background Color", "mk_framework") ,
             "param_name" => "bg_hover_color",
             "value" => "",
             "description" => __("Hover color of the box containing the client's logo", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Box Border Color", "mk_framework") ,
             "param_name" => "border_color",
             "value" => "",
@@ -179,6 +180,7 @@ vc_map(array(
             "unit" => 'px',
             "description" => __("", "mk_framework")
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

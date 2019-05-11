@@ -39,6 +39,9 @@ $orientation_class = ($post_type != 'instagram' && $post_type != 'twitter') ? $o
             'image_size'    => $view_params['image_size'],
             'image_width'   => $image_width,
             'image_height'  => $view_params['grid_image_height'],
+            'lazyload'      => $view_params['lazyload'],
+            'disable_lazyload'      => $view_params['disable_lazyload'],
+            'image_height'  => $view_params['grid_image_height'],
             'post_type'     => $post_type,
         );
         echo mk_get_shortcode_view('mk_blog', 'components/featured-media', true, $media_atts);

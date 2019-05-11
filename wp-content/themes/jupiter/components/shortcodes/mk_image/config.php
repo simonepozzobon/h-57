@@ -19,13 +19,19 @@ extract( shortcode_atts( array(
 			'desc'                 => '',
 			'align'                => 'left',
 			'caption_location'     => 'inside-image',
+			'hover_image_overlay'  => 'true',
 			'visibility'           => '',
 			'el_class'             => '',
 			'drop_shadow'          => 'false',
 			'drop_shadow_angle'    => '45',
 			'drop_shadow_distance' => '8',
 			'drop_shadow_blur'     => '20',
-			'drop_shadow_color'    => 'rgba(0,0,0,0.5)'
+			'drop_shadow_color'    => 'rgba(0,0,0,0.5)',
+			'pxs'                  => 'false',
+			'pxs_x'                => 0,
+			'pxs_y'                => -100,
+			'pxs_z'                => 0,
+			'pxs_smoothness'       => '',
 		), $atts ) );
 Mk_Static_Files::addAssets('mk_image');
 

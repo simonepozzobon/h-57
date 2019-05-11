@@ -10,8 +10,6 @@
 
 global $mk_options;
 
-if ($mk_options['header_toolbar_subscribe'] != 'true') return false;
-
 $mailchimp_list_id = ! empty( $mk_options['mailchimp_list_id'] ) ? $mk_options['mailchimp_list_id'] : '';
 $mailchimp_optin   = ! empty( $mk_options['mailchimp_optin'] ) ? $mk_options['mailchimp_optin'] : false;
 $mailchimp_api_key = ! empty( $mk_options['mailchimp_api_key'] ) ? true : false;

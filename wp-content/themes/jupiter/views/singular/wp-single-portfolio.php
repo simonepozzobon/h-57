@@ -1,11 +1,12 @@
 <?php
 
 /**
- * template part for portfolio single portfolio-single.php. views/portfolio/components
+ * Template part for portfolio single portfolio-single.php. views/portfolio/components
  *
- * @author      Artbees
- * @package     jupiter/views
- * @version     5.0.0
+ * @author  Artbees
+ * @package jupiter/views
+ * @since   5.0.0
+ * @since   5.9.1 Added if conditions for `mk_get_view()` functions.
  */
 
 global $mk_options;
@@ -17,7 +18,9 @@ if (have_posts()) while (have_posts()):
     
     mk_get_view('portfolio/components', 'portfolio-single-meta');
     
-    mk_get_view('portfolio/components', 'portfolio-single-featured');
+    if ( get_post_meta( $post->ID, '_portfolio_featured_image', true ) !== 'false' ) {
+        mk_get_view( 'portfolio/components', 'portfolio-single-featured' );
+    }
     
     do_action('portfolio_single_before_the_content');
     
@@ -25,8 +28,11 @@ if (have_posts()) while (have_posts()):
     
     do_action('portfolio_single_after_the_content');
     
-    mk_get_view('portfolio/components', 'portfolio-single-comments');
+    if ( $mk_options['enable_portfolio_comment'] == 'true' ) {
+        mk_get_view( 'portfolio/components', 'portfolio-single-comments' );
+    }
     
     do_action('portfolio_single_after_comments');
+    
 endwhile;
 ?>

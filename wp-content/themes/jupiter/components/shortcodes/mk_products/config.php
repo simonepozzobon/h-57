@@ -18,6 +18,7 @@ extract( shortcode_atts( array(
 	'animation' 					=> '',
 	'pagination'					=> 'true',
 	'count'							=> 12,
+	'visibility' 					=> '',
 	'el_class' 						=> '',
 
 	'color_product_title' 			=> '',

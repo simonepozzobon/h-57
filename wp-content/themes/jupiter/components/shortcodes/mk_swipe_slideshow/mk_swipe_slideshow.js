@@ -5,6 +5,7 @@
     // When instance is discovered in cache object then we return exisiting instance.
     // 
     // TODO move it to core functions and run logic on init
+    // var init = function init() {
     var _instancesCollection = {};
 
     MK.component.SwipeSlideshow = function( el ) {
@@ -66,5 +67,45 @@
         if(typeof _instancesCollection[config.id] === 'undefined') return;
         _instancesCollection[config.id].reset();
     });
+
+	function init() {
+		// Lazy load.
+		// Get All Related Layers
+		var $swiper = $('.mk-swipe-slideshow');
+		var $imgs = $swiper.find('img[data-mk-image-src-set]');
+
+		if ( $swiper.hasClass('mk-swipe-slideshow-lazyload') && $imgs.length ) {
+
+			// Load Images if the user scrolls to them
+			$(window).on('scroll.mk_swipe_slideshow_lazyload', MK.utils.throttle(500, function(){
+				$imgs.each(function(index, elem) {
+					if ( MK.utils.isElementInViewport(elem) ) {
+						MK.component.ResponsiveImageSetter.init( $(elem) );
+						$imgs = $imgs.not( $(elem) );  // Remove element from the list when loaded to reduce the amount of iteration in each()
+					}
+				});
+			}));
+
+			$(window).trigger('scroll.mk_swipe_slideshow_lazyload');
+
+			// Handle the resize
+			MK.component.ResponsiveImageSetter.onResize($imgs);
+
+		} else {
+
+			MK.component.ResponsiveImageSetter.init($imgs);
+			MK.component.ResponsiveImageSetter.onResize($imgs);
+
+		}
+		
+        /* Why we need to reinitialize it? it causes double sliding effect
+    		$( '.mk-swiper-container' ).each( function() {
+    			new MK.component.SwipeSlideshow( this ).init();
+    		} );
+        */
+	}
+
+	init();
+	$(window).on('vc_reload', init);
 
 })( jQuery );

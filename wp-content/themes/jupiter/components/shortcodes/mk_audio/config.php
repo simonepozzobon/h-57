@@ -8,6 +8,7 @@ extract(shortcode_atts(array(
     'el_class' => '',
     'large_player_class' => 'mk-audio-shortcode',
     'img_dimension' => 170,
-    'player_background' => ''
+    'player_background' => '',
+    'visibility' => ''
 ) , $atts));
 Mk_Static_Files::addAssets('mk_audio');

@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Laptop Slideshow", "mk_framework"),
     "base" => "mk_laptop_slideshow",
+	'html_template' => dirname( __FILE__ ) . '/mk_laptop_slideshow.php',
     'icon' => 'icon-mk-laptop-slideshow vc_mk_element-icon',
     "category" => __('Slideshows', 'mk_framework'),
     'description' => __( 'Slider inside laptop frame', 'mk_framework' ),
@@ -63,6 +64,7 @@ vc_map(array(
             "description" => __("Pauses the slideshow when hovering over slider, then resume when no longer hovering", "mk_framework")
         ),
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

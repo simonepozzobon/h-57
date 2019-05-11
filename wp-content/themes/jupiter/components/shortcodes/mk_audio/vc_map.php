@@ -2,6 +2,7 @@
     vc_map(array(
         "name" => __("Audio Player", "mk_framework") ,
         "base" => "mk_audio",
+		'html_template' => dirname( __FILE__ ) . '/mk_audio.php',
         'icon' => 'icon-mk-audio-player vc_mk_element-icon',
         'description' => __('Adds player to your audio files.', 'mk_framework') ,
         "category" => __('General', 'mk_framework') ,
@@ -35,12 +36,13 @@
                 "description" => __("", "mk_framework")
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Player Background", "mk_framework"),
                 "param_name" => "player_background",
                 "value" => "",
                 "description" => __("If left empty a random color will be shown in each page visit.", "mk_framework"),
             ),
+            $add_device_visibility,
             array(
                 "type" => "textfield",
                 "heading" => __("Extra class name", "mk_framework") ,

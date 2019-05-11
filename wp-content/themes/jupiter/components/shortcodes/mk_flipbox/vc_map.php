@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Flip Box", "mk_framework") ,
     "base" => "mk_flipbox",
+	'html_template' => dirname( __FILE__ ) . '/mk_flipbox.php',
     'icon' => 'icon-mk-tab-slider vc_mk_element-icon',
     "category" => __('General', 'mk_framework') ,
     'description' => __('Flip based boxes.', 'mk_framework') ,
@@ -19,14 +20,14 @@ vc_map(array(
         ) ,
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Front Background Color", "mk_framework") ,
             "param_name" => "front_background_color",
             "value" => "",
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Back Background Color", "mk_framework") ,
             "param_name" => "back_background_color",
             "value" => "",
@@ -71,11 +72,10 @@ vc_map(array(
         ) ,
 
         array(
-            "type" => "textfield",
-            "heading" => __("Icon Class Name", "mk_framework") ,
+            "type" => "icon_selector",
+            "heading" => __("Icon", "mk_framework") ,
             "param_name" => "icon",
             "value" => "mk-li-smile",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework") ,
             "dependency" => array(
                 'element' => "icon_type",
                 'value' => array(
@@ -102,7 +102,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Color", "mk_framework") ,
             "param_name" => "icon_color",
             "value" => "",
@@ -134,7 +134,7 @@ vc_map(array(
             'type' => 'range'
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Front Title Font Color", "mk_framework") ,
             "param_name" => "front_title_color",
             "value" => "",
@@ -160,7 +160,7 @@ vc_map(array(
             'type' => 'range'
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Back Title Font Color", "mk_framework") ,
             "param_name" => "back_title_color",
             "value" => "",
@@ -193,7 +193,7 @@ vc_map(array(
             'type' => 'range'
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Front Description Font Color", "mk_framework") ,
             "param_name" => "front_desc_color",
             "value" => "",
@@ -219,7 +219,7 @@ vc_map(array(
             'type' => 'range'
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Back Description Font Color", "mk_framework") ,
             "param_name" => "back_desc_color",
             "value" => "",
@@ -249,14 +249,14 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Button Background Color", "mk_framework") ,
             "param_name" => "button_bg_color",
             "value" => "",
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Button Hover Background Color", "mk_framework") ,
             "param_name" => "button_bg_hover_color",
             "value" => "",
@@ -273,7 +273,7 @@ vc_map(array(
             ) ,
             "description" => __("", "mk_framework")
         ) ,
-
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

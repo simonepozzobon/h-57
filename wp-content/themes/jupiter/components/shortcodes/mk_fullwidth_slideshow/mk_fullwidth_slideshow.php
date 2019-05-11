@@ -29,7 +29,7 @@ $slider_atts[] = 'data-isCarousel="false"';
 
 ?>
 
-<div id="fullwidth-slideshow-wrapper-<?php echo $id; ?>">
+<div id="fullwidth-slideshow-wrapper-<?php echo $id; ?>" class="<?php echo $visibility; ?>">
 	<div id="fullwidth-slideshow-<?php echo $id; ?>" class="mk-fullwidth-slideshow mk-script-call mk-flexslider js-flexslider <?php echo $parallax.$el_class; ?> stretch-images-<?php echo $stretch_images; ?>" <?php echo implode(' ', $slider_atts); ?>>
 		<ul class="mk-flex-slides">
 			<?php foreach ( $images as $image ) { ?>

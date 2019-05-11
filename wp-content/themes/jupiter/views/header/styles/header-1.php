@@ -6,7 +6,7 @@
  * @package     jupiter/views
  * @version     5.0.0
  */
-global $mk_options;
+global $woocommerce, $mk_options;
 
     /*
     * These options comes from header shortcode and will only be used to override the header options through shortcode.
@@ -36,7 +36,9 @@ global $mk_options;
     <header <?php echo get_header_json_data($is_shortcode, $header_class['sh_header_style']); ?> <?php echo mk_get_header_class($header_class); ?> <?php echo get_schema_markup('header'); ?>>
         <?php if (is_header_show($is_shortcode)): ?>
             <div class="mk-header-holder">
-                <?php mk_get_header_view('holders', 'toolbar', ['is_shortcode' => $is_shortcode]); ?>
+                <?php if ( is_header_toolbar_show() === 'true' && $is_shortcode === false ) {
+                    mk_get_header_view( 'holders', 'toolbar' ); 
+                } ?>
                 <div class="mk-header-inner add-header-height">
 
                     <div class="mk-header-bg <?php echo mk_get_bg_cover_class($mk_options['header_size']); ?>"></div>
@@ -51,23 +53,25 @@ global $mk_options;
 
                             <div class="mk-header-nav-container one-row-style menu-hover-style-<?php echo esc_attr( $header_class['sh_hover_styles'] ); ?>" <?php echo get_schema_markup('nav'); ?>>
                                 <?php
-                                mk_get_header_view('master', 'main-nav', ['menu_location' => $menu_location, 'logo_middle' => $mk_options['logo_in_middle']]);
-                                
-                                if($search_icon != 'false') { 
-                                    mk_get_header_view('global', 'nav-side-search', ['header_style' => 1]);
-                                }
-                                if($show_cart != 'false') { 
-                                    mk_get_header_view('master', 'checkout', ['header_style' => 1]);
-                                }
-                                if($seconday_show_logo != 'false') {
-                                    mk_get_header_view('global', 'secondary-menu-burger-icon', ['is_shortcode' => $is_shortcode, 'header_style' => 1]);
-                                }
+                                    mk_get_header_view('master', 'main-nav', ['menu_location' => $menu_location, 'logo_middle' => $mk_options['logo_in_middle']]);
+                                    
+                                    if ( ( $mk_options['header_search_location'] === 'beside_nav' || $mk_options['header_search_location'] === 'fullscreen_search' ) && $search_icon != 'false' ) { 
+                                        mk_get_header_view( 'global', 'nav-side-search', ['header_style' => 1] );
+                                    }
+                                    
+                                    if ( $woocommerce && $mk_options['woocommerce_catalog'] === 'false' && $mk_options['shopping_cart'] === 'true' && $show_cart != 'false' ) { 
+                                        mk_get_header_view( 'master', 'checkout', ['header_style' => 1] );
+                                    }
+                                    
+                                    if ( ! empty( $mk_options['seondary_header_for_all'] ) && $mk_options['seondary_header_for_all'] === 'true' && $seconday_show_logo != 'false' ) {
+                                        mk_get_header_view( 'global', 'secondary-menu-burger-icon', ['is_shortcode' => $is_shortcode, 'header_style' => 1] );
+                                    }
                                 ?>
                             </div>
                             <?php    
                                 mk_get_header_view('global', 'main-menu-burger-icon', ['header_style' => 1]);                            
-                                if($show_logo != 'false') { 
-                                    mk_get_header_view('master', 'logo');
+                                if ( ! empty( $mk_options['hide_header_logo'] ) && $mk_options['hide_header_logo'] === 'true' && $show_logo != 'false' ) { 
+                                    mk_get_header_view( 'master', 'logo' );
                                 }
                             ?>
 
@@ -77,11 +81,21 @@ global $mk_options;
 
                     <div class="mk-header-right">
                         <?php
-                        do_action('header_right_before');
-                        mk_get_header_view('master', 'start-tour');
-                        mk_get_header_view('global', 'search', ['location' => 'header']);
-                        mk_get_header_view('global', 'social', ['location' => 'header']);
-                        do_action('header_right_after');
+                            do_action('header_right_before');
+                            
+                            if ( ! empty( $mk_options['header_start_tour_text'] ) ) {
+                                mk_get_header_view('master', 'start-tour');
+                            }
+                            
+                            if ( ! empty( $mk_options['header_search_location'] ) && $mk_options['header_search_location'] === 'header' ) {
+                                mk_get_header_view('global', 'search', ['location' => 'header']);
+                            }
+                            
+                            if ( ! empty( $mk_options['header_social_location'] ) && $mk_options['header_social_location'] === 'header' ) {
+                                mk_get_header_view('global', 'social', ['location' => 'header']);
+                            }
+                            
+                            do_action('header_right_after');
                         ?>
                     </div>
 

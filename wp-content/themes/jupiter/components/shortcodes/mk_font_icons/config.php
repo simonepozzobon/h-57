@@ -25,6 +25,7 @@ extract( shortcode_atts( array(
 	'smooth_scroll' 				=> 'false',
 	'link' 							=> '',
 	'target' 						=> '_self',
+	'visibility' 					=> '',
 	'el_class' 						=> '',
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_font_icons');

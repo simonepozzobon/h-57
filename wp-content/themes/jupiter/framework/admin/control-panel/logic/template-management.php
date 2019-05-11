@@ -1,7 +1,6 @@
 <?php
 // error_reporting( E_ALL );
 // ini_set( 'display_errors', 1 );
-
 /**
  * This class is responsible manage all jupiter templates
  * it will communicate with artbees API and get list of templates , install them or remove them.
@@ -11,8 +10,15 @@
  *
  * @link         http://artbees.net
  * @since        5.4
+ * @since        6.0.3 Replace importThemeContent with new SSE process. Suppress warning.
  *
  * @version      1.0
+ *
+ * @SuppressWarnings(PHPMD)
+ * @SuppressWarnings(PHPMD.StaticAccess)
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ * @SuppressWarnings(PHPMD.ExitExpression)
+ * - We need exit warning to cut SSE process, if not it will continue the process.
  */
 
 class mk_template_managememnt {
@@ -37,6 +43,16 @@ class mk_template_managememnt {
 
 	public function getApiURL() {
 		return $this->api_url;
+	}
+
+	private $template_id;
+
+	public function setTemplateID( $template_id ) {
+		$this->template_id = $template_id;
+	}
+
+	public function getTemplateID() {
+		return intval( $this->template_id );
 	}
 
 	private $template_name;
@@ -97,6 +113,62 @@ class mk_template_managememnt {
 
 	public function getOptionsFileName() {
 		return $this->options_file_name;
+	}
+
+	/**
+	 * Customizer filename.
+	 *
+	 * @since 6.0.3
+	 * @var string
+	 */
+	private $customizer_file_name;
+
+	/**
+	 * Set Customizer filename.
+	 *
+	 * @since 6.0.3
+	 * @param string $customizer_file_name Customizer filename.
+	 */
+	public function set_customizer_file_name( $customizer_file_name ) {
+		$this->customizer_file_name = $customizer_file_name;
+	}
+
+	/**
+	 * Get Customizer filename.
+	 *
+	 * @since 6.0.3
+	 * @return string Customizer filename.
+	 */
+	public function get_customizer_file_name() {
+		return $this->customizer_file_name;
+	}
+
+	/**
+	 * Header Builder filename.
+	 *
+	 * @since 6.0.3
+	 * @var string
+	 */
+	private $header_builder_file_name;
+
+	/**
+	 * Set Header Builder filename.
+	 *
+	 * @since 6.0.3
+	 * @param string $header_builder_file_name Header Builder filename.
+	 */
+	public function set_header_builder_file_name( $header_builder_file_name ) {
+		$this->header_builder_file_name = $header_builder_file_name;
+	}
+
+	/**
+	 * Get Header Builder filename.
+	 *
+	 * @since 6.0.3
+	 * @return string Header Builder filename.
+	 */
+	public function get_header_builder_file_name() {
+		return $this->header_builder_file_name;
 	}
 
 	private $json_file_name;
@@ -186,46 +258,47 @@ class mk_template_managememnt {
 		$this->setThemeName( 'Jupiter' );
 		$this->setSystemTestEnv( $system_test_env );
 		$this->setAjaxMode( $ajax_mode );
-		
-		// Init logger to system
+
 		$this->logger = new Devbees\BeesLog\logger();
 
-		// Set API Server URL
 		$this->setApiURL( V2ARTBEESAPI );
 
-		// Set API Calls template
 		$template = \Httpful\Request::init()
 		->method( \Httpful\Http::GET )
 		->withoutStrictSsl()
 		->expectsJson()
-		->addHeaders(array(
-			'api-key' => get_option( 'artbees_api_key' ),
-	        'domain'  => $_SERVER['SERVER_NAME'],
-		));
+		->addHeaders(
+			array(
+				'api-key' => get_option( 'artbees_api_key' ),
+				'domain'  => $_SERVER['SERVER_NAME'],
+			)
+		);
 		\Httpful\Request::ini( $template );
 
-		// Set Addresses
 		$this->setUploadDir( wp_upload_dir() );
 		$this->setBasePath( $this->getUploadDir()['basedir'] . '/mk_templates/' );
 		$this->setBaseUrl( $this->getUploadDir()['baseurl'] . '/mk_templates/' );
 
-		// Set File Names
 		$this->setTemplateContentFileName( 'theme_content.xml' );
 		$this->setWidgetFileName( 'widget_data.wie' );
 		$this->setOptionsFileName( 'options.txt' );
+		$this->set_customizer_file_name( 'customizer.json' );
+		$this->set_header_builder_file_name( 'header-builder.json' );
 		$this->setJsonFileName( 'package.json' );
 
-		// Include WP_Importer
 		global $wpdb;
 
-		if ( ! defined( 'WP_LOAD_IMPORTERS' ) ) {
-			define( 'WP_LOAD_IMPORTERS', true );
+		if ( ! defined( 'MK_LOAD_IMPORTERS' ) ) {
+			define( 'MK_LOAD_IMPORTERS', true );
 		}
 
-		// Add Actions
 		if ( $this->getAjaxMode() == true ) {
 			add_action( 'wp_ajax_abb_template_lazy_load', array( &$this, 'loadTemplatesFromApi' ) );
 			add_action( 'wp_ajax_abb_install_template_procedure', array( &$this, 'installTemplateProcedure' ) );
+
+			// Action only for importing theme content with Server-Sent Event.
+			add_action( 'wp_ajax_abb_install_template_sse', array( &$this, 'import_theme_content_sse' ) );
+
 			add_action( 'wp_ajax_abb_get_templates_categories', array( &$this, 'getTemplateCategoryListFromApi' ) );
 			add_action( 'wp_ajax_abb_restore_latest_db', array( &$this, 'restoreLatestDB' ) );
 			add_action( 'wp_ajax_abb_is_restore_db', array( &$this, 'isRestoreDB' ) );
@@ -234,10 +307,12 @@ class mk_template_managememnt {
 			add_action( 'wp_ajax_abb_check_system_resource', array( &$this, 'checkSystemResource' ) );
 
 			add_action( 'wp_ajax_abb_check_ftp_credentials', array( &$this, 'checkFtpCredentials' ) );
+			add_action( 'wp_ajax_abb_get_template_psd_link', array( &$this, 'get_template_psd_link' ) );
 		}
 	}
-	// Begin Install Template Procedure
 	public function installTemplateProcedure() {
+		$template_id = (isset( $_POST['template_id'] ) ? intval( $_POST['template_id'] ) : 0);
+		$this->setTemplateID( $template_id );
 		$template_name = (isset( $_POST['template_name'] ) ? $_POST['template_name'] : null);
 		$import_media = (isset( $_POST['import_media'] ) ? $_POST['import_media'] : false);
 		$type = (isset( $_POST['type'] ) ? $_POST['type'] : null);
@@ -249,49 +324,55 @@ class mk_template_managememnt {
 		switch ( $type ) {
 			case 'preparation':
 				$this->preparation( $template_name );
-			break;
+				break;
 			case 'backup_db':
 				$this->backupDB();
-			break;
+				break;
 			case 'backup_media_records':
 				$this->backup_media_records();
-			break;
+				break;
 			case 'restore_media_records':
 				$this->restore_media_records();
-			break;
+				break;
 			case 'reset_db':
 				$this->resetDB();
-			break;
+				break;
 			case 'upload':
 				$this->uploadTemplateToServer( $template_name );
-			break;
+				break;
 			case 'unzip':
 				$this->unzipTemplateInServer( $template_name );
-			break;
+				break;
 			case 'validate':
 				$this->validateTemplateFiles( $template_name );
-			break;
+				break;
 			case 'plugin':
 				$this->installRequiredPlugins( $template_name );
-			break;
+				break;
 			case 'theme_content':
 				$this->importThemeContent( $template_name , $import_media );
-			break;
+				break;
 			case 'menu_locations':
 				$this->importMenuLocations( $template_name );
-			break;
+				break;
 			case 'setup_pages':
 				$this->setUpPages( $template_name );
-			break;
+				break;
 			case 'theme_options':
 				$this->importThemeOptions( $template_name );
-			break;
+				break;
+			case 'customizer':
+				$this->import_customizer( $template_name );
+				break;
+			case 'header_builder':
+				$this->import_header_builder( $template_name );
+				break;
 			case 'theme_widget':
 				$this->importThemeWidgets( $template_name );
-			break;
-			case 'finilize':
-				$this->finilizeImporting( $template_name);
-			break;
+				break;
+			case 'finalize':
+				$this->finalizeImporting( $template_name );
+				break;
 		}
 	}
 	public function reinitializeData( $template_name ) {
@@ -301,27 +382,63 @@ class mk_template_managememnt {
 			}
 			$this->setTemplateName( $template_name );
 			if (
-				file_exists( $this->getAssetsAddress( 'template_content_path', $this->getTemplateName() ) ) == false or
-				file_exists( $this->getAssetsAddress( 'widget_path', $this->getTemplateName() ) ) == false or
-				file_exists( $this->getAssetsAddress( 'options_path', $this->getTemplateName() ) ) == false or
+				file_exists( $this->getAssetsAddress( 'template_content_path', $this->getTemplateName() ) ) == false ||
+				file_exists( $this->getAssetsAddress( 'widget_path', $this->getTemplateName() ) ) == false ||
+				file_exists( $this->getAssetsAddress( 'options_path', $this->getTemplateName() ) ) == false ||
 				file_exists( $this->getAssetsAddress( 'json_path', $this->getTemplateName() ) ) == false
 			) {
 				throw new Exception( 'Template assets are not completely exist - p1, Contact support.' );
 			} else {
 				return true;
 			}
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
 	}
+
 	/**
-	 * method that is resposible to pass plugin list to UI base on lazy load condition.
+	 * Reinitilize Template file is exist or not for SEE request.
+	 *
+	 * @since 6.0.3
+	 *
+	 * @throws Exception If template name empty.
+	 * @throws Exception If template file is not exist.
+	 *
+	 * @param  string $template_name The template name will be imported.
+	 * @param  string $template_id   The template ID will be imported.
+	 * @return boolean               File status.
+	 */
+	public function reinitialize_data_sse( $template_name, $template_id ) {
+		try {
+
+			// Check template name and ID.
+			if ( empty( $template_name ) || empty( $template_id ) ) {
+				throw new Exception( 'Choose template first!' );
+			}
+
+			$this->setTemplateName( $template_name );
+			$this->setTemplateID( $template_id );
+
+			// Check template file exist or not.
+			if ( false === file_exists( $this->getAssetsAddress( 'template_content_path', $this->getTemplateName() ) ) ) {
+				throw new Exception( 'Template content is not exist - p1, Contact support.' );
+			}
+
+			return true;
+		} catch ( Exception $e ) {
+			$this->message_sse( $e->getMessage(), true );
+			exit;
+		}
+	}
+
+	/**
+	 * Method that is resposible to pass plugin list to UI base on lazy load condition.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
-	 * @param str $_POST[from]  from number
-	 * @param str $_POST[count] how many ?
+	 * @param str $_POST[from]  from number.
+	 * @param str $_POST[count] how many.
 	 *
 	 * @return bool will return boolean status of action , all message is setted to $this->message()
 	 */
@@ -329,36 +446,46 @@ class mk_template_managememnt {
 		try {
 			$from = (isset( $_POST['from'] ) ? $_POST['from'] : null);
 			$count = (isset( $_POST['count'] ) ? $_POST['count'] : null);
+			$template_id = (isset( $_POST['template_id'] ) ? intval( $_POST['template_id'] ) : 0);
 			$template_name = (isset( $_POST['template_name'] ) ? $_POST['template_name'] : null);
 			$template_category = (isset( $_POST['template_category'] ) ? $_POST['template_category'] : null);
 			if ( is_null( $from ) || is_null( $count ) ) {
 				throw new Exception( 'System problem , please contact support', 1001 );
 				return false;
 			}
-			$list_of_templates = $this->getTemplateListFromApi( [ 'pagination_start' => $from, 'pagination_count' => $count, 'template_name' => $template_name, 'template_category' => $template_category ] );
-			
+			$getTemplateListArgs = [
+				'pagination_start' => $from,
+				'pagination_count' => $count,
+				'template_category' => $template_category,
+				'template_name' => $template_name,
+				'template_id' => $template_id,
+			];
+			$list_of_templates = $this->getTemplateListFromApi( $getTemplateListArgs );
+
 			if ( ! is_array( $list_of_templates ) ) {
 				throw new Exception( 'Template list is not what we expected' );
 			}
-			
+
 			$mk_db_management = new mk_db_management();
 			$backups = $mk_db_management->is_restore_db();
-			$this->message( 'Successfull', true, array( 'templates' => $list_of_templates, 'backups' => $backups ) );
+			$this->message(
+				'Successfull', true, array(
+					'templates' => $list_of_templates,
+					'backups' => $backups,
+				)
+			);
 			return true;
 
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
 	}
 	public function preparation( $template_name ) {
 		try {
-
-			// @todo: Write function here for preparion such as cheking the backup_folder is writable, etc
-			
-			$this->message( "All is ready.", true );
+			$this->message( 'All is ready.', true );
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -367,14 +494,14 @@ class mk_template_managememnt {
 		try {
 			$mk_db_management = new mk_db_management();
 			$dm_response = $mk_db_management->backup_db();
-			if ( $dm_response == false ) {
+			if ( false == $dm_response ) {
 				throw new Exception( $mk_db_management->get_error_message() );
 			}
 
-			$this->message( "Backup created.", true );
+			$this->message( 'Backup created.', true );
 			return true;
 
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -382,16 +509,16 @@ class mk_template_managememnt {
 	public function backup_media_records() {
 		try {
 			$mk_db_management = new mk_db_management();
-			
+
 			$dm_response = $mk_db_management->backup_media_records();
 
-			if ( $dm_response == false ) {
+			if ( false == $dm_response ) {
 				throw new Exception( $mk_db_management->get_error_message() );
 			}
 			$this->message( 'Media records backup created.', true );
 			return true;
 
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -399,16 +526,16 @@ class mk_template_managememnt {
 	public function restore_media_records() {
 		try {
 			$mk_db_management = new mk_db_management();
-			
+
 			$dm_response = $mk_db_management->restore_media_records();
 
-			if ( $dm_response == false ) {
+			if ( false == $dm_response ) {
 				throw new Exception( $mk_db_management->get_error_message() );
 			}
 			$this->message( 'Media records restored successfully', true );
 			return true;
 
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -422,8 +549,8 @@ class mk_template_managememnt {
 				return true;
 			} else {
 				throw new Exception( 'Result is not what we expected' );
-			}			
-		} catch (Exception $e) {
+			}
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -432,13 +559,13 @@ class mk_template_managememnt {
 		try {
 			$mk_db_management = new mk_db_management();
 			$return = $mk_db_management->restore_latest_db();
-			if ( $return == false ) {
+			if ( false == $return ) {
 				throw new Exception( $mk_db_management->get_error_message() );
 			}
 			mk_purge_cache_actions();
-			$this->message( "Restore completed!", true );
+			$this->message( 'Restore completed!', true );
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -449,7 +576,7 @@ class mk_template_managememnt {
 				'comments',
 				'commentmeta',
 				'links',
-				//'options',
+				// 'options',
 				'postmeta',
 				'posts',
 				'term_relationships',
@@ -457,11 +584,17 @@ class mk_template_managememnt {
 				'terms',
 				'term_taxonomy',
 			);
+
+			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+				$tables[] = 'icl_translations';
+			}
+
 			$this->resetWordpressDatabase( $tables, array(), false );
 			$this->message( 'Database reseted', true );
 
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 
 			return false;
@@ -483,7 +616,7 @@ class mk_template_managememnt {
 			Abb_Logic_Helpers::uploadFromURL( $this->getTemplateRemoteAddress(), $template_file_name ,$this->getBasePath() );
 			$this->message( 'Uploaded to server', true );
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -500,27 +633,31 @@ class mk_template_managememnt {
 
 			$this->setTemplateFileName( $response );
 
-			$mkfs = new Mk_Fs( array( 'context' => $this->getBasePath() ) ) ;
+			$mkfs = new Mk_Fs(
+				array(
+					'context' => $this->getBasePath(),
+				)
+			);
 
-			if( $mkfs->get_error_code() ){
+			if ( $mkfs->get_error_code() ) {
 				throw new Exception( $mkfs->get_error_message() );
 				return false;
 			}
 
-			if( !$mkfs->exists( $this->getBasePath() . $this->getTemplateName() ) ){
+			if ( ! $mkfs->exists( $this->getBasePath() . $this->getTemplateName() ) ) {
 				Abb_Logic_Helpers::unZip( $this->getBasePath() . $this->getTemplateFileName(), $this->getBasePath() );
-			}else{
-				if( $mkfs->rmdir( $this->getBasePath() . $this->getTemplateName(), true ) ){
+			} else {
+				if ( $mkfs->rmdir( $this->getBasePath() . $this->getTemplateName(), true ) ) {
 					Abb_Logic_Helpers::unZip( $this->getBasePath() . $this->getTemplateFileName(), $this->getBasePath() );
 				}
 			}
 
 			@$mkfs->delete( $this->getBasePath() . $this->getTemplateFileName() );
 
-			$this->message( 'Compeleted', true );
+			$this->message( 'Completed', true );
 
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 
 			return false;
@@ -531,10 +668,14 @@ class mk_template_managememnt {
 			if ( empty( $template_name ) ) {
 				throw new Exception( 'Choose template first' );
 			}
-			
-			$mkfs = new Mk_Fs( array( 'context' => $this->getBasePath() ) ) ;
 
-			if( $mkfs->get_error_code() ){
+			$mkfs = new Mk_Fs(
+				array(
+					'context' => $this->getBasePath(),
+				)
+			);
+
+			if ( $mkfs->get_error_code() ) {
 				throw new Exception( $mkfs->get_error_message() );
 				return false;
 			}
@@ -548,10 +689,10 @@ class mk_template_managememnt {
 			) {
 				throw new Exception( 'Template assets are not completely exist - p2, Contact support.' );
 			} else {
-				$this->message( 'Compeleted', true );
+				$this->message( 'Completed', true );
 				return true;
 			}
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 
 			return false;
@@ -570,7 +711,7 @@ class mk_template_managememnt {
 			}
 			$mk_plugin_management = new mk_plugin_management( false, false );
 			$pm_response = $mk_plugin_management->install_batch( $plugins['required_plugins'] );
-			if ( $pm_response == false ) {
+			if ( false == $pm_response ) {
 				$pm_response = $mk_plugin_management->get_response_message();
 				throw new Exception( $pm_response );
 			}
@@ -578,97 +719,260 @@ class mk_template_managememnt {
 			$message = '{param} plugins are installed.' ;
 			$this->message( array( $message, count( $plugins['required_plugins'] ) ), true );
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
 	}
+
+	/**
+	 * Import theme content via Server-Sent Events request.
+	 *
+	 * @since 6.0.3
+	 *
+	 * @throws Exception If template data is empty.
+	 * @throws Exception If preliminary data is empty.
+	 */
+	public function import_theme_content_sse() {
+		try {
+			/*
+			 * Filter data input from GET method. Eventsource doesn't allow us to use
+			 * POST method.
+			 */
+			$template_name = '';
+			if ( ! empty( $_GET['template_name'] ) ) { // WPCS: XSS ok, CSRF ok.
+				$template_name = sanitize_text_field( $_GET['template_name'] );
+			}
+
+			$template_id = '';
+			if ( ! empty( $_GET['template_id'] ) ) { // WPCS: XSS ok, CSRF ok.
+				$template_id = sanitize_text_field( $_GET['template_id'] );
+			}
+
+			$fetch_attachments = 'false';
+			if ( ! empty( $_GET['fetch_attachments'] ) ) { // WPCS: XSS ok, CSRF ok.
+				$fetch_attachments = sanitize_text_field( $_GET['fetch_attachments'] );
+			}
+
+			// Include wordpress-importer class.
+			Abb_Logic_Helpers::include_wordpress_importer();
+			$this->reinitialize_data_sse( $template_name, $template_id );
+
+			// Set importer options as an array.
+			$options = array(
+				'fetch_attachments' => filter_var( $fetch_attachments, FILTER_VALIDATE_BOOLEAN ),
+				'default_author'    => get_current_user_id(),
+			);
+
+			// Create new instance for Importer.
+			$importer = new WXR_Importer( $options );
+			$logger   = new WP_Importer_Logger_ServerSentEvents();
+			$importer->set_logger( $logger );
+
+			// Get preliminary information.
+			$file     = $this->getAssetsAddress( 'template_content_path', $this->getTemplateName() );
+			$pre_data = $importer->get_preliminary_information( $file );
+			if ( is_wp_error( $pre_data ) ) {
+				throw new Exception( $pre_data->get_error_message() );
+			}
+
+			// @codingStandardsIgnoreStart
+			// Turn off PHP output compression, allow us to print the log.
+			$previous = error_reporting( error_reporting() ^ E_WARNING );
+			ini_set( 'output_buffering', 'off' );
+			ini_set( 'zlib.output_compression', false );
+			error_reporting( $previous );
+			// @codingStandardsIgnoreEnd
+
+			if ( $GLOBALS['is_nginx'] ) {
+				// Setting this header instructs Nginx to disable fastcgi_buffering
+				// and disable gzip for this request.
+				header( 'X-Accel-Buffering: no' );
+				header( 'Content-Encoding: none' );
+			}
+
+			// Start the event stream here to record all the logs.
+			header( 'Content-Type: text/event-stream' );
+			header( 'Cache-Control: no-cache' );
+
+			// Time to run the import!
+			set_time_limit( 0 );
+
+			// Ensure we're not buffered.
+			wp_ob_end_flush_all();
+			flush();
+
+			// Run import process.
+			$process = $importer->import( $file );
+
+			// Setup complete response.
+			$complete = array(
+				'status'  => true,  // The process is complete no matter success or not.
+				'error'   => false, // Message error if any.
+				'data'    => null,  // Compatibility with current Ajax.
+				'message' => 'Template contents were imported.',
+			);
+
+			// Check if the request is error, then set the message.
+			if ( is_wp_error( $process ) ) {
+				$complete['error'] = $process->get_error_message();
+			}
+
+			$this->message_sse( $complete );
+			exit;
+
+		} catch ( Exception $e ) {
+			$this->message_sse( $e->getMessage(), true );
+			exit;
+		}
+	}
+
+	/**
+	 * Get package.json data.
+	 *
+	 * @since 6.1.2
+	 */
+	public function getPackageJsonData( $template_name ) {
+
+		$this->setTemplateName( $template_name );
+		$json_url  = $this->getAssetsAddress( 'json_url', $this->getTemplateName() );
+		$json_path = $this->getAssetsAddress( 'json_path', $this->getTemplateName() );
+		$response  = Abb_Logic_Helpers::getFileBody( $json_url, $json_path );
+
+		return json_decode( $response, true );
+	}
+
+	/**
+	 * Send a Server-Sent Events message.
+	 *
+	 * @since 6.0.3
+	 *
+	 * @param mixed   $message     Data to be JSON-encoded and sent in the message.
+	 * @param boolean $need_header Send response along with the header.
+	 */
+	public function message_sse( $message, $need_header = false ) {
+		// Add header to start event stream only if needed.
+		if ( $need_header ) {
+			// Start the event stream.
+			header( 'Content-Type: text/event-stream' );
+			header( 'Cache-Control: no-cache' );
+		}
+
+		// Convert any message data as an array.
+		if ( ! is_array( $message ) ) {
+			$message = array(
+				'message' => $message,
+			);
+		}
+
+		// Set message event and pass the data.
+		echo "event: message\n";
+		echo 'data: ' . wp_json_encode( $message ) . "\n\n";
+
+		flush();
+	}
+
 	public function importThemeContent( $template_name, $fetch_attachments = false ) {
 		try {
 
-			// Include wordpress-importer class
+			// Include wordpress-importer class.
 			Abb_Logic_Helpers::include_wordpress_importer();
 			$this->reinitializeData( $template_name );
-			
-			$importer = new WP_Import();
-			$importer->fetch_attachments = filter_var( $fetch_attachments, FILTER_VALIDATE_BOOLEAN );
 
+			// Set importer options as an array.
+			$options = array(
+				'fetch_attachments' => filter_var( $fetch_attachments, FILTER_VALIDATE_BOOLEAN ),
+				'default_author'    => get_current_user_id(),
+			);
+
+			// Create new instance for Importer.
+			$importer = new WXR_Importer( $options );
+			$logger   = new WP_Importer_Logger_ServerSentEvents();
+			$importer->set_logger( $logger );
+
+			// Get preliminary information.
+			$file = $this->getAssetsAddress( 'template_content_path', $this->getTemplateName() );
+			$data = $importer->get_preliminary_information( $file );
+			if ( is_wp_error( $data ) ) {
+				$this->message( 'Error in parsing theme_content.xml!', false );
+				return false;
+			}
+
+			// Run import process.
 			ob_start();
-			$importer->import( $this->getAssetsAddress( 'template_content_path', $this->getTemplateName() ) );
+			$importer->import( $file );
 			ob_end_clean();
 
 			$this->message( 'Template contents were imported.', true );
 			return true;
 
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
 	}
-	function importMenuLocations($template_name){
-	    try {
-	        $this->setTemplateName($template_name);
-	        $json_url  = $this->getAssetsAddress('json_url', $this->getTemplateName());
-	        $json_path = $this->getAssetsAddress('json_path', $this->getTemplateName());
-	        $response  = Abb_Logic_Helpers::getFileBody($json_url, $json_path);
-	        $set_menus = json_decode($response, true);
+	function importMenuLocations( $template_name ) {
+		try {
 
-            if (!empty($set_menus['menu_locations']) && is_array($set_menus['menu_locations']) && count($set_menus['menu_locations']) > 0) {
+			$set_menus = $this->getPackageJsonData( $template_name );
 
-	                foreach ($set_menus['menu_locations'][0] as $location => $menu_name) {
-	                    $locations = get_theme_mod('nav_menu_locations');
-	                    $menus     = wp_get_nav_menus();
-	                    if ($menus) {
-	                        foreach ($menus as $menu) {
-	                            if ($menu->name == $menu_name) {
-	                                $locations[$location] = $menu->term_id;
-	                            }
-	                            set_theme_mod('nav_menu_locations', $locations);
-	                        }
-	                    }
-	                }
+			if ( ! empty( $set_menus['menu_locations'] ) && is_array( $set_menus['menu_locations'] ) && count( $set_menus['menu_locations'] ) > 0 ) {
 
-	        } else {
+				foreach ( $set_menus['menu_locations'][0] as $location => $menu_name ) {
+					$locations = get_theme_mod( 'nav_menu_locations' );
+					$menus     = wp_get_nav_menus();
+					if ( $menus ) {
+						foreach ( $menus as $menu ) {
+							if ( $menu->name == $menu_name ) {
+								$locations[ $location ] = $menu->term_id;
+							}
+							set_theme_mod( 'nav_menu_locations', $locations );
+						}
+					}
+				}
+			} else {
 
-	        	$locations = get_theme_mod('nav_menu_locations');
-	            $menus     = wp_get_nav_menus();
-	            if ($menus) {
-	                foreach ($menus as $menu) {
-	                    if (
-	                        $menu->name == 'Main Navigation' ||
-	                        $menu->name == 'main navigation' ||
-	                        $menu->name == 'Main' ||
-	                        $menu->name == 'Main Menu' ||
-	                        $menu->name == 'main menu' ||
-	                        $menu->name == 'main'
-	                    ) {
-	                        $locations['primary-menu'] = $menu->term_id;
-	                    }
+				$locations = get_theme_mod( 'nav_menu_locations' );
+				$menus     = wp_get_nav_menus();
+				if ( $menus ) {
+					foreach ( $menus as $menu ) {
+						if (
+							'Main Navigation' == $menu->name ||
+							'main navigation' == $menu->name ||
+							'Main' == $menu->name ||
+							'Main Menu' == $menu->name ||
+							'main menu' == $menu->name ||
+							'main' == $menu->name
+						) {
+							$locations['primary-menu'] = $menu->term_id;
+						}
 
-	                	set_theme_mod('nav_menu_locations', $locations);    
-	                }
-	            }
-	            
-	        }
+						set_theme_mod( 'nav_menu_locations', $locations );
+					}
+				}
+			}
 
-	        $this->message('Navigation locations is configured.', true);
+			$this->message( 'Navigation locations is configured.', true );
 
-	        return true;
-	    } catch (Exception $e) {
-	        $this->message($e->getMessage(), false);
+			return true;
+		} catch ( Exception $e ) {
+			$this->message( $e->getMessage(), false );
 
-	        return false;
-	    }
+			return false;
+		}// End try().
 	}
 
 
 	public function setUpPages( $template_name ) {
 		try {
-			$homepage = get_page_by_title( 'Homepage 1' );
-			if ( empty( $homepage->ID ) ) {
+			$package_data = $this->getPackageJsonData( $template_name );
+
+			if ( ! empty( $package_data['homepage_title'] ) ) {
+				$homepage = get_page_by_title( $package_data['homepage_title'] );
+			} else {
 				$homepage = get_page_by_title( 'Homepage' );
 				if ( empty( $homepage->ID ) ) {
-					$homepage = get_page_by_title( 'Home' );
+					$homepage = get_page_by_title( 'home' );
 				}
 			}
 
@@ -678,17 +982,34 @@ class mk_template_managememnt {
 				$home_page_response = true;
 			}
 
-			$shop_page = get_page_by_title( 'Shop' );
+			if ( ! empty( $package_data['shop_title'] ) ) {
+				$shop_page = get_page_by_title( $package_data['shop_title'] );
+			} else {
+				$shop_page = get_page_by_title( 'Shop' );
+			}
 			if ( ! empty( $shop_page->ID ) ) {
 				update_option( 'woocommerce_shop_page_id', $shop_page->ID );
 				$shop_page_response = true;
 			}
+
+			// Set Cart page.
+			$cart_page = get_page_by_title( 'Cart' );
+			if ( ! empty( $cart_page->ID ) ) {
+				update_option( 'woocommerce_cart_page_id', $cart_page->ID );
+			}
+
+			// Set Checkout page.
+			$checkout_page = get_page_by_title( 'Checkout' );
+			if ( ! empty( $checkout_page->ID ) ) {
+				update_option( 'woocommerce_checkout_page_id', $checkout_page->ID );
+			}
+
 			// 'Default homepage is configured.'; 'Shop Page is configured.';
-			if ( isset( $home_page_response ) and isset( $shop_page_response ) ) {
+			if ( isset( $home_page_response ) && isset( $shop_page_response ) ) {
 				$response = 'Default homepage and Shop Page is configured.';
-			} elseif ( ! isset( $home_page_response ) and isset( $shop_page_response ) ) {
+			} elseif ( ! isset( $home_page_response ) && isset( $shop_page_response ) ) {
 				$response = 'Shop Page is configured.';
-			} elseif ( isset( $home_page_response ) and ! isset( $shop_page_response ) ) {
+			} elseif ( isset( $home_page_response ) && ! isset( $shop_page_response ) ) {
 				$response = 'Default homepage is configured.';
 			} else {
 				$response = 'Setup pages completed.';
@@ -696,7 +1017,7 @@ class mk_template_managememnt {
 			$this->message( $response, true );
 
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 
 			return false;
@@ -711,7 +1032,7 @@ class mk_template_managememnt {
 			);
 			$data = unserialize( base64_decode( $import_data ) );
 			if ( empty( $data ) == false ) {
-				unset( $data['custom_js'], $data['twitter_consumer_key'], $data['google_maps_api_key'], $data['twitter_consumer_secret'], $data['twitter_access_token'], $data['twitter_access_token_secret'], $data['typekit_id'], $data['analytics'] );
+				unset( $data['custom_js'], $data['twitter_consumer_key'], $data['google_maps_api_key'], $data['twitter_consumer_secret'], $data['twitter_access_token'], $data['twitter_access_token_secret'], $data['typekit_id'], $data['analytics'], $data['quick_contact_email'] );
 				update_option( THEME_OPTIONS, $data );
 
 				$this->message( 'Theme options are imported.', true );
@@ -720,7 +1041,73 @@ class mk_template_managememnt {
 				throw new Exception( 'Template options is empty' );
 				return false;
 			}
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
+			$this->message( $e->getMessage(), false );
+
+			return false;
+		}
+	}
+	/**
+	 * Import Customizer options.
+	 *
+	 * @since  6.0.3
+	 * @param  string $template_name Name of template.
+	 * @return mixed
+	 * @throws Exception When Customizer file is empty.
+	 */
+	public function import_customizer( $template_name ) {
+		try {
+			$this->reinitializeData( $template_name );
+			if ( ! file_exists( $this->getAssetsAddress( 'customizer_path', $this->getTemplateName() ) ) ) {
+				$this->message( 'Customizer file is not found.', true );
+				return true;
+			}
+			$import_data = Abb_Logic_Helpers::getFileBody(
+				$this->getAssetsAddress( 'customizer_url', $this->getTemplateName() ),
+				$this->getAssetsAddress( 'customizer_path', $this->getTemplateName() )
+			);
+			$data = json_decode( $import_data, true );
+			if ( false === empty( $data ) ) {
+				update_option( 'mk_cz', $data );
+
+				$this->message( 'Customizer is imported.', true );
+				return true;
+			}
+			throw new Exception( 'Customizer is empty.' );
+		} catch ( Exception $e ) {
+			$this->message( $e->getMessage(), false );
+
+			return false;
+		}
+	}
+	/**
+	 * Import Header Builder option.
+	 *
+	 * @since  6.0.3
+	 * @param  [type] $template_name Name of template.
+	 * @return mixed
+	 * @throws Exception When Header Builder file is empty.
+	 */
+	public function import_header_builder( $template_name ) {
+		try {
+			$this->reinitializeData( $template_name );
+			if ( ! file_exists( $this->getAssetsAddress( 'header_builder_path', $this->getTemplateName() ) ) ) {
+				$this->message( 'Header builder file is not found.', true );
+				return true;
+			}
+			$import_data = Abb_Logic_Helpers::getFileBody(
+				$this->getAssetsAddress( 'header_builder_url', $this->getTemplateName() ),
+				$this->getAssetsAddress( 'header_builder_path', $this->getTemplateName() )
+			);
+			$data = json_decode( $import_data, true );
+			if ( false === empty( $data ) ) {
+				update_option( 'mkhb_global_header', $data );
+
+				$this->message( 'Header Builder is imported.', true );
+				return true;
+			}
+			throw new Exception( 'Header Builder is empty' );
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 
 			return false;
@@ -734,20 +1121,21 @@ class mk_template_managememnt {
 				$this->getAssetsAddress( 'widget_path', $this->getTemplateName() )
 			);
 			$data = json_decode( $data );
-			$this->importWidgetData( $data );
+			$this->import_widget_data( $data );
 
 			$this->message( 'Widgets are imported.', true );
 
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 
 			return false;
 		}
 	}
-	public function finilizeImporting( $template_name) {
+	public function finalizeImporting( $template_name ) {
 		$this->reinitializeData( $template_name );
-		// Check if it had something to import
+		$template_name = sanitize_title( $template_name );
+		// Check if it had something to import.
 		try {
 			$json_url = $this->getAssetsAddress( 'json_url', $this->getTemplateName() );
 			$json_path = $this->getAssetsAddress( 'json_path', $this->getTemplateName() );
@@ -760,40 +1148,61 @@ class mk_template_managememnt {
 				foreach ( $plugins['importing_data'] as $key => $value ) {
 					switch ( $value['name'] ) {
 						case 'layer-slider':
-							$ls_content_path = $this->getBasePath() . strtolower( $template_name ) . '/' . $value['content_path'];
+							$ls_content_path = $this->getBasePath() . $template_name . '/' . $value['content_path'];
 							if ( file_exists( $ls_content_path ) ) {
 								$this->importLayerSliderContent( $ls_content_path );
 							}
-						break;
+							break;
 					}
 				}
 			}
 
-			// Deleting Template Source
-			if ( file_exists( $this->getBasePath() . $template_name ) ) {
-				$delete_response = Abb_Logic_Helpers::deleteFileNDir( $this->getBasePath() . $template_name );
-			}
-			if ( file_exists( $this->getBasePath() . $template_name . '.zip' ) ) {
-				$delete_response = Abb_Logic_Helpers::deleteFileNDir( $this->getBasePath() . $template_name . '.zip' );
-			}
-			if ( $delete_response = false ) {
-				throw new Exception( 'Can not remove source files' );
+			if ( ! $this->cleanInstallFiles( $template_name ) ) {
+				throw new Exception( 'Can not remove installation source files' );
 				return false;
 			}
 
 			update_option( 'jupiter_template_installed', $this->getTemplateName() );
+			update_option( 'jupiter_template_installed_id', $this->getTemplateID() );
 			update_option( THEME_OPTIONS . '_imported', 'true' );
-
-			$this->updateThemeOptions();
 
 			$this->message( 'Data imported successfully', true );
 			return true;
 
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 
 			return false;
 		}// End try().
+	}
+
+	/**
+	 * Clean install files
+	 *
+	 * @param $template_name
+	 * @author Reza Marandi
+	 * @return bool
+	 */
+	private function cleanInstallFiles( $template_name ) {
+		$mkfs = new Mk_Fs(
+			array(
+				'context' => $this->getBasePath(),
+			)
+		);
+
+		// Deleting Template Source Folder.
+		$template_path = $this->getBasePath() . sanitize_title( $template_name );
+		if ( $mkfs->exists( $template_path ) && $mkfs->is_dir( $template_path ) && ! $mkfs->delete( $template_path, true ) ) {
+			return false;
+		}
+
+		// Deleting Template Source Zip file.
+		$template_zip = $template_path . '.zip';
+		if ( $mkfs->exists( $template_zip ) && $mkfs->is_file( $template_zip ) && ! $mkfs->delete( $template_zip ) ) {
+			return false;
+		}
+
+		return true;
 	}
 	public function uninstallTemplate() {
 		try {
@@ -812,19 +1221,18 @@ class mk_template_managememnt {
 
 			$reset = $this->resetWordpressDatabase( $tables, array(), true );
 
-			if( !$reset ){
+			if ( ! $reset ) {
 				throw new Exception( 'Failed to uninstall template. Please try again.' );
 			}
 
 			$this->message( 'Template uninstall success.', true );
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 
 			return false;
 		}
 	}
-	// End    Install Template Procedure
 	public function availableWidgets() {
 		global $wp_registered_widget_controls;
 		$widget_controls = $wp_registered_widget_controls;
@@ -838,7 +1246,18 @@ class mk_template_managememnt {
 
 		return apply_filters( 'available_widgets', $available_widgets );
 	}
-	private function importWidgetData( $data ) {
+
+	/**
+	 * Import widgets' data.
+	 *
+	 * @throws Exception If can not read widget data.
+	 *
+	 * @since 5.7.0
+	 *        6.0.4 Make it public.
+	 * @param  array $data Widgets' data.
+	 * @return boolean
+	 */
+	public function import_widget_data( $data ) {
 		global $wp_registered_sidebars;
 
 		$available_widgets = $this->availableWidgets();
@@ -924,7 +1343,7 @@ class mk_template_managememnt {
 					}
 				}
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['name'] = isset( $available_widgets[ $id_base ]['name'] ) ? $available_widgets[ $id_base ]['name'] : $id_base;
-				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title'] = !empty($widget->title) ? $widget->title : '';
+				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title'] = ! empty( $widget->title ) ? $widget->title : '';
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message_type'] = $widget_message_type;
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message'] = $widget_message;
 			}// End foreach().
@@ -933,21 +1352,21 @@ class mk_template_managememnt {
 		return true;
 	}
 	/**
-	 * It will empty all or custom database tables of wordpress and install wordpress again if needed.
+	 * It will empty all or custom database tables of WordPress and install WordPress again if needed.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
 	 * @param array $table          which table need to be empty ? example : array('user' , 'usermeta')
 	 *                              table names should be without any prefix
-	 * @param bool  $install_needed if wordpress need to be installed after reseting database
+	 * @param bool  $install_needed if WordPress need to be installed after reseting database
 	 *                              it should be false or true
 	 *
 	 * @return bool return if everything looks good and throwing errors on problems
 	 */
 	public function resetWordpressDatabase( $tables = array(), $exclude_tables = array(), $install_needed = false ) {
 		global $wpdb, $reactivate_wp_reset_additional, $current_user;
-		
-		if ( $install_needed ) {			
+
+		if ( $install_needed ) {
 
 			require_once ABSPATH . '/wp-admin/includes/upgrade.php';
 
@@ -955,20 +1374,19 @@ class mk_template_managememnt {
 
 			$old_options = array(
 				'artbees_api_key',
-				'jupiter-data-tracking'
+				'jupiter-data-tracking',
 			);
-			
+
 			$blogname = get_option( 'blogname' );
-			$admin_email = get_option( 'admin_email' );
 			$blog_public = get_option( 'blog_public' );
 			$site_url = site_url();
 			$current_theme = wp_get_theme();
 
-			foreach ($old_options as $old_option_key) {
-				$new_options[$old_option_key] = get_option( $old_option_key );
+			foreach ( $old_options as $old_option_key ) {
+				$new_options[ $old_option_key ] = get_option( $old_option_key );
 			}
 
-			if ( $current_user->user_login != 'admin' ) {
+			if ( 'admin' != $current_user->user_login ) {
 				$user = get_user_by( 'login', 'admin' );
 			}
 
@@ -977,24 +1395,28 @@ class mk_template_managememnt {
 				$session_tokens = get_user_meta( $user->ID, 'session_tokens', true );
 			}
 
-			// Check if we need all the tables or specific table
+			// Check if we need all the tables or specific table.
 			if ( is_array( $tables ) && count( $tables ) > 0 ) {
-				array_walk($tables, function ( &$value, $key ) use ( $wpdb ) {
-					$value = $wpdb->prefix . $value;
-				});
+				array_walk(
+					$tables, function ( &$value, $key ) use ( $wpdb ) {
+						$value = $wpdb->prefix . $value;
+					}
+				);
 			} else {
 				$prefix = str_replace( '_', '\_', $wpdb->prefix );
 				$tables = $wpdb->get_col( "SHOW TABLES LIKE '{$prefix}%'" );
 			}
 
-			// exclude table if its valued
+			// exclude table if its valued.
 			if ( is_array( $exclude_tables ) && count( $exclude_tables ) > 0 ) {
-				array_walk($exclude_tables, function ( &$ex_value, $key ) use ( $wpdb ) {
-					$ex_value = $wpdb->prefix . $ex_value;
-				});
+				array_walk(
+					$exclude_tables, function ( &$ex_value, $key ) use ( $wpdb ) {
+						$ex_value = $wpdb->prefix . $ex_value;
+					}
+				);
 				$tables = array_diff( $tables, $exclude_tables );
 			}
-			// Removing data from wordpress tables.
+			// Removing data from WordPress tables.
 			foreach ( $tables as $table ) {
 				$wpdb->query( "DROP TABLE $table" );
 			}
@@ -1003,11 +1425,17 @@ class mk_template_managememnt {
 			switch_theme( $current_theme->get_stylesheet() );
 
 			/* GoDaddy Patch => GD have a problem of cleaning siteurl option value after reseting database */
-			if(site_url() == '') {
-				$this->logger->debug('Fresh Installed WP' , 'Sounds like GDServers : ' . $site_url);
-				$wpdb->update( $wpdb->options, array( 'option_value' => $site_url),array('option_name'=>'siteurl'));
-				$this->logger->debug('Update Query' , $wpdb->last_query);
-				$this->logger->debug('After Executing GD Patch' , site_url());
+			if ( site_url() == '' ) {
+				$this->logger->debug( 'Fresh Installed WP' , 'Sounds like GDServers : ' . $site_url );
+				$wpdb->update(
+					$wpdb->options, array(
+						'option_value' => $site_url,
+					),array(
+						'option_name' => 'siteurl',
+					)
+				);
+				$this->logger->debug( 'Update Query' , $wpdb->last_query );
+				$this->logger->debug( 'After Executing GD Patch' , site_url() );
 			}
 			extract( $result, EXTR_SKIP );
 
@@ -1033,65 +1461,99 @@ class mk_template_managememnt {
 			}
 
 			wp_set_auth_cookie( $user_id, true );
-			do_action( 'wp_login', $user->user_login );
+			do_action( 'wp_login', $user->user_login, $user );
 
-			if( $new_options ){
-				foreach ($new_options as $key => $value) {
+			if ( $new_options ) {
+				foreach ( $new_options as $key => $value ) {
 					update_option( $key, $value );
 				}
 			}
 			return true;
-		}else{
+		} else {
 
-			$jupiter_template_installed = get_option('jupiter_template_installed');
+			$jupiter_temp_installed = get_option( 'jupiter_template_installed' );
 
-			if( $jupiter_template_installed ){
+			if ( $jupiter_temp_installed ) {
 
-				// Delete plugins
-				$json_url = $this->getAssetsAddress( 'json_url', $jupiter_template_installed );
-				$json_path = $this->getAssetsAddress( 'json_path', $jupiter_template_installed );
+				// Delete plugins.
+				$json_url = $this->getAssetsAddress( 'json_url', $jupiter_temp_installed );
+				$json_path = $this->getAssetsAddress( 'json_path', $jupiter_temp_installed );
 				$response = Abb_Logic_Helpers::getFileBody( $json_url, $json_path );
 				$plugins = json_decode( $response, true );
-				if( $plugins ){
+				if ( $plugins ) {
 					$mk_plugin_management = new mk_plugin_management( false, false );
 					foreach ( $plugins['required_plugins'] as $required_plugin ) {
-						if( !$mk_plugin_management->deactivate_plugin( $required_plugin, true ) ){
+						if ( ! $mk_plugin_management->deactivate_plugin( $required_plugin, true ) ) {
 							throw new Exception( sprintf( 'Failed to deactivate plugin: %s', $required_plugin ) );
 							return false;
 						}
 					}
 				}
 
-				// Delete option data for page_on_front
-				if( get_option( 'page_on_front' ) ){
+				// Delete option data for page_on_front.
+				if ( get_option( 'page_on_front' ) ) {
 					delete_option( 'page_on_front' );
 				}
 
-				// Delete option data for show_on_front
-				if( get_option( 'show_on_front' ) ){
+				// Delete option data for show_on_front.
+				if ( get_option( 'show_on_front' ) ) {
 					delete_option( 'show_on_front' );
 				}
 
-				// Delete option data for woocommerce_shop_page_id
-				if( get_option( 'woocommerce_shop_page_id' ) ){
+				// Delete option data for woocommerce_shop_page_id.
+				if ( get_option( 'woocommerce_shop_page_id' ) ) {
 					delete_option( 'woocommerce_shop_page_id' );
 				}
 
 				// Delete widgets
 				$wpdb->query( "DELETE FROM {$wpdb->prefix}options WHERE option_name LIKE '%widget%';" );
-			
-			}
 
-			// truncate tables
-			foreach ($tables as $table) {
+			}// End if().
+
+			// truncate tables.
+			foreach ( $tables as $table ) {
 				$wpdb->query( "TRUNCATE TABLE {$wpdb->prefix}{$table}" );
 			}
 
 			return true;
+		}// End if().
+	}
+
+	private function setResponseForApiTemplateList( $url, $configs ) {
+
+		$response = \Httpful\Request::get( $url )
+			->addHeaders(
+				array(
+					'theme-name' => $this->getThemeName(),
+					'pagination-start' => isset( $configs['pagination_start'] ) ? $configs['pagination_start'] : 0,
+					'pagination-count' => isset( $configs['pagination_count'] ) ? $configs['pagination_count'] : 1,
+				)
+			);
+		if ( isset( $configs['template_id'] ) && is_null( $configs['template_id'] ) == false ) {
+			$response->addHeaders(
+				array(
+					'template-id' => $configs['template_id'],
+				)
+			);
 		}
+		if ( isset( $configs['template_name'] ) && is_null( $configs['template_name'] ) == false ) {
+			$response->addHeaders(
+				array(
+					'template-name' => $configs['template_name'],
+				)
+			);
+		}
+		if ( isset( $configs['template_category'] ) && is_null( $configs['template_category'] ) == false ) {
+			$response->addHeaders(
+				array(
+					'template-category' => $configs['template_category'],
+				)
+			);
+		}
+		return $response;
 	}
 	/**
-	 * This method is resposible to get template list from api and create download link if template need to extract from wordpress repo.
+	 * This method is resposible to get template list from api and create download link if template need to extract from WordPress repo.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
@@ -1100,27 +1562,14 @@ class mk_template_managememnt {
 	 *
 	 * @return array will return array of templates
 	 */
-	public function getTemplateListFromApi( $configs = array() ) {
-
+	public function getTemplateListFromApi( $configs ) {
+		if ( ! is_array( $configs ) ) {
+			$configs = array();
+		}
 		$url = $this->getApiURL() . 'theme/templates';
-		$response = \Httpful\Request::get( $url )
-		->addHeaders(array(
-				'theme-name' => $this->getThemeName(),
-				'pagination-start' => isset( $configs['pagination_start'] ) ? $configs['pagination_start'] : 0,
-				'pagination-count' => isset( $configs['pagination_count'] ) ? $configs['pagination_count'] : 1,
-		));
-		if ( isset( $configs['template_name'] ) && is_null( $configs['template_name'] ) == false ) {
-			$response->addHeaders(array(
-				'template-name' => $configs['template_name'],
-			));
-		}
-		if ( isset( $configs['template_category'] ) && is_null( $configs['template_category'] ) == false ) {
-			$response->addHeaders(array(
-				'template-category' => $configs['template_category'],
-			));
-		}
+		$response = $this->setResponseForApiTemplateList( $url, $configs );
 		$response = $response->send();
-		if ( isset( $response->body->bool ) == false || $response->body->bool == false ) {
+		if ( false == isset( $response->body->bool ) || false == $response->body->bool ) {
 			throw new Exception( $response->body->message );
 		}
 		return $response->body->data;
@@ -1128,85 +1577,130 @@ class mk_template_managememnt {
 	public function getTemplateDownloadLink( $template_name = '', $type = 'download' ) {
 		$url = $this->getApiURL() . 'theme/download-template';
 		$response = \Httpful\Request::get( $url )
-		->addHeaders(array(
+		->addHeaders(
+			array(
 				'template-name' => $template_name,
 				'type' => $type,
-		))
+			)
+		)
 		->send();
-		if ( isset( $response->body->bool ) == false || $response->body->bool == false ) {
+		if ( false == isset( $response->body->bool ) || false == $response->body->bool ) {
 			throw new Exception( $response->body->message );
 		}
-		return $response->body->data;
+
+		/**
+		 * Filters the template download url.
+		 *
+		 * @since 6.0.3
+		 * @param string $response->body->data Download url.
+		 */
+		return apply_filters( 'mk_template_download_url', $response->body->data );
 	}
+
+	/**
+	 * Gets psd file download link.
+	 *
+	 * @return mixed
+	 * @since 5.7.0
+	 * @author Ugur Mirza Zeyrek
+	 */
+	public function get_template_psd_link() {
+		$template_name = $_POST['template_name'];
+		try {
+			$response = $this->getTemplateDownloadLink( $template_name,'download-psd' );
+			$this->message(
+				'Successfull', true, array(
+					'psd_link' => $response,
+				)
+			);
+			return true;
+		} catch ( Exception $e ) {
+			$this->message( $e->getMessage(), false );
+			return false;
+		}// End try().
+	}
+
 	/**
 	 * This method is resposible to get templates categories list from api
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
-	 * @param str $template_name if template name is valued it will return array of information about the this template
-	 *                           but if template is valued as false it will return all templates information
+	 * @param str $template_name if template name is valued it will return array of information about the this template.
+	 * but if template is valued as false it will return all templates information.
 	 *
-	 * @return array will return array of plugins
+	 * @return array will return array of plugins.
 	 */
 	public function getTemplateCategoryListFromApi() {
 		try {
 			$url = $this->getApiURL() . 'theme/template-categories';
 			$response = \Httpful\Request::get( $url )->send();
-			if ( isset( $response->body->bool ) == false || $response->body->bool == false ) {
+			if ( false == isset( $response->body->bool ) || false == $response->body->bool ) {
 				throw new Exception( $response->body->message );
 			}
 			$this->message( 'Successfull', true, $response->body->data );
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
 	}
 	/**
-	 * we need to make assets addresses dynamic and fully proccess
+	 * We need to make assets addresses dynamic and fully proccess.
 	 * in one method for future development
 	 * it will get the type of address and will return full address in string
 	 * example :
 	 * for (options_url) type , it will return something like this
 	 * (http://localhost/jupiter/wp-content/uploads/mk_templates/dia/options.txt).
 	 *
-	 * for (options_path) type , it will return something like this
+	 * For (options_path) type , it will return something like this.
 	 * (/usr/apache/www/wp-content/uploads/mk_templates/dia/options.txt)
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
-	 * @param str $which_one     Which address do you need ?
-	 * @param str $template_name such as :
+	 * @param str $which_one     Which address do you need.
+	 * @param str $template_name such as.
 	 */
 	public function getAssetsAddress( $which_one, $template_name ) {
 		$template_name = sanitize_title( $template_name );
 		switch ( $which_one ) {
 			case 'template_content_url':
-			return $this->getBaseUrl() . $template_name . '/' . $this->getTemplateContentFileName();
+				return $this->getBaseUrl() . $template_name . '/' . $this->getTemplateContentFileName();
 			break;
 			case 'template_content_path':
-			return $this->getBasePath() . $template_name . '/' . $this->getTemplateContentFileName();
+				return $this->getBasePath() . $template_name . '/' . $this->getTemplateContentFileName();
 			break;
 			case 'widget_url':
-			return $this->getBaseUrl() . $template_name . '/' . $this->getWidgetFileName();
+				return $this->getBaseUrl() . $template_name . '/' . $this->getWidgetFileName();
 			break;
 			case 'widget_path':
-			return $this->getBasePath() . $template_name . '/' . $this->getWidgetFileName();
+				return $this->getBasePath() . $template_name . '/' . $this->getWidgetFileName();
 			break;
 			case 'options_url':
-			return $this->getBaseUrl() . $template_name . '/' . $this->getOptionsFileName();
+				return $this->getBaseUrl() . $template_name . '/' . $this->getOptionsFileName();
 			break;
 			case 'options_path':
-			return $this->getBasePath() . $template_name . '/' . $this->getOptionsFileName();
+				return $this->getBasePath() . $template_name . '/' . $this->getOptionsFileName();
+			break;
+			case 'customizer_url':
+				return $this->getBaseUrl() . $template_name . '/' . $this->get_customizer_file_name();
+			break;
+			case 'customizer_path':
+				return $this->getBasePath() . $template_name . '/' . $this->get_customizer_file_name();
+			break;
+			case 'header_builder_url':
+				return $this->getBaseUrl() . $template_name . '/' . $this->get_header_builder_file_name();
+			break;
+			case 'header_builder_path':
+				return $this->getBasePath() . $template_name . '/' . $this->get_header_builder_file_name();
 			break;
 			case 'json_url':
-			return $this->getBaseUrl() . $template_name . '/' . $this->getJsonFileName();
+				return $this->getBaseUrl() . $template_name . '/' . $this->getJsonFileName();
 			break;
 			case 'json_path':
-			return $this->getBasePath() . $template_name . '/' . $this->getJsonFileName();
+				return $this->getBasePath() . $template_name . '/' . $this->getJsonFileName();
 			break;
 			default:
-			throw new Exception( 'File name you are looking for is not introduced.' );
+				throw new Exception( 'File name you are looking for is not introduced.' );
 
 			return false;
 			break;
@@ -1225,20 +1719,21 @@ class mk_template_managememnt {
 			throw new Exception( 'LayerSlider is installed but not activated , activate it first' );
 			return false;
 		}
-		// Empty layerslider table first
+		// Empty layerslider table first.
 		$table = $wpdb->prefix . 'layerslider';
 		$wpdb->query( "TRUNCATE TABLE $table" );
 
 		// Try to import configs.
 		$ls_plugin_root_path = pathinfo( $plugin->get_plugins_dir() . $ls_path );
 		include $ls_plugin_root_path['dirname'] . '/classes/class.ls.importutil.php';
-		$import = new LS_ImportUtil( $content_path );
+		new LS_ImportUtil( $content_path );
 		return true;
 	}
 
 	/**
 	 * Check system resource based on max_execution_time and memory_limit.
 	 * All response will be sent to message function.
+	 *
 	 * @return boolean True if successfull, false if error happens.
 	 *
 	 * @author Ayub Adiputra <ayub@artbees.net>
@@ -1250,7 +1745,7 @@ class mk_template_managememnt {
 			// Collect all parameters.
 			$resources = array();
 			$resources['max_execution_time'] = ini_get( 'max_execution_time' );
-			$resources['memory_limit'] 		 = ini_get( 'memory_limit' );
+			$resources['memory_limit']       = ini_get( 'memory_limit' );
 
 			// Check max_execution_time is less than 3000 s.
 			if ( (int) $resources['max_execution_time'] > 0 && (int) $resources['max_execution_time'] < 3000 ) {
@@ -1274,26 +1769,34 @@ class mk_template_managememnt {
 
 	/**
 	 * Check FTP credentials
-	 * 
+	 *
 	 * @return boolean True if successfull, false if error happens.
 	 *
 	 * @author Sofyan Sitorus <sofyan@artbees.net>
 	 * @since 5.8
 	 * @version 5.8
 	 */
-	public function checkFtpCredentials(){
+	public function checkFtpCredentials() {
 
 		try {
 
-			$url = wp_nonce_url('admin.php?page=theme-templates','mk-check-ftp-credentials');
+			$url = wp_nonce_url( 'admin.php?page=theme-templates','mk-check-ftp-credentials' );
 
 			$upload_dir = wp_upload_dir();
 
 			$context = trailingslashit( $upload_dir['basedir'] ) . 'mk-fs-creds/';
 
-			$mkfs = new Mk_Fs( array( 'form_post' => $url, 'context' => $context, 'extra_fields' => array( 'mk_check_ftp_credentials' => 1 ) ), true );
+			$mkfs = new Mk_Fs(
+				array(
+					'form_post' => $url,
+					'context' => $context,
+					'extra_fields' => array(
+						'mk_check_ftp_credentials' => 1,
+					),
+				), true
+			);
 
-			if( $mkfs->get_error_code() ){
+			if ( $mkfs->get_error_code() ) {
 				throw new Exception( $mkfs->get_error_message() );
 				return false;
 			}
@@ -1302,8 +1805,8 @@ class mk_template_managememnt {
 
 			$config_file = $context . 'index.php';
 
-			// Delete existing config file
-			if( $mkfs->exists( $config_file ) ){
+			// Delete existing config file.
+			if ( $mkfs->exists( $config_file ) ) {
 				$mkfs->delete( $config_file );
 			}
 
@@ -1313,21 +1816,21 @@ class mk_template_managememnt {
 				'password',
 				'public_key',
 				'private_key',
-				'connection_type'
+				'connection_type',
 			);
 
-			// Create existing config file
+			// Create existing config file.
 			$creds_data = [];
-			foreach ($_POST as $key => $value) {
-				if( in_array( $key, $includes ) ){
-					$creds_data[$key] = Abb_Logic_Helpers::encrypt_decrypt( $value );
+			foreach ( $_POST as $key => $value ) {
+				if ( in_array( $key, $includes ) ) {
+					$creds_data[ $key ] = Abb_Logic_Helpers::encrypt_decrypt( $value );
 				}
 			}
-			
-			$config_file_content = '<?php' . "\n" . '$mkfs_config = \''. json_encode( $creds_data ) . '\';' . "\n";
-			
+
+			$config_file_content = '<?php' . "\n" . '$mkfs_config = \'' . json_encode( $creds_data ) . '\';' . "\n";
+
 			$mkfs->put_contents( $config_file, $config_file_content );
-			
+
 			$this->message( 'Successfull', true );
 
 			return true;
@@ -1335,25 +1838,25 @@ class mk_template_managememnt {
 		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
-		}
+		}// End try().
 	}
 
 	/*====================== Helpers ============================*/
 	/**
-	 * this method is resposible to manage all the classes messages and act different on ajax mode or test mode.
+	 * This method is resposible to manage all the classes messages and act different on ajax mode or test mode.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
-	 * @param str   $message for example ("Successfull")
-	 * @param bool  $status  true or false
-	 * @param mixed $data    its for when ever you want to result back an array of data or anything else
+	 * @param str   $message for example ("Successfull").
+	 * @param bool  $status  true or false.
+	 * @param mixed $data    its for when ever you want to result back an array of data or anything else.
 	 */
 	public function message( $message, $status, $data = null ) {
 		$response = array(
-				'status' => $status,
-				'message' => mk_logic_message_helper( 'template-management' , $message ),
-				'data' => $data,
-			);
+			'status' => $status,
+			'message' => mk_logic_message_helper( 'template-management' , $message ),
+			'data' => $data,
+		);
 		if ( $this->getAjaxMode() == true ) {
 			header( 'Content-Type: application/json' );
 			wp_die( json_encode( $response ) );
@@ -1363,42 +1866,8 @@ class mk_template_managememnt {
 	}
 
 	/**
-	 * @author Bob Ulusoy
-	 */
-	public function updateThemeOptions() {
-		$theme_options = array();
-			$page = include( THEME_ADMIN . '/theme-options/masterkey.php' );
-			$theme_options[ $page['name'] ] = array();
-
-		foreach ( $page['options'] as $group ) {
-
-			foreach ( $group['fields'] as $subgroup ) {
-				foreach ( $subgroup['fields'] as $option ) {
-					if ( $option['type'] == 'groupset' ) {
-						foreach ( $option['fields'] as $option ) {
-							if ( isset( $option['default'] ) ) {
-								$theme_options[ $page['name'] ][ $option['id'] ] = $option['default'];
-							}
-						}
-					} else {
-						if ( isset( $option['default'] ) ) {
-							$theme_options[ $page['name'] ][ $option['id'] ] = $option['default'];
-						}
-					}
-				}
-			}
-		}
-
-		$theme_options[ $page['name'] ] = array_merge( (array) $theme_options[ $page['name'] ], (array) get_option( $page['name'] ) );
-
-		$GLOBALS['mk_options'] = $theme_options[ $page['name'] ];
-		update_option( THEME_OPTIONS, $theme_options[ $page['name'] ] );
-		update_option( THEME_OPTIONS_BUILD, uniqid() );
-		mk_purge_cache_actions();
-	}
-
-	/**
 	 * Convert memory data to number. Copy from let_to_num in mk_control_panel class.
+	 *
 	 * @param  string $size Memory size in string format.
 	 * @return int          Memory size in integer format.
 	 * @see framework/admin/control-panel/logic/functions.php
@@ -1407,40 +1876,53 @@ class mk_template_managememnt {
 	 * @version 5.6
 	 */
 	private function letToNum( $size ) {
-        $l   = substr( $size, -1);
-        $ret = substr( $size, 0, -1);
+		$let   = substr( $size, -1 );
+		$ret = substr( $size, 0, -1 );
 
-        switch ( strtoupper( $l ) ) {
-            case 'P':
-                $ret *= 1024;
-            case 'T':
-                $ret *= 1024;
-            case 'G':
-                $ret *= 1024;
-            case 'M':
-                $ret *= 1024;
-            case 'K':
-                $ret *= 1024;
-        }
+		switch ( strtoupper( $let ) ) {
+			case 'P':
+				$ret *= 1024;
+			case 'T':
+				$ret *= 1024;
+			case 'G':
+				$ret *= 1024;
+			case 'M':
+				$ret *= 1024;
+			case 'K':
+				$ret *= 1024;
+		}
 
-        return $ret;
-    }
+		return $ret;
+	}
 }
 /* Disable woocommerce redirection */
 add_action( 'admin_init', 'disable_woocommerce', 5 );
+/**
+ * Disable Woocommerce redirect for template install
+ *
+ * @since 5.6
+ * @version 5.6
+ */
 function disable_woocommerce() {
 	delete_transient( '_wc_activation_redirect' );
-	add_filter( 'woocommerce_prevent_automatic_wizard_redirect', function(){return true;
-	} );
+	add_filter(
+		'woocommerce_prevent_automatic_wizard_redirect', function() {
+			return true;
+		}
+	);
 }
 
-add_filter( 'pre_transient__wc_activation_redirect', function(){
-	return 0;
-});
+add_filter(
+	'pre_transient__wc_activation_redirect', function() {
+		return 0;
+	}
+);
 
-add_filter( 'pre_transient__vc_page_welcome_redirect', function(){
-	return 0;
-});
+add_filter(
+	'pre_transient__vc_page_welcome_redirect', function() {
+		return 0;
+	}
+);
 
 global $abb_phpunit;
 if ( empty( $abb_phpunit ) || $abb_phpunit == false ) {

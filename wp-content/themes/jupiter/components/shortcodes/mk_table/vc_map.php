@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Table", "mk_framework") ,
     "base" => "mk_table",
+	'html_template' => dirname( __FILE__ ) . '/mk_table.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-table vc_mk_element-icon',
     'description' => __('Adds styles to your data tables.', 'mk_framework') ,

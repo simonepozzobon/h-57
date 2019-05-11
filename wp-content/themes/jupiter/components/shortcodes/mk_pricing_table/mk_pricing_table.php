@@ -34,7 +34,7 @@ switch ($table_number) {
 }
 ?>
 
-<div class="pricing-table <?php echo $style; ?> <?php echo $el_class; ?> <?php echo ( strlen( $content ) < 5 ? 'no-pricing-offer' : ''); ?>">
+<div class="pricing-table <?php echo $style; ?> <?php echo $el_class . ' ' . $visibility; ?> <?php echo ( strlen( $content ) < 5 ? 'no-pricing-offer' : ''); ?>">
 	<?php echo mk_get_shortcode_view('mk_pricing_table', 'components/offers', true, ['content' => $content]); ?>
 	<ul class="pricing-cols"><?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
 <?php $featured = get_post_meta( get_the_ID(), 'featured', true ); ?>

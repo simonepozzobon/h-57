@@ -6,7 +6,7 @@
 <?php 
 $video_color_mask_css = '';
 
-if (!empty($view_params['video_color_mask'])) { 
+if ( 'false' === $view_params['bg_gradient']  && !empty($view_params['video_color_mask']) ) { 
     $video_color_mask_css = ' style="background-color:' . $view_params['video_color_mask'] . ';opacity:' . $view_params['video_opacity'] . ';"';
 }
 ?>

@@ -7,7 +7,7 @@
  *
  * @link         http://artbees.net
  */
-class mk_theme_options {
+class MK_Theme_Options_Save {
 
 	private $queue_size;
 	private $revision_name;
@@ -32,22 +32,25 @@ class mk_theme_options {
 
 		$data           = $_POST;
 		$button_clicked = $data['button_clicked'];
+		if ( $button_clicked ) {
+			Mk_Static_Files::update_global_assets_timestamp();
+		}
 		switch ( $button_clicked ) {
 			case 'save_theme_options_top':
 				$this->save_theme_options( $data );
-			break;
+				break;
 			case 'save_theme_options_bottom':
 				$this->save_theme_options( $data );
-			break;
+				break;
 			case 'reset_theme_options':
 				$this->reset_theme_options( $data );
-			break;
+				break;
 			case 'import_theme_options':
 				$this->import_theme_options( $data );
-			break;
+				break;
 			default:
 				// code...
-			break;
+				break;
 		}
 	}
 	/**
@@ -68,7 +71,13 @@ class mk_theme_options {
 		$theme_options_data = is_array( $theme_options_data ) ? array_map( 'stripslashes_deep', $theme_options_data ) : stripslashes( $theme_options_data );
 
 		if ( empty( $theme_options_data ) ) {
-			$response = [ 'msg' => 'Not saved' , 'status' => false , 'data' => [ 'element' => 'mk-not-saved'] ];
+			$response = [
+				'msg' => 'Not saved',
+				'status' => false,
+				'data' => [
+					'element' => 'mk-not-saved',
+				],
+			];
 		}
 
 		if ( update_option( THEME_OPTIONS, $theme_options_data ) && update_option( 'mk_jupiter_flush_rules', 1 ) ) {
@@ -77,9 +86,22 @@ class mk_theme_options {
 			}
 			update_option( THEME_OPTIONS . '_backup', $theme_options_data ); // This line must be remove because of adding revision feature
 			update_option( THEME_OPTIONS_BUILD, uniqid() );
-			$response = [ 'msg' => 'Successfull' , 'status' => true , 'data' => ['element' => 'mk-success-save', 'theme_export_options' => base64_encode(serialize($theme_options_data))] ];
+			$response = [
+				'msg' => 'Successfull',
+				'status' => true,
+				'data' => [
+					'element' => 'mk-success-save',
+					'theme_export_options' => base64_encode( serialize( $theme_options_data ) ),
+				],
+			];
 		} else {
-			$response = [ 'msg' => 'You have already saved these settings.' , 'status' => false , 'data' => [ 'element' => 'mk-already-saved'] ];
+			$response = [
+				'msg' => 'You have already saved these settings.',
+				'status' => false,
+				'data' => [
+					'element' => 'mk-already-saved',
+				],
+			];
 		}
 
 		$static = new Mk_Static_Files( false );
@@ -87,28 +109,56 @@ class mk_theme_options {
 		$this->message( $response['msg'], $response['status'] , $response['data'] );
 
 	}
+
+	/**
+	 * Reset theme options to default state.
+	 *
+	 * @since 5.9.5 Add action to delete HB Activation Warning log.
+	 */
 	public function reset_theme_options() {
 		delete_option( THEME_OPTIONS );
+		delete_option( 'jupiter_hb_activation_warning' );
 		update_option( THEME_OPTIONS_BUILD, uniqid() );
 		$static = new Mk_Static_Files( false );
 		$static->DeleteThemeOptionStyles( true );
-		$this->message('Successfull' , false , ['element' => 'mk-success-reset', 'reload' => true]);
+		$this->message(
+			'Successfull' , false , [
+				'element' => 'mk-success-reset',
+				'reload' => true,
+			]
+		);
 	}
+
 	public function import_theme_options( $theme_options_data ) {
 		$import_data             = $_POST['theme_import_options'];
 		$import_data             = base64_decode( $import_data );
 		$import_data_unserilized = $import_data ? unserialize( $import_data ) : false;
 
 		if ( is_array( $import_data_unserilized ) && empty( $import_data_unserilized ) ) {
-			$this->message('Successfull' , false , ['element' => 'mk-fail-import', 'modal' => true]);
+			$this->message(
+				'Successfull' , false , [
+					'element' => 'mk-fail-import',
+					'modal' => true,
+				]
+			);
 		}
 		if ( update_option( THEME_OPTIONS, $import_data_unserilized ) ) {
 			update_option( THEME_OPTIONS_BUILD, uniqid() );
 			$static = new Mk_Static_Files( false );
 			$static->DeleteThemeOptionStyles( true );
-			$this->message('Successfull' , true , ['element' => 'mk-success-import', 'reload' => true]);
+			$this->message(
+				'Successfull' , true , [
+					'element' => 'mk-success-import',
+					'reload' => true,
+				]
+			);
 		} else {
-			$this->message('Successfull' , false , ['element' => 'mk-fail-import', 'modal' => true]);
+			$this->message(
+				'Successfull' , false , [
+					'element' => 'mk-fail-import',
+					'modal' => true,
+				]
+			);
 		}
 	}
 	/**
@@ -144,11 +194,13 @@ class mk_theme_options {
 		$query       = "SELECT * FROM $wpdb->options WHERE option_name like '$this->revision_name%'";
 		$db_response = $wpdb->get_results( $query );
 		$response    = [];
-		array_walk($db_response, function ( $val ) use ( &$response ) {
-			$val        = explode( '_', $val->option_name );
-			$val        = date( 'Y-m-d H:i:s', end( $val ) );
-			$response[] = $val;
-		});
+		array_walk(
+			$db_response, function ( $val ) use ( &$response ) {
+				$val        = explode( '_', $val->option_name );
+				$val        = date( 'Y-m-d H:i:s', end( $val ) );
+				$response[] = $val;
+			}
+		);
 		$this->message( 'Successfull', true, $response );
 		return true;
 	}
@@ -207,9 +259,13 @@ class mk_theme_options {
 		$how_many_records = ( (int) $db_response->count - $this->queue_size) + 1;
 		$query            = "SELECT option_id as id FROM $wpdb->options WHERE option_name like '$this->revision_name%' ORDER BY option_name ASC LIMIT $how_many_records";
 		$db_response      = $wpdb->get_results( $query );
-		$remove_records   = implode(',', array_map(function ( $val ) {
-			return $val->id;
-		}, $db_response));
+		$remove_records   = implode(
+			',', array_map(
+				function ( $val ) {
+					return $val->id;
+				}, $db_response
+			)
+		);
 
 		// Removing first elements that come to queue
 		$response = $wpdb->query( "DELETE FROM $wpdb->options WHERE option_id IN ($remove_records)" );
@@ -231,11 +287,11 @@ class mk_theme_options {
 	 */
 	public function message( $message, $status = true, $data = null ) {
 		$response = array(
-			'message' 		=> mk_logic_message_helper('theme-options', $message),
-			'status'  		=> $status,
+			'message'       => mk_logic_message_helper( 'theme-options', $message ),
+			'status'        => $status,
 			// Its a patch for wp_ajax object to define wether action was successfull or not
-			'success'  		=> $status,
-			'data'    		=> $data,
+			'success'       => $status,
+			'data'          => $data,
 		);
 		header( 'Content-Type: application/json' );
 		wp_die( json_encode( $response ) );
@@ -245,5 +301,5 @@ class mk_theme_options {
 }
 global $abb_phpunit;
 if ( empty( $abb_phpunit ) || $abb_phpunit == false ) {
-	new mk_theme_options();
+	new MK_Theme_Options_Save();
 }

@@ -1,6 +1,6 @@
 var mk_template_count_per_request = 10,
     mk_disable_until_server_respone = false,
-    mk_install_types = ['preparation', 'backup_db', 'backup_media_records', 'reset_db', 'upload', 'unzip', 'validate', 'plugin', 'theme_content', 'menu_locations', 'setup_pages', 'theme_options', 'theme_widget', 'restore_media_records', 'finilize'],
+    mk_install_types = ['preparation', 'backup_db', 'backup_media_records', 'reset_db', 'upload', 'unzip', 'validate', 'plugin', 'theme_content', 'menu_locations', 'setup_pages', 'theme_options', 'theme_widget', 'restore_media_records', 'finalize'],
     mk_template_id = null,
     mk_template_name = null,
     mk_template_media_import_status = false;
@@ -495,7 +495,7 @@ function mkShowResult(type, message) {
         case 'restore_media_records':
             jQuery('.import-modal-container .install .result-message').text(message);
             break;
-        case 'finilize':
+        case 'finalize':
             jQuery('.import-modal-container .install .result-message').text(message);
             jQuery('.import-modal-container .install').addClass('mk-done');
             break;
@@ -587,7 +587,7 @@ function mkTemplateGenerator(data) {
             '<a class="abb_template_install mk-template-item-btn mk-template-item-btn-action" data-name="' + data.name + '" data-slug="' + data.name + '">' +
             mk_cp_textdomain.install +
             '</a>' +
-            '<a class="mk-template-item-btn mk-template-item-btn-preview" href="http://demos.artbees.net/jupiter5/' + sanitized_template_name + '/" target="_blank">' +
+            '<a class="mk-template-item-btn mk-template-item-btn-preview" href="http://demos.artbees.net/jupiter/' + sanitized_template_name + '/" target="_blank">' +
             mk_cp_textdomain.preview +
             '</a>';
     } else {
@@ -595,7 +595,7 @@ function mkTemplateGenerator(data) {
             '<a class="mk-template-item-btn mk-template-item-btn-action abb_template_uninstall" data-name="' + data.name + '" data-slug="' + data.name + '">' +
             mk_cp_textdomain.uninstall +
             '</a>' +
-            '<a class="mk-template-item-btn mk-template-item-btn-preview" href="http://demos.artbees.net/jupiter5/' + sanitized_template_name + '/" target="_blank">' +
+            '<a class="mk-template-item-btn mk-template-item-btn-preview" href="http://demos.artbees.net/jupiter/' + sanitized_template_name + '/" target="_blank">' +
             mk_cp_textdomain.preview +
             '</a>';
     }

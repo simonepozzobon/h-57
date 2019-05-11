@@ -35,6 +35,7 @@ Mk_Static_Files::addCSS('
 $class[] = get_viewport_animation_class($animation);
 $class[] = 'mk-align-'.$align;
 $class[] = $el_class;
+$class[] = $visibility;
 
 ?>
 

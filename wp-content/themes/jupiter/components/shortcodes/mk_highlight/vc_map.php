@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Highlight Text", "mk_framework") ,
     "base" => "mk_highlight",
+	'html_template' => dirname( __FILE__ ) . '/mk_highlight.php',
     'icon' => 'icon-mk-highlight vc_mk_element-icon',
     "category" => __('Typography', 'mk_framework') ,
     'description' => __('adds highlight to an inline text.', 'mk_framework') ,
@@ -14,14 +15,14 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Text Color", "mk_framework") ,
             "param_name" => "text_color",
             "value" => "",
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Background Color", "mk_framework") ,
             "param_name" => "bg_color",
             "value" => "",
@@ -42,6 +43,7 @@ vc_map(array(
                   "description" => __("", "mk_framework")
               ),
         */
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

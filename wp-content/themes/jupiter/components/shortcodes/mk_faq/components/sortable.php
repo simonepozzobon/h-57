@@ -11,7 +11,7 @@
                       $terms = get_terms('faq_category', 'hide_empty=1');
                  } ?>
 
-              <li><a class="current" data-filter="" href="#"><?php echo _e( $view_params['sortable_all_text'], 'mk_framework' ); ?></a></li>
+              <li><a class="current" data-filter="" href="#"><?php echo $view_params['sortable_all_text']; ?></a></li>
           
           <?php foreach ( $terms as $term ) { ?>
 

@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Employees", "mk_framework") ,
     "base" => "mk_employees",
+	'html_template' => dirname( __FILE__ ) . '/mk_employees.php',
     'icon' => 'icon-mk-employees vc_mk_element-icon',
     "category" => __('Loops', 'mk_framework') ,
     'description' => __('Shows Employees posts in multiple styles.', 'mk_framework') ,
@@ -110,7 +111,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Box background Color", "mk_framework") ,
             "param_name" => "box_bg_color",
             "value" => "",
@@ -123,7 +124,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Box Border Color", "mk_framework") ,
             "param_name" => "box_border_color",
             "value" => "",
@@ -206,6 +207,7 @@ vc_map(array(
             "type" => "dropdown"
         ) ,
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,
@@ -215,7 +217,7 @@ vc_map(array(
         ),
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Employee Name Color", "mk_framework") ,
             "param_name" => "name_color",
             "value" => "",
@@ -223,7 +225,7 @@ vc_map(array(
             "group" => __('Color', 'mk_framework') ,
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Employee Position Color", "mk_framework") ,
             "param_name" => "position_color",
             "value" => "",
@@ -231,7 +233,7 @@ vc_map(array(
             "group" => __('Color', 'mk_framework') ,
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Employee About Color", "mk_framework") ,
             "param_name" => "about_color",
             "value" => "",
@@ -239,7 +241,7 @@ vc_map(array(
             "group" => __('Color', 'mk_framework') ,
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Employee Social Color", "mk_framework") ,
             "param_name" => "social_color",
             "value" => "",

@@ -3,15 +3,10 @@
 /**
  * template part for portfolio single content single.php. views/portfolio/components
  *
- * @author      Artbees
- * @package     jupiter/views
- * @version     5.0.0
+ * @author  Artbees
+ * @package jupiter/views
+ * @since   5.0.0
+ * @version 5.9.1 Removed if condition.
  */
 
-global $mk_options;
-
-if ($mk_options['enable_portfolio_comment'] == 'true') {
-    
-    comments_template('', true);
-    
-}
+comments_template('', true);

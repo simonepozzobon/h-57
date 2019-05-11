@@ -1,29 +1,61 @@
 function mk_upload_option(option_id) {
-    if (typeof wp.media != 'undefined') {
-        var _custom_media = true,
-            _orig_send_attachment = wp.media.editor.send.attachment;
-        var option_selector = option_id ? ("#" + option_id + "_button") : '.option-upload-button';
+	if (typeof wp.media != 'undefined') {
+		var frame,
+			_custom_media = true,
+			_orig_send_attachment = wp.media.editor.send.attachment,
+			option_selector = option_id ? ("#" + option_id + "_button") : '.option-upload-button';
 
-        jQuery(option_selector).click(function(e) {
-            var send_attachment_bkp = wp.media.editor.send.attachment;
-            var button = jQuery(this);
-            var id = button.attr('id').replace('_button', '');
-            _custom_media = true;
-            wp.media.editor.send.attachment = function(props, attachment) {
-                if (_custom_media) {
-                    jQuery("#" + id).val(attachment.url);
-                    jQuery("#" + id + "-preview img").attr("src", attachment.url);
-                } else {
-                    return _orig_send_attachment.apply(this, [props, attachment]);
-                };
-            }
-            wp.media.editor.open(button);
-            return false;
-        });
-        jQuery('.add_media').on('click', function() {
-            _custom_media = false;
-        });
-    }
+		jQuery(option_selector).click(function(e) {
+			var send_attachment_bkp = wp.media.editor.send.attachment;
+			var button = jQuery(this);
+			var id = button.attr('id').replace('_button', '');
+			_custom_media = true;
+
+			// Create a new media frame
+			frame = wp.media({
+				title: 'Set Image',
+				button: {
+					text: 'Set Image'
+				},
+				multiple: false  // Set to true to allow multiple files to be selected
+			});
+
+			// When an image is selected in the media frame...
+			frame.on( 'select', function() {
+
+				// Get media attachment details from the frame state
+				var attachment = frame.state().get('selection').first().toJSON();
+				if (_custom_media) {
+					jQuery("#" + id).val(attachment.url);
+					jQuery("#" + id + "-preview img").attr("src", attachment.url);
+				} else {
+					return _orig_send_attachment.apply(this, [props, attachment]);
+				};
+			});
+
+			// Finally, open the modal on click
+			frame.open();
+
+			return false;
+		});
+
+		jQuery('.add_media').on('click', function() {
+			_custom_media = false;
+		});
+	}
+}
+
+function mk_upload_width() {
+	jQuery('.mk-upload-width').each(function() {
+		var $this = jQuery( this ),
+			value = $this.data('value'),
+			$hiddenInput = jQuery( 'input[id=' + value + ']' )
+
+		$this.val( $hiddenInput.val() )
+		$this.on('keyup', function() {
+			$hiddenInput.val( $this.val() );
+		})
+	});
 }
 
 function mk_range_option(option_id) {
@@ -182,6 +214,29 @@ jQuery.expr[':'].Contains = function(a, i, m) {
     return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
 };
 
+function mk_header_builder_link() {
+    // Declare selector.
+    var selectEl = jQuery( '#_hb_override_template_id' );
+    var linkEl = jQuery( '#_hb_header_builder_link' );
+
+    // Remove select option.
+    selectEl.find('option[value=""]').remove();
+
+    // Set id parameter on load.
+    var value = selectEl.val();
+    var href = linkEl.attr( 'href' );
+    var newHref = href + '&id=' + value;
+    linkEl.attr( 'href', newHref );
+
+    // Update id parameter on change.
+    selectEl.on( 'change', function(){
+        var value = jQuery( this ).val();
+        var href = linkEl.attr( 'href' );
+        var newHref = href.replace( /(id=)[0-9]+/, '$1' + value );
+        linkEl.attr( 'href', newHref );
+    } );
+}
+
 function icon_filter_name() {
     jQuery('.page-composer-icon-filter').each(function() {
         jQuery(this).change(function() {
@@ -252,6 +307,8 @@ jQuery(document).ready(function() {
     mk_upload_option();
     mk_color_picker();
     mk_header_selector();
+    mk_header_builder_link();
+    mk_upload_width();
     /*
 **
 ** Toggle Button Option
@@ -715,7 +772,7 @@ General Background Selector
                     'background-size': stretch_option,
                 });
             }
-            
+
             if (image_source == 'no-image') {
                 jQuery(section_preview_class).find('.mk-bg-preview-layer').css({
                     'background-image': 'none',
@@ -790,7 +847,7 @@ General Background Selector
             position = jQuery(position_id).val();
             repeat = jQuery(repeat_id).val();
             attachment = jQuery(attachment_id).val();
-            
+
             size_id = '#' + this_panel_rel + '_size';
             size_value = jQuery(size_id).val();
             if (size_value == 'true') {
@@ -905,7 +962,7 @@ jQuery(document).ready(function() {
             action: 'mk_restore_theme_option_revision',
             revision_name: jQuery(this).data('name'),
         }).done(function(response) {
-            show_message(response);    
+            show_message(response);
             if (response.status == true) {
                 location.reload();
             }
@@ -960,7 +1017,7 @@ function show_message(n) {
                     jQuery('.mk-main-panes').addClass('hidden-view');
                     setTimeout(function() {
                         location.reload();
-                    }, 2000);    
+                    }, 2000);
                 }
             } else {
                 jQuery('#mk-message-modal-txt').html(n.message);
@@ -969,7 +1026,7 @@ function show_message(n) {
                 }
                 jQuery('#mk-message-modal').show();
             }
-        }  
+        }
 }
 /*******************/
 /*
@@ -1013,12 +1070,12 @@ jQuery(document).ready(function( $ ) {
     form_options = jQuery( '#masterkey_settings' );
 
     if ( form_options.length > 0 ) {
-        
+
         current_window = jQuery( window );
-        
+
         // Initialize Theme Options lock.
         mk_lock_theme_options();
-        
+
         // Initialize the theme options.
         mk_get_theme_options( false, true );
 
@@ -1053,7 +1110,7 @@ jQuery(document).ready(function( $ ) {
             init_status = check_status = null;
             mk_get_theme_options( false, false );
         });
-        
+
         // Lock Theme Options
         current_window.on( 'mk_theme_options:locked', function( event, data ) {
             swal({
@@ -1069,7 +1126,7 @@ jQuery(document).ready(function( $ ) {
                     location.reload();
                 });
         });
-        
+
         // Refresh Theme Options lock.
         current_window.on( 'mk_theme_options:unlocked', function( event, data ) {
             var interval = setInterval( mk_refresh_theme_options_lock, ( data.expiration - 1 ) * 1000 );
@@ -1233,7 +1290,7 @@ jQuery(document).ready(function( $ ) {
         $.ajax({
             type: 'GET',
             url: ajaxurl,
-            data: { 
+            data: {
                 action: 'mk_lock_theme_options',
                 security: theme_backend_localized_data.security
             },
@@ -1244,12 +1301,12 @@ jQuery(document).ready(function( $ ) {
                     console.log( 'Undefined data.' );
                     return;
                 }
-                
+
                 // Lock Theme Options
                 if ( response.status === true ) {
                     $( window ).trigger( 'mk_theme_options:locked', [ response.data ] );
                 }
-                
+
                 // Refresh Theme Options lock since it is unlocked.
                 if ( response.status === false ) {
                     $( window ).trigger( 'mk_theme_options:unlocked', [ response.data ] );
@@ -1260,14 +1317,14 @@ jQuery(document).ready(function( $ ) {
             }
         });
     }
-    
+
     // Refresh Theme Options lock.
     function mk_refresh_theme_options_lock() {
         $.ajax({
             type: 'POST',
             url: ajaxurl,
-            data: { 
-                action: 'mk_lock_theme_options', 
+            data: {
+                action: 'mk_lock_theme_options',
                 refresh: true,
                 security: theme_backend_localized_data.security
             },
@@ -1286,3 +1343,24 @@ jQuery(document).ready(function( $ ) {
     }
 
 });
+
+
+// VC Admin JS for Edge Slider
+(function($) {
+    'use strict';
+
+    $(document).on('ajaxComplete.mk_edgeslider_lazyload_option', function(e) {
+        if ( theme_backend_localized_data.mk_global_lazyload == 'true' ) {
+            var $lazyload = $('.vc_shortcode-param').filter(function(index) {
+                return $(this).attr('data-vc-shortcode-param-name') === 'lazyload';
+            });
+            $lazyload.hide();
+        } else {
+            var $disable_lazyload = $('.vc_shortcode-param').filter(function(index) {
+                return $(this).attr('data-vc-shortcode-param-name') === 'disable_lazyload';
+            });
+            $disable_lazyload.hide();
+        }
+    });
+
+})(jQuery);

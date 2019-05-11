@@ -8,9 +8,12 @@ global $mk_options;
 
 $bg_color = !empty( $bg_color ) ? $bg_color : $mk_options['skin_color'];
 $text_color = !empty( $text_color ) ? $text_color : "#fff";
+
+$class = $el_class;
+$class .= ' ' . $visibility;
 ?>
 
-<span id="mk-highlight-<?php echo $id; ?>" class="mk-highlight <?php echo $el_class; ?>"><?php echo $text; ?></span>
+<span id="mk-highlight-<?php echo $id; ?>" class="mk-highlight <?php echo $class; ?>"><?php echo $text; ?></span>
 
 <?php
 /**

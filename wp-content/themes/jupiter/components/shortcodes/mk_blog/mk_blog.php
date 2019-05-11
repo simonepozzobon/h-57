@@ -92,6 +92,8 @@ $atts = array(
     'image_size' => $image_size,
     'excerpt_length' => $excerpt_length,
     'thumbnail_align' => $thumbnail_align,
+    'lazyload' => $lazyload,
+    'disable_lazyload' => $disable_lazyload,
     //'image_quality' => $image_quality,
     'i' => 0
 );
@@ -102,6 +104,7 @@ $wrapper_class[] = 'mk-blog-container';
 $wrapper_class[] = 'mk-'.$style.'-wrapper';
 $wrapper_class[] = $el_class;
 $wrapper_class[] = ($style == "grid" && $transparent_border == 'true') ? 'no-border' : '';
+$wrapper_class[] = $visibility;
 
 switch ($magazine_strcutre) {
     case 1:
@@ -138,6 +141,10 @@ if($style == 'grid' || $style == 'newspaper' || $style == 'spotlight') {
 
 // Initial loaded post
 $initial_loaded_posts = array();
+$global_lazyload = ( !empty( $mk_options['global_lazyload'] ) ) ? $mk_options['global_lazyload'] : 'false';
+if ( ($global_lazyload == 'true' && $disable_lazyload == 'false') || ($global_lazyload == 'false' && $lazyload == 'true') ) {
+     $wrapper_class[] = 'mk-blog-container-lazyload';
+}
 
 ?>
 

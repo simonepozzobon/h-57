@@ -3,17 +3,24 @@
 $phpinfo =  pathinfo( __FILE__ );
 $path = $phpinfo['dirname'];
 include( $path . '/config.php' );
+global $mk_options;
 
 
 if ( $images == '' ) return null;
 
-$id = uniqid();
+$id = Mk_Static_Files::shortcode_id();
 
 $direction = $direction == 'horizontal' ? 'slide' : 'vertical_slide';
 
+$lazyload_class = '';
+$global_lazyload = ( !empty( $mk_options['global_lazyload'] ) ) ? $mk_options['global_lazyload'] : 'false';
+if ( ($global_lazyload == 'true' && $disable_lazyload == 'false') || ($global_lazyload == 'false' && $lazyload == 'true') ) {
+     $lazyload_class = 'mk-swipe-slideshow-lazyload';
+}
+
 ?>
 
-<div class="mk-swipe-slideshow mk-slider">
+<div class="mk-swipe-slideshow mk-slider <?php echo $lazyload_class . ' ' . $visibility; ?>">
 	<div id="mk-swiper-<?php echo $id; ?>" class="mk-swiper-container <?php echo $el_class; ?> js-el"
 			data-mk-component='SwipeSlideshow'
 			data-swipeSlideshow-config='{
@@ -27,7 +34,7 @@ $direction = $direction == 'horizontal' ? 'slide' : 'vertical_slide';
 			<?php
 			$images = explode( ',', $images );
 			foreach ( $images as $attach_id ) {
-				
+
 
 				$featured_image_src = Mk_Image_Resize::resize_by_id_adaptive($attach_id, $image_size, $image_width, $image_height, $crop = true, $dummy = true);
 
@@ -35,14 +42,14 @@ $direction = $direction == 'horizontal' ? 'slide' : 'vertical_slide';
 					?>
 
 					<div class="swiper-slide mk-slider-slide">
-						<img alt="<?php echo trim(strip_tags( get_post_meta($attach_id, '_wp_attachment_image_alt', true) )); ?>" 
-							 src="<?php echo $featured_image_src['dummy']; ?>" 
-							 <?php echo $featured_image_src['data-set']; ?> 
-							 width="<?php echo $image_width; ?>" 
+						<img class="swiper-slide-image" alt="<?php echo trim(strip_tags( get_post_meta($attach_id, '_wp_attachment_image_alt', true) )); ?>"
+							 src="<?php echo $featured_image_src['dummy']; ?>"
+							 <?php echo $featured_image_src['data-set']; ?>
+							 width="<?php echo $image_width; ?>"
 							 height="<?php echo $image_height; ?>" />
 					</div>
 
-					<?php 
+					<?php
 				} ?>
 			<?php } ?>
 

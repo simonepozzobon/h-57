@@ -21,6 +21,7 @@ $class[] = 'bg-cover-' . $view_params['cover'];
 $class[] = ($view_params['title'] == '') ? 'slideshow-no-title' : '';
 $class[] = ($view_params['title'] == '') ? 'slideshow-no-title' : '';
 $class[] = $view_params['el_class'];
+$class[] = $view_params['visibility'];
 
 
 ?>

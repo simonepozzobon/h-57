@@ -27,7 +27,7 @@ if ($title_as == 'text') {
 }else if ($title_as == 'image') {
 	$title_container->find('.title')
 					->append('<span class="title-image"></span>');
-				    
+
 
     $title_container->find('.title')
 				    ->find('.title-image')
@@ -36,7 +36,7 @@ if ($title_as == 'text') {
 
 echo mk_get_fontfamily( "#mk-ornamental-title-", $id, $font_family, $font_type );
 
-	
+
 if($ornament_style == 'rovi-single' || $ornament_style == 'rovi-double'){
 	$title_container->find('.title')
 				    ->find('span')
@@ -53,6 +53,7 @@ if($ornament_style == 'norman-short-single' || $ornament_style == 'norman-short-
 $title_container->addClass('title_as_'.$title_as);
 $title_container->addClass($ornament_style);
 $title_container->addClass($el_class);
+$title_container->addClass( $visibility );
 if ( $animation != '' ) {
 	$title_container->addClass(get_viewport_animation_class($animation));
 }
@@ -152,7 +153,7 @@ if($ornament_style == 'rovi-double' || $ornament_style == 'norman-double' || $or
 	Mk_Static_Files::addCSS('
 		#mk-ornamental-title-'.$id.' .title span::after,
 		#mk-ornamental-title-'.$id.' .title span::before {
-			top: '.$double_line.'px; 
+			top: '.$double_line.'px;
 			border-bottom: '.$ornament_thickness.'px solid '.$ornament_color.';
 		}
 	', $id);
@@ -180,7 +181,7 @@ if($ornament_style == 'lemo-single') {
 			border-top: '.$ornament_thickness.'px solid '.$ornament_color.';
 		}
 		#mk-ornamental-title-'.$id.' .title span::before {
-			border-top: '.$ornament_thickness.'px solid '.$ornament_color.'; 
+			border-top: '.$ornament_thickness.'px solid '.$ornament_color.';
 		}
 	', $id);
 }

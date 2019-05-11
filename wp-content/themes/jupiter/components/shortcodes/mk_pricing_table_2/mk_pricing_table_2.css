@@ -83,8 +83,8 @@
   padding: 10px 0;
   min-width: 160px;
   -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
 }
 .new-style.pricing-table .pricing-cols .pricing-featured-text.style-dark {
   color: #222222;

@@ -15,6 +15,7 @@ $player = pq('.mk-audio-section');
 $player->attr('id', 'mk-audio-section-'.$id);
 $player->addClass($large_player_class);
 $player->addClass($el_class);
+$player->addClass( $visibility );
 
 if ( $thumb && $remove_thumb == 'false') {
 	$image_src = Mk_Image_Resize::resize_by_url($thumb, $img_dimension, $img_dimension, $crop = true, $dummy = true);

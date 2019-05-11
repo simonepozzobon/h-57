@@ -42,9 +42,9 @@
             </div>
         </div>
 
-        <div class="mk-ip-footer mk-clearfix">
-            <a class="mk-ip-cancel-btn mk-ip-btn" href="#">Cancel</a>
-            <a class="mk-ip-save-btn mk-ip-btn" href="#">Save</a>
+        <div class="mk-ip-footer mk-clearfix mka-wrap">
+            <a class="mk-ip-cancel-btn mka-button mka-button--medium mka-button--gray" href="#">Cancel</a>
+            <a class="mk-ip-save-btn mka-button mka-button--medium mka-button--green" href="#">Save</a>
             <span class="mk-ip-spinner"></span>
         </div>
 

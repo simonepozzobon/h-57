@@ -6,7 +6,7 @@
  * @package     jupiter/views
  * @version     5.0.0
  */
-global $mk_options;
+global $woocommerce, $mk_options;
 
 $header_class = array(
         'sh_id' => Mk_Static_Files::shortcode_id(),
@@ -21,7 +21,9 @@ $is_transparent = (isset($view_params['is_transparent'])) ? ($view_params['is_tr
     <header <?php echo get_header_json_data($header_class['is_shortcode'], 2); ?> <?php echo mk_get_header_class($header_class); ?> <?php echo get_schema_markup('header'); ?>>
         <?php if (is_header_show($header_class['is_shortcode'])): ?>
             <div class="mk-header-holder">
-                <?php mk_get_header_view('holders', 'toolbar', ['is_shortcode' => false]); ?>
+                <?php if ( is_header_toolbar_show() === 'true' ) {
+                    mk_get_header_view( 'holders', 'toolbar' );
+                } ?>
                 <div class="mk-header-inner">
                     
                     <div class="mk-header-bg <?php echo mk_get_bg_cover_class($mk_options['header_size']); ?>"></div>
@@ -35,9 +37,14 @@ $is_transparent = (isset($view_params['is_transparent'])) ? ($view_params['is_tr
                     <?php } ?>
                         <div class="add-header-height">
                             <?php
-                                mk_get_header_view('global', 'secondary-menu-burger-icon', ['is_shortcode' => false, 'header_style' => 2]);
+                                if ( ! empty( $mk_options['seondary_header_for_all'] ) && $mk_options['seondary_header_for_all'] === 'true' ) {
+                                    mk_get_header_view( 'global', 'secondary-menu-burger-icon', ['is_shortcode' => false, 'header_style' => 2] );
+                                }
+                                
                                 mk_get_header_view('global', 'main-menu-burger-icon', ['header_style' => 2]);                            
-                                mk_get_header_view('master', 'logo');
+                                if ( ! empty( $mk_options['hide_header_logo'] ) && $mk_options['hide_header_logo'] === 'true' ) { 
+                                    mk_get_header_view( 'master', 'logo' );
+                                }
                             ?>
                         </div>
 
@@ -51,9 +58,15 @@ $is_transparent = (isset($view_params['is_transparent'])) ? ($view_params['is_tr
                         <div class="mk-classic-nav-bg"></div>
                         <div class="mk-classic-menu-wrapper">
                             <?php
-                            mk_get_header_view('master', 'main-nav');
-                            mk_get_header_view('global', 'nav-side-search', ['header_style' => 2]);
-                            mk_get_header_view('master', 'checkout', ['header_style' => 2]);
+                                mk_get_header_view('master', 'main-nav');
+                                
+                                if ( $mk_options['header_search_location'] === 'beside_nav' || $mk_options['header_search_location'] === 'fullscreen_search' ) { 
+                                    mk_get_header_view( 'global', 'nav-side-search', ['header_style' => 2] );
+                                }
+                                
+                                if ( $woocommerce && $mk_options['woocommerce_catalog'] === 'false' && $mk_options['shopping_cart'] === 'true' ) { 
+                                    mk_get_header_view( 'master', 'checkout', ['header_style' => 2] );
+                                }
                             ?>
                         </div>
                     </div>
@@ -61,11 +74,21 @@ $is_transparent = (isset($view_params['is_transparent'])) ? ($view_params['is_tr
 
                     <div class="mk-header-right">
                         <?php
-                        do_action('header_right_before');
-                        mk_get_header_view('master', 'start-tour');
-                        mk_get_header_view('global', 'search', ['location' => 'header']);
-                        mk_get_header_view('global', 'social', ['location' => 'header']);
-                        do_action('header_right_after');
+                            do_action('header_right_before');
+                            
+                            if ( ! empty( $mk_options['header_start_tour_text'] ) ) {
+                                mk_get_header_view('master', 'start-tour');
+                            }
+                            
+                            if ( ! empty( $mk_options['header_search_location'] ) && $mk_options['header_search_location'] === 'header' ) {
+                                mk_get_header_view('global', 'search', ['location' => 'header']);
+                            }
+                            
+                            if ( ! empty( $mk_options['header_social_location'] ) && $mk_options['header_social_location'] === 'header' ) {
+                                mk_get_header_view('global', 'social', ['location' => 'header']);
+                            }
+                            
+                            do_action('header_right_after');
                         ?>
                     </div>
                     <?php mk_get_header_view('global', 'responsive-menu', ['is_shortcode' => false]); ?>         

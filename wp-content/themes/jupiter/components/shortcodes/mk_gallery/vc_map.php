@@ -2,8 +2,10 @@
 vc_map(array(
     "name" => __("Image Gallery", "mk_framework") ,
     "base" => "mk_gallery",
+	'html_template' => dirname( __FILE__ ) . '/mk_gallery.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-image-gallery vc_mk_element-icon',
+    "admin_enqueue_js" => THEME_COMPONENTS . "/shortcodes/mk_gallery/vc_admin.js",
     'description' => __('Adds images in grids in many styles.', 'mk_framework') ,
     "params" => array(
         array(
@@ -29,7 +31,7 @@ vc_map(array(
         ) ,
         array(
             "heading" => __("Gallery Style", 'mk_framework') ,
-            "description" => __("In grid style you will need to set column and image heights. For Mansory Styles Structure see below image :</br><img src='" . THEME_ADMIN_ASSETS_URI . "/images/gallery-mansory-styles.png' /><br>", 'mk_framework') ,
+            "description" => sprintf(__("In grid style you will need to set column and image heights. For Mansory Styles Structure see below image :%s", 'mk_framework'), "</br><img src='" . THEME_ADMIN_ASSETS_URI . "/images/gallery-mansory-styles.png' /><br>"),
             "param_name" => "style",
             "value" => array(
                 __("Grid", 'mk_framework') => "grid",
@@ -95,7 +97,7 @@ vc_map(array(
             "type" => "dropdown",
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Overlay Color", "mk_framework") ,
             "param_name" => "overlay_color",
             "value" => "",
@@ -231,9 +233,30 @@ vc_map(array(
             "heading" => __("Orderby", 'mk_framework') ,
             "description" => __("Sorts retrieved gallery items by parameter.", 'mk_framework') ,
             "param_name" => "orderby",
-            "value" => $mk_orderby,
+            "value" => array(
+                        __("Date", 'mk_framework') => "date",
+                        __("Posts In (manually selected posts)", 'mk_framework') => "post__in",
+                        __("Post Id", 'mk_framework') => "id",
+                        __("Title", 'mk_framework') => "title",
+                        __("Random", 'mk_framework') => "rand",
+                        __("Author", 'mk_framework') => "author"
+                    ),
             "type" => "dropdown"
         ) ,
+        array(
+            "type" => "toggle",
+            "heading" => __("Lazyload", "mk_framework"),
+            "param_name" => "lazyload",
+            "value" => "false",
+        ),
+        array(
+            "type" => "toggle",
+            "heading" => __("Disable Lazyload", "mk_framework"),
+            "param_name" => "disable_lazyload",
+            "value" => "false",
+            "description" => __("Disable Lazyload is only available when 'Global Lazyload' is enabled in the Theme Options.", "mk_framework"),
+        ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

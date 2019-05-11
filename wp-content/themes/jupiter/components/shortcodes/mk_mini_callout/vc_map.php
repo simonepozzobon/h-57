@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Mini Callout Box", "mk_framework") ,
     "base" => "mk_mini_callout",
+	'html_template' => dirname( __FILE__ ) . '/mk_mini_callout.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-mini-callout-box vc_mk_element-icon',
     'description' => __('Small callout box for important infos.', 'mk_framework') ,
@@ -35,6 +36,7 @@ vc_map(array(
             "value" => "",
             "description" => __("", "mk_framework")
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

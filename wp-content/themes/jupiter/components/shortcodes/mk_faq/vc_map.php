@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("FAQ", "mk_framework") ,
     "base" => "mk_faq",
+	'html_template' => dirname( __FILE__ ) . '/mk_faq.php',
     'icon' => 'icon-mk-faq vc_mk_element-icon',
     "category" => __('Loops', 'mk_framework') ,
     'description' => __('Shows FAQ posts in multiple styles.', 'mk_framework') ,
@@ -94,12 +95,13 @@ vc_map(array(
             "type" => "dropdown"
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Pane Content Background Color", "mk_framework") ,
             "param_name" => "background_color",
             "value" => "",
             "description" => __("", "mk_framework") ,
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

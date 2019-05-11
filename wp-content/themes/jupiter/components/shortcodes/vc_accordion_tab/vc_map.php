@@ -2,9 +2,11 @@
 vc_map(array(
     "name" => __("Accordion Section", "mk_framework") ,
     "base" => "vc_accordion_tab",
+	'html_template' => dirname( __FILE__ ) . '/vc_accordion_tab.php',
     "allowed_container_element" => 'vc_row',
     "is_container" => true,
     "content_element" => false,
+	'front_enqueue_js' => THEME_COMPONENTS . '/shortcodes/vc_accordion_tab/vc_front.js',
     "params" => array(
         array(
             "type" => "textfield",
@@ -13,11 +15,10 @@ vc_map(array(
             "description" => __("Accordion section title.", "mk_framework")
         ) ,
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Add Icon (optional)", "mk_framework") ,
             "param_name" => "icon",
             "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework")
         )
     ) ,
     'js_view' => 'VcAccordionTabView'

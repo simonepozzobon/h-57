@@ -141,7 +141,7 @@ a.mka-cp-sidebar-link {
 
 .mka-cp-nav-item-icon {
     background-position: top center;
-    background-size: contain; 
+    background-size: contain;
     background-repeat: no-repeat;
     display: inline-block;
     vertical-align: middle;
@@ -196,6 +196,10 @@ a.mka-cp-sidebar-link {
     background-image: url(../images/control-panel/updates.svg);
 }
 
+.mka-cp-nav-item-icon--export-import {
+    background-image: url(../images/control-panel/export-import.svg);
+}
+
 
 /* Panes */
 
@@ -207,7 +211,7 @@ a.mka-cp-sidebar-link {
     padding-bottom: 50px;
     position: relative;
     margin-left: 20%;
-    
+
 }
 .mka-cp-panes.loading-pane{
     opacity: 0.7;
@@ -409,6 +413,7 @@ a.mka-cp-sidebar-link {
 .mka-restore-template-wrap{
     position: relative;
     display: none;
+    text-align: right;
 }
 .mka-restore-template-wrap.is-active {
     display: block;
@@ -416,7 +421,6 @@ a.mka-cp-sidebar-link {
 
 .mka-restore-template-wrap .mka-button {
     margin-bottom: 30px;
-    float: right;
 }
 
 .mka-restore-template-info-box {
@@ -465,6 +469,10 @@ a.mka-cp-sidebar-link {
 .mka-cp-installed-template {
     margin: 10px 0 50px 0;
     display: none;
+}
+
+.mka-restore-template-wrap.is-active ~ .mka-cp-installed-template {
+    margin-top: -60px;
 }
 
 .mka-cp-install-template {
@@ -531,6 +539,45 @@ a.mka-cp-sidebar-link {
     padding-bottom: 15px;
 }
 
+.mka-cp-template-item-buttons.has-psd .mka-button--small{
+    padding: 10px 15px;
+}
+
+.mka-wrap .mka-button.mka-download-psd {
+    width: 30px;
+    height: 32px;
+    opacity: 0.9;
+    margin-bottom: -13px;
+    border-radius: 0 !important;
+    position: relative;
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    border-radius: 3px !important;
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.mka-wrap .mka-button.mka-download-psd:hover {
+    opacity: 1;
+}
+
+.mka-wrap .mka-button.mka-download-psd:after {
+    content: "";
+    display: block;
+    width: 34px;
+    height: 36px;
+    left: -4px;
+    bottom: 0px;
+    position: absolute;
+    background-image: url('../images/psd-icon.svg');
+    background-repeat: no-repeat;
+}
+
+.mka-wrap .mka-button.mka-download-psd:active {
+    -webkit-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2)
+}
+
 .mka-cp-template-item-btn {
     margin: 0 4px !important;
 }
@@ -555,15 +602,33 @@ a.mka-cp-sidebar-link {
     display: block;
 }
 
+@media screen and (min-width: 1281px) {
+    .mka-wrap .mka-button.mka-download-psd{
+        margin-left: 50px !important;
+    }
+}
+
+@media screen and (min-width: 901px) and (max-width: 1280px) {
+    .mka-wrap .mka-button.mka-download-psd{
+        margin-left: 10px !important;
+    }
+}
+
 @media handheld, only screen and (max-width: 900px) {
     .mka-cp-template-item {
         width: 50%;
+    }
+    .mka-wrap .mka-button.mka-download-psd{
+        margin-left: 20px !important;
     }
 }
 
 @media handheld, only screen and (max-width: 767px) {
     .mka-cp-template-item {
         width: 100%;
+    }
+    .mka-wrap .mka-button.mka-download-psd{
+        margin-left: 30px !important;
     }
 }
 
@@ -713,7 +778,7 @@ a.mka-cp-sidebar-link {
 }
 .mka-cp-icon-item:hover,
 .mka-cp-icon-item:hover .mka-cp-icon-item-class {
- border-color:#cccccc; 
+ border-color:#cccccc;
 }
 
 .mka-cp-icon-item-svg {
@@ -939,15 +1004,17 @@ a.mka-cp-sidebar-link {
 
 .mka-cp-common-issues {
 	list-style: disc;
-	list-style-position:inside; 
+	list-style-position:inside;
 }
 
-.js__no-api-key-warning-icon {
+.js__no-api-key-warning-icon,
+.mka-new-version-warning-icon {
     display: none;
     vertical-align: middle;
-    margin-left: 5px;
+    margin:1px 0 0 5px;
 }
-.js__no-api-key-warning-icon.is-active {
+.js__no-api-key-warning-icon.is-active,
+.mka-new-version-warning-icon.is-active {
     display: inline-block;
 }
 
@@ -979,7 +1046,7 @@ a.mka-cp-sidebar-link {
     padding: 0;
 }
 
-#mk-install-template-credential .ftp-username, 
+#mk-install-template-credential .ftp-username,
 #mk-install-template-credential .ftp-password{
     margin-top: 10px;
 }
@@ -1179,8 +1246,8 @@ a.mka-cp-sidebar-link {
 	top:20px;
 	right:20px;
 	font-size: 11px;
-	
-	
+
+
 }
 .mka-cp-addons-item-update {
 	color: #fff;
@@ -1239,6 +1306,21 @@ a.mka-cp-sidebar-link {
     }
 }
 
+/*------------------------------------------------*/
+/* Control Panel Export & Import
+/*------------------------------------------------*/
+.mka-cp-export-form label,
+.mka-cp-import-form label {
+	display: block;
+	margin-bottom: 0.5rem;
+}
 
+.mka-cp-import-form {
+	margin-top: 1rem;
+}
 
-
+.mka-cp-export-wrap .mka-cp-export-btn,
+.mka-cp-import-wrap .mka-cp-import-btn {
+	display: block;
+	margin: 1rem 0 3rem;
+}

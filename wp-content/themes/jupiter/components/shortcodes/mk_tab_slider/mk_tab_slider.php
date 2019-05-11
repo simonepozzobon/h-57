@@ -3,7 +3,7 @@ $phpinfo =  pathinfo( __FILE__ );
 $path = $phpinfo['dirname'];
 include( $path . '/config.php' );
 
-$id = uniqid();
+$id = Mk_Static_Files::shortcode_id();
 
 global $mk_options, $post;
 
@@ -22,7 +22,7 @@ $page_permalink = esc_url( get_permalink() );
 ?>
 
 
-<div class="mk-tab-slider-nav" data-id="<?php echo $id; ?>">
+<div class="mk-tab-slider-nav <?php echo $visibility; ?>" data-id="<?php echo $id; ?>">
 	<?php while ( $r->have_posts() ) : $r->the_post();
 		 $menu_icon = get_post_meta( $post->ID, '_menu_icon', true );
          $menu_text = get_post_meta( $post->ID, '_menu_text', true );
@@ -38,11 +38,11 @@ $page_permalink = esc_url( get_permalink() );
 
 
 
-<div id="mk-tab-slider-<?php echo $id; ?>" data-id="<?php echo $id; ?>" data-autoplay="<?php echo $autoplay_time; ?>" class="mk-tab-slider <?php echo get_viewport_animation_class($animation).$el_class; ?>">
+<div id="mk-tab-slider-<?php echo $id; ?>" data-id="<?php echo $id; ?>" data-autoplay="<?php echo $autoplay_time; ?>" class="mk-tab-slider <?php echo get_viewport_animation_class($animation).$el_class . ' ' . $visibility; ?>">
     <div class="mk-tab-slider-wrapper">
         <?php
         while ( $r->have_posts() ) : $r->the_post();
-       
+
         $image_src_array = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full');
         $skin_color = (get_post_meta( $post->ID, '_skin_color', true ) != '') ? get_post_meta( $post->ID, '_skin_color', true ) : 'light' ;
         $content_background = get_post_meta( $post->ID, '_bg_color', true );

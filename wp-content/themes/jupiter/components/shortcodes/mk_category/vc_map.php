@@ -3,6 +3,7 @@
     vc_map(array(
         "name" => __("Category Showcase", "mk_framework"),
         "base" => "mk_category",
+		'html_template' => dirname( __FILE__ ) . '/mk_category.php',
         'icon' => 'vc_mk_element-icon',
         'description' => __( 'Taxonomy Loop for posts, portfolio, news and product categories.', 'mk_framework' ),
         "category" => __('Loops', 'mk_framework'),
@@ -73,6 +74,7 @@
                 "value" => "false",
                 "description" => __("", "mk_framework")
             ),
+            $add_device_visibility,
             array(
                 "type" => "textfield",
                 "heading" => __("Extra class name", "mk_framework"),
@@ -156,7 +158,7 @@
             ),
              array(
                 "group" => __('Styles & Colors', 'mk_framework'),
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Title / Description Color", "mk_framework"),
                 "param_name" => "text_color",
                 "value" => "",
@@ -192,7 +194,7 @@
             ),
             array(
                 "group" => __('Styles & Colors', 'mk_framework'),
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Overlay Color", "mk_framework"),
                 "param_name" => "overlay_color",
                 "value" => "",

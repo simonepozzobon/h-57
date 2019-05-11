@@ -13,6 +13,9 @@ extract( shortcode_atts( array(
 	'full_height' 		=> 'false',
 	'padding_top' 		=> '10',
 	'padding_bottom' 	=> '10',
+	'orderby'           => 'date',
+	'order'             => 'ASC',
+	'visibility' 		=> '',
 	'el_class' 			=> '',
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_slideshow_box');

@@ -71,13 +71,13 @@
 
 ?>
  
-<article id="<?php the_ID(); ?>" class="mk-portfolio-item mk-portfolio-grid-item <?php echo implode(' ', $item_classes); ?>">
+<article id="<?php the_ID(); ?>" class="mk-portfolio-item mk-portfolio-grid-item <?php echo implode(' ', $item_classes); ?>" >
 
     <div class="item-holder">
         
         <div class="featured-image js-taphover <?php if($view_params['permalink_icon'] == 'false' && $view_params['zoom_icon'] == 'false') echo 'buttons-disabled'; ?>" onclick="">
             
-            <img alt="<?php the_title_attribute(); ?>" title="<?php the_title_attribute(); ?>" src="<?php echo $featured_image_src['dummy']; ?>" <?php echo $featured_image_src['data-set']; ?>  width="<?php echo esc_attr($image_size_atts['width']); ?>" height="<?php echo esc_attr($image_size_atts['height']); ?>"  />
+            <img class="portfolio-image" alt="<?php the_title_attribute(); ?>" title="<?php the_title_attribute(); ?>" src="<?php echo $featured_image_src['dummy']; ?>" <?php echo $featured_image_src['data-set']; ?>  width="<?php echo esc_attr($image_size_atts['width']); ?>" height="<?php echo esc_attr($image_size_atts['height']); ?>"  />
             
                 <?php echo mk_get_shortcode_view('mk_portfolio', 'components/hover-overlay', true, ['hover_scenarios' => $view_params['hover_scenarios']]); ?>
 

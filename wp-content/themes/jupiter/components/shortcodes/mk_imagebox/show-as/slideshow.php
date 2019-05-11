@@ -19,7 +19,7 @@
 			"hasNav" : true,
 			"fluidHeight" : true }'>
 
-        <div class="mk-swiper-wrapper mk-slider-holder"><?php echo wpb_js_remove_wpautop( $view_params['content'], true ); ?></div>
+        <div class="mk-swiper-wrapper mk-slider-holder"><?php echo wpb_js_remove_wpautop( $view_params['content'] ); ?></div>
        
     </div>
 </div>

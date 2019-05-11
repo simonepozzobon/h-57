@@ -1,15 +1,16 @@
-<aside id="mk-sidebar" class="mk-builtin" <?php echo get_schema_markup('sidebar'); ?>>
-    <div class="sidebar-wrapper">
-    <?php  
-    global $post;
-    if(isset($post)){
+<aside id="mk-sidebar" class="mk-builtin" <?php echo get_schema_markup( 'sidebar' ); ?>>
+	<div class="sidebar-wrapper">
+	<?php
+	global $post;
+	if ( isset( $post ) ) {
 
-    	mk_sidebar_generator( 'get_sidebar', $post->ID);
+		mk_sidebar_generator( 'get_sidebar', $post->ID );
 
-    }else{
+	} else {
 
-    	mk_sidebar_generator( 'get_sidebar', false);
+		mk_sidebar_generator( 'get_sidebar', false );
 
-    } ?>
-    </div>
+	}
+	?>
+	</div>
 </aside>

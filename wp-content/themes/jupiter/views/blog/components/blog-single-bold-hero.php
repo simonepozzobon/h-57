@@ -10,8 +10,6 @@
 
 global $mk_options;
 
-if (mk_get_blog_single_style() != 'bold') return false;
-
 $image_array = wp_get_attachment_image_src(get_post_thumbnail_id() , 'full');
 $hero_image_background = $image_array[0];
 $hero_image_background_css = (!Mk_Image_Resize::is_default_thumb($hero_image_background) && get_post_meta( $post->ID, '_disable_featured_image', true ) == 'true') ? 'background-image:url(' . esc_url( $hero_image_background ) . ');' : '';

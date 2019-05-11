@@ -2,11 +2,12 @@
 if($view_params['layout_structure'] != 'full') return false;
 
 $grid_layout = ($view_params['full_width'] == 'true') ? 'page-section-fullwidth' : 'mk-grid';
+$vertical_alignment = ($view_params['vertical_align'] == '') ? '' : ('fluid-width-equal-height-columns vertical-align-' . $view_params['vertical_align']);
 
 if ($view_params['section_layout'] == 'full') { ?>
 
-        <div class="page-section-content vc_row-fluid <?php echo $grid_layout; ?>">
-            <div class="mk-padding-wrapper"><?php echo wpb_js_remove_wpautop($view_params['content']); ?></div>
+        <div class="page-section-content vc_row-fluid <?php echo $grid_layout; ?> <?php echo $vertical_alignment; ?>" >
+            <div class="mk-padding-wrapper wpb_row"><?php echo wpb_js_remove_wpautop($view_params['content']); ?></div>
             <div class="clearboth"></div>
         </div>
 

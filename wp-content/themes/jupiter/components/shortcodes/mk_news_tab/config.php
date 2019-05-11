@@ -8,5 +8,6 @@ extract( shortcode_atts( array(
 	'widget_title' 	=> '',
 	'responsive' 	=> 'true',
 	'tab_title' 	=> 'News',
+	'visibility'    => ''
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_news_tab');

@@ -11,6 +11,7 @@ extract(shortcode_atts(array(
     'pagination_style'  => '2',
     'orderby'           => 'date',
     'order'             => 'DESC',
+    'visibility'        => '',
     'el_class'          => ''
 ) , $atts));
 

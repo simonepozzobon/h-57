@@ -2,10 +2,9 @@
 -------------------------------------------------------------------- */
 .mk-flipbox {
     position: relative;
-    -webkit-perspective: 1000;
-    -moz-perspective: 1000;
     -ms-perspective: 1000;
-    perspective: 1000;
+    -webkit-perspective: 1000;
+            perspective: 1000;
     -ms-transform: perspective(1000px);
     -moz-transform: perspective(1000px);
     -moz-transform-style: preserve-3d;
@@ -15,8 +14,6 @@
     position: relative;
     -webkit-transform-style: preserve-3d;
     -moz-transform: perspective(1000px);
-    -moz-transform-style: preserve-3d;
-    -ms-transform-style: preserve-3d;
     transform-style: preserve-3d;
 }
 .mk-flipbox-front {
@@ -36,16 +33,11 @@
     top: 0;
     display: table;
     -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -ms-backface-visibility: hidden;
     backface-visibility: hidden;
 }
 .mk-flipbox-front, .mk-flipbox-back {
     -webkit-transform-style: preserve-3d;
-    -moz-transform-style: preserve-3d;
-    -o-transform-style: preserve-3d;
-    -ms-transform-style: preserve-3d;
-    transform-style: preserve-3d;
+            transform-style: preserve-3d;
 }
 .Chrome .chrome-flipbox-backface-fix {
     backface-visibility: visible !important;
@@ -62,15 +54,15 @@
 
 .flip-horizontal .mk-flipbox-back {
     -webkit-transform: rotateY(180deg);
-    transform: rotateY(180deg);
+            transform: rotateY(180deg);
 }
 .flip-horizontal:hover .mk-flipbox-front {
     -webkit-transform: rotateY(-180deg);
-    transform: rotateY(-180deg);
+            transform: rotateY(-180deg);
 }
 .flip-horizontal:hover .mk-flipbox-back {
     -webkit-transform: rotateY(0);
-    transform: rotateY(0);
+            transform: rotateY(0);
 }
 
 /*
@@ -79,15 +71,15 @@
 
 .flip-vertical .mk-flipbox-back {
     -webkit-transform: rotateX(180deg);
-    transform: rotateX(180deg);
+            transform: rotateX(180deg);
 }
 .flip-vertical:hover .mk-flipbox-front {
     -webkit-transform: rotateX(-180deg);
-    transform: rotateX(-180deg);
+            transform: rotateX(-180deg);
 }
 .flip-vertical:hover .mk-flipbox-back {
     -webkit-transform: rotateX(0);
-    transform: rotateX(0);
+            transform: rotateX(0);
 }
 
 /*

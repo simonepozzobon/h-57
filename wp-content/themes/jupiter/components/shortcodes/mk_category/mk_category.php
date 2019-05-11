@@ -16,6 +16,7 @@ $container->addClass($image_hover.'-image-effect');
 $container->addClass($layout_style.'-layout');
 $container->addClass('mk--row');
 $container->addClass($el_class);
+$container->addClass( $visibility );
 
 // Classes for js traversing
 if($layout_style == 'masonry') {
@@ -103,7 +104,7 @@ foreach ($categories as $category) {
     if ( empty( $category->term_id ) ) {
         continue;
     }
-    $category_link = get_category_link( $category->term_id );
+    $category_link = get_category_link( $category );
     //$each_item->find('.view-more')->attr('href', '#!'); //TODO : add links once styling is finished
 
     $each_item->addClass($column_class);

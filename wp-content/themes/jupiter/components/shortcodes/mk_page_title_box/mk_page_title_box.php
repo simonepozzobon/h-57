@@ -116,7 +116,7 @@ if(!empty($overlay)) {
     $output .= '<div style="opacity: 1 !important; background-color:' . $overlay . ';" class="mk-video-color-mask"></div>';
 }
 
-$output .= '    <div id="mk-page-title-box-' .$id. '" class="mk-page-title-box ' . $subtitle_force_font_size_class . ' ' . $title_force_font_size_class . ' ' .mk_get_bg_cover_class($bg_stretch). ' '.$el_class.'"';
+$output .= '    <div id="mk-page-title-box-' .$id. '" class="mk-page-title-box ' . $subtitle_force_font_size_class . ' ' . $title_force_font_size_class . ' ' .mk_get_bg_cover_class($bg_stretch). ' '.$el_class . ' ' . $visibility . '"';
 if(empty($bg_effects)) { $output .= $imageset; }
 $output .= '    >';
 $output .= '        '.$effectsLayer;
@@ -147,6 +147,7 @@ $app_styles .= "
     #mk-page-title-box-{$id} {
         height: {$section_height}px;
         background-color: {$bg_color};
+        background-repeat: {$bg_repeat};
         text-align: {$text_align};";
         if (empty($bg_effects)) { 
             $app_styles .= "

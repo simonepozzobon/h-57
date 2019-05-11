@@ -2,6 +2,7 @@
     vc_map(array(
     "name" => __("Posts Carousel", "mk_framework"),
     "base" => "mk_blog_carousel",
+	'html_template' => dirname( __FILE__ ) . '/mk_blog_carousel.php',
     'icon' => 'icon-mk-blog-carousel vc_mk_element-icon',
     "category" => __('Loops', 'mk_framework'),
     'description' => __( 'Shows blog posts in carousel.', 'mk_framework' ),
@@ -129,6 +130,7 @@
             "value" => $mk_orderby,
             "type" => "dropdown"
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

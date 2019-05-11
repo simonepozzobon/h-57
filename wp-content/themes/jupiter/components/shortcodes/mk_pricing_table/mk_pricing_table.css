@@ -198,8 +198,8 @@
   padding: 4px 0;
   display: inline-block;
   -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
   position: absolute;
   right: -33px;
   top: 16px;

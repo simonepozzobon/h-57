@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Toggle", "mk_framework"),
     "base" => "mk_toggle",
+	'html_template' => dirname( __FILE__ ) . '/mk_toggle.php',
     "wrapper_class" => "clearfix",
     'icon' => 'icon-mk-toggle vc_mk_element-icon',
     "category" => __('Typography', 'mk_framework'),
@@ -32,11 +33,10 @@ vc_map(array(
             "value" => __("", "mk_framework")
         ),
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Add Icon for Title", "mk_framework"),
             "param_name" => "icon",
             "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework"),
              "dependency" => array(
                 'element' => "style",
                 'value' => array(
@@ -44,7 +44,7 @@ vc_map(array(
                 )
             ),
         ),
-        
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

@@ -19,6 +19,8 @@ $post_type = !empty($post_type) ? $post_type : 'image';
         'image_size'    => $view_params['image_size'],
         'image_width'   => $image_width,
         'image_height'  => $view_params['grid_image_height'],
+        'lazyload'      => $view_params['lazyload'],
+        'disable_lazyload'      => $view_params['disable_lazyload'],
         'post_type'     => $post_type,
         //'image_quality' => $view_params['image_quality']
     );
@@ -30,7 +32,6 @@ $post_type = !empty($post_type) ? $post_type : 'image';
             <?php
             echo mk_get_shortcode_view('mk_blog', 'components/social-share', true);   
             echo mk_get_shortcode_view('mk_blog', 'components/comments', true, ['post_type' => $post_type]);
-            echo mk_get_shortcode_view('mk_blog', 'components/love-this', true);
             ?>
         </div>
     <?php } ?>

@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Theatre Slider", "mk_framework") ,
     "base" => "mk_theatre_slider",
+	'html_template' => dirname( __FILE__ ) . '/mk_theatre_slider.php',
     'icon' => 'vc_mk_element-icon',
     "category" => __('Slideshows', 'mk_framework') ,
     'description' => __('', 'mk_framework') ,
@@ -153,6 +154,7 @@ vc_map(array(
             "unit" => 'px',
             "description" => __("", "mk_framework")
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

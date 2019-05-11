@@ -22,5 +22,8 @@ extract(shortcode_atts(array(
     'image_size'        => 'crop',
     'item_id'           => '',
     'count'             => 10,
+    'lazyload'          => 'false',
+    'disable_lazyload'  => 'false',
+	'visibility' 		=> ''
 ), $atts));
 Mk_Static_Files::addAssets('mk_gallery');

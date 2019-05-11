@@ -2,6 +2,8 @@
 vc_map(array(
     "name" => __("Image Box", "mk_framework"),
     "base" => "mk_imagebox",
+	'html_template' => dirname( __FILE__ ) . '/mk_imagebox.php',
+    'front_enqueue_js' => THEME_COMPONENTS . '/shortcodes/mk_imagebox/vc_front.js',
     "content_element" => true,
     'icon' => 'icon-mk-content-box vc_mk_element-icon',
     "as_parent" => array('only' => 'mk_imagebox_item'),
@@ -96,6 +98,7 @@ vc_map(array(
             "description" => __("If set to zero the autoplay will be disabled, any number above zeo will define the delay between each slide transition.", "mk_framework"),
             'type' => 'range'
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),
@@ -103,6 +106,7 @@ vc_map(array(
             "value" => "",
             "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in Custom CSS Shortcode or Masterkey Custom CSS option.", "mk_framework")
         )
-    ),
-    "js_view" => 'VcColumnView'
+	),
+	'default_content' => '[mk_imagebox_item][/mk_imagebox_item]',
+	'js_view' => 'VcColumnView',
 ));

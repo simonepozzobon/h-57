@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("News Tab", "mk_framework") ,
     "base" => "mk_news_tab",
+	'html_template' => dirname( __FILE__ ) . '/mk_news_tab.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-news-tab vc_mk_element-icon',
     'description' => __('News feed in tabs style.', 'mk_framework') ,
@@ -30,6 +31,7 @@ vc_map(array(
                 "No!" => "false"
             ) ,
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

@@ -38,8 +38,8 @@
 .mk-milestone.center-align .milestone-text:after {
   left: 50%;
   -webkit-transform: translate(-50%, 0);
-      -ms-transform: translate(-50%, 0);
-          transform: translate(-50%, 0);
+          -ms-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
 }
 .mk-milestone.right-align .milestone-top {
   float: right;
@@ -52,8 +52,8 @@
 .mk-milestone.right-align .milestone-text:after {
   right: 0;
   -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
-          transform: translate(0, 0);
+          -ms-transform: translate(0, 0);
+      transform: translate(0, 0);
 }
 .mk-milestone .milestone-text {
   letter-spacing: 1px;

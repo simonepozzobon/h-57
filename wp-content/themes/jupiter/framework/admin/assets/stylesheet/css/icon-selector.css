@@ -37,16 +37,6 @@
     background-color: #ffffff;
     border-radius: 25px;
 }
-@media only screen and (max-height: 800px) {
-
-    .mk-ip {
-        top: 60px;
-    }
-    .mk-ip-lib-wrap {
-        height: 320px;
-    }
-
-}
 
 /* Header */
 .mk-ip-header {
@@ -66,7 +56,7 @@
     line-height: 1;
 }
 .mk-ip-header-close-btn path {
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 .mk-ip-header-close-btn:hover path,
 .mk-ip-header-close-btn:focus path{
@@ -86,7 +76,6 @@ input.mk-ip-search-input {
     margin: 0;
     padding: 0;
     background-color: transparent;
-    border: none;
     font-size: 20px;
     vertical-align: top;
     border: 0;
@@ -132,7 +121,7 @@ input.mk-ip-search-input:-ms-input-placeholder {
     color: inherit;
 }
 .mk-ip-add-icon-btn circle {
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 .mk-ip-add-icon-btn:hover circle {
     fill: currentColor;
@@ -148,7 +137,7 @@ input.mk-ip-search-input:-ms-input-placeholder {
     margin-left: 16px;
     opacity: 0.4;
 
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 .mk-ip-lib-view a:focus {
     box-shadow: none;
@@ -175,20 +164,26 @@ input.mk-ip-search-input:-ms-input-placeholder {
 .mk-ip-filter a {
     display: inline-block;
     text-decoration: none;
-    padding: 7px 10px;
+    padding: 3px 13px;
     color: #999999;
     border: 2px solid transparent;
-    border-radius: 5px;
+    border-radius: 15px;
     font-size: 14px;
+    font-weight: 500;
 
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 .mk-ip-filter .mk-selected,
-.mk-ip-filter a:focus,
-.mk-ip-filter a:hover {
-    border-color: #cfcfcf;
+.mk-ip-filter a:focus {
+    border-color: #d9d9d9;
     box-shadow: none;
     outline: 0;
+}
+.mk-ip-filter a:not(.mk-selected):hover {
+    border-color: #f7f7f7;
+    box-shadow: none;
+    outline: 0;
+    background-color: #f7f7f7;
 }
 .mk-ip-lib-wrap {
     margin-top: 20px;
@@ -236,7 +231,7 @@ input.mk-ip-search-input:-ms-input-placeholder {
     height: calc(100% + 2px);
     border: 2px solid transparent;
 
-    transition: border-color 0.3s ease;
+    transition: border-color 0.1s ease;
 }
 .mk-ip-lib-item-icon {
     margin: auto;
@@ -255,6 +250,7 @@ input.mk-ip-search-input:-ms-input-placeholder {
 }
 
 .mk-ip-footer {
+    width: 100%;
     padding-top: 20px;
 }
 
@@ -272,7 +268,7 @@ input.mk-ip-search-input:-ms-input-placeholder {
     text-align: center;
     font-weight: bold;
 
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 .mk-ip-btn:hover {
     opacity: 0.9;
@@ -280,46 +276,54 @@ input.mk-ip-search-input:-ms-input-placeholder {
 }
 .mk-ip-save-btn {
     float: right;
-    margin-right: 15px;
-    background: #42a6c9;
-    background: -webkit-linear-gradient(bottom,  #42a6c9 0%,#58bcdf 100%);
-    background: linear-gradient(to top,  #42a6c9 0%,#58bcdf 100%);
+    margin-right: 15px !important;
 }
 .mk-ip-cancel-btn {
     float: right;
     background: #bababa;
-    background: -webkit-linear-gradient(bottom,  #bababa 0%,#d7d7d7 100%);
-    background: linear-gradient(to top,  #bababa 0%,#d7d7d7 100%);
 }
 
 
 .mk-vc-icon-selector {
     text-align: center;
 }
+.mk-vc-icon-selector-view-wrap {
+    float: left;
+    position: relative;
+    margin-right: 10px !important;
+}
 .mk-vc-icon-selector-view {
     box-sizing: border-box;
     display: inline-block;
-    border: 3px solid #f6f6f6;
-    padding: 27px 20px 0 20px;
-    width: 90px;
-    height: 90px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    padding: 6px 5px 0 5px;
+    width: 36px;
+    height: 36px;
     text-align: center;
 }
 .mk-vc-icon-selector-view svg {
     display: inline-block;
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
 }
 .mk-vc-icon-selector-btn {
-    display: inline-block;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 13px 33px;
-    box-shadow: 0px 2px 4px 0px rgba(255, 255, 255, 0.06);
-    border: 2px solid #dddddd;
-    border-radius: 25px;
-    color: #222222;
-    margin-top: 15px;
+    float: left;
+    margin-top: 1px !important;
+}
+.mk-vc-icon-selector-view-remove {
+    position: absolute;
+    right: -6px;
+    top: -6px;
+    width: 16px;
+    height: 16px;
+    background: url(../../images/remove.svg) no-repeat center center;
+    opacity: 0;
+
+    transition: opacity 0.2s ease;
+}
+.mk-vc-icon-selector-view-wrap:hover .mk-vc-icon-selector-view-remove {
+    opacity: 1;
 }
 
 /* Spinner */
@@ -387,3 +391,13 @@ input.mk-ip-search-input:-ms-input-placeholder {
 
 
 
+@media only screen and (max-height: 800px) {
+
+    .mk-ip {
+        top: 60px;
+    }
+    .mk-ip-lib-wrap {
+        height: 320px;
+    }
+
+}

@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Product Loop", "mk_framework"),
     "base" => "mk_products",
+	'html_template' => dirname( __FILE__ ) . '/mk_products.php',
     'icon' => 'vc_mk_element-icon',
     "category" => __('Loops', 'mk_framework'),
     'description' => __( '', 'mk_framework' ),
@@ -161,6 +162,7 @@ vc_map(array(
             "description" => __("Disable this option if you do not want pagination for this loop.", "mk_framework"),
         ),
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),
@@ -170,7 +172,7 @@ vc_map(array(
         ),
         array(
             "group" => __('Styles & Colors', 'mk_framework'),
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Product Title color", "mk_framework"),
             "param_name" => "color_product_title",
             "value" => "",
@@ -186,7 +188,7 @@ vc_map(array(
         ),
         array(
             "group" => __('Styles & Colors', 'mk_framework'),
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Product Category color", "mk_framework"),
             "param_name" => "color_product_category",
             "value" => "",
@@ -200,7 +202,7 @@ vc_map(array(
         ),
         array(
             "group" => __('Styles & Colors', 'mk_framework'),
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Product Image Border color", "mk_framework"),
             "param_name" => "color_product_border",
             "value" => "",
@@ -214,7 +216,7 @@ vc_map(array(
         ),
         array(
             "group" => __('Styles & Colors', 'mk_framework'),
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Price color", "mk_framework"),
             "param_name" => "color_product_price",
             "value" => "",
@@ -229,7 +231,7 @@ vc_map(array(
         ),
         array(
             "group" => __('Styles & Colors', 'mk_framework'),
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Sale Price color", "mk_framework"),
             "param_name" => "color_product_price_sale",
             "value" => "",
@@ -244,7 +246,7 @@ vc_map(array(
         ),
         array(
             "group" => __('Styles & Colors', 'mk_framework'),
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Orginal Price color", "mk_framework"),
             "param_name" => "color_product_price_orginal",
             "value" => "",
@@ -259,7 +261,7 @@ vc_map(array(
         ),
         array(
             "group" => __('Styles & Colors', 'mk_framework'),
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Product rating color", "mk_framework"),
             "param_name" => "color_product_rating",
             "value" => "",

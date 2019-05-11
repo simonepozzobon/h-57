@@ -2,16 +2,16 @@
 vc_map(array(
     "name" => __("Milestones", "mk_framework") ,
     "base" => "mk_milestone",
+	'html_template' => dirname( __FILE__ ) . '/mk_milestone.php',
     'icon' => 'icon-mk-milestone vc_mk_element-icon',
     'description' => __('Milestone numbers to show statistics.', 'mk_framework') ,
     "category" => __('General', 'mk_framework') ,
     "params" => array(
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Add Icon", "mk_framework") ,
             "param_name" => "icon",
             "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework")
         ) ,
         array(
             "type" => "dropdown",
@@ -36,7 +36,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Color", "mk_framework") ,
             "param_name" => "icon_color",
             "value" => $skin_color,
@@ -97,7 +97,7 @@ vc_map(array(
             "description" => __("Description that goes below the Number.", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Text Color", "mk_framework") ,
             "param_name" => "text_color",
             "value" => "",
@@ -152,6 +152,7 @@ vc_map(array(
             "value" => "",
             "description" => __("", "mk_framework")
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

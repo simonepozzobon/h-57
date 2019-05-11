@@ -19,6 +19,7 @@ extract( shortcode_atts( array(
 	'visibility' 	=> '',
 	"font_family" 	=> '',
 	"font_type" 	=> '',
+	'visibility'    => '',
 	'el_class' 		=> '',
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_milestone');

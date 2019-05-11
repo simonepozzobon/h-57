@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Flexslider", "mk_framework"),
     "base" => "mk_flexslider",
+	'html_template' => dirname( __FILE__ ) . '/mk_flexslider.php',
     'icon' => 'icon-mk-flex-slider vc_mk_element-icon',
     "category" => __('Slideshows', 'mk_framework'),
     'description' => __( 'Flexslider with captions.', 'mk_framework' ),
@@ -129,14 +130,14 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Caption Background Color", "mk_framework"),
             "param_name" => "caption_bg_color",
             "value" => "",
             "description" => __("", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Caption Text Color", "mk_framework"),
             "param_name" => "caption_color",
             "value" => "#fff",
@@ -153,6 +154,7 @@ vc_map(array(
             "unit" => 'alpha',
             "description" => __("", "mk_framework")
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

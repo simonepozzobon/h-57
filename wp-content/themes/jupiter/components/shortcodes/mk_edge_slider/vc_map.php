@@ -2,7 +2,9 @@
 vc_map(array(
     "name" => __("Edge Slider", "mk_framework"),
     "base" => "mk_edge_slider",
+	'html_template' => dirname( __FILE__ ) . '/mk_edge_slider.php',
     'icon' => 'icon-mk-edge-slider vc_mk_element-icon',
+    "admin_enqueue_js" => THEME_COMPONENTS . "/shortcodes/mk_edge_slider/vc_admin.js",
     "category" => __('Slideshows', 'mk_framework'),
     'description' => __( 'Powerful Edge Slider.', 'mk_framework' ),
     "params" => array(
@@ -15,7 +17,7 @@ vc_map(array(
         ),
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Slideshow Background Color", "mk_framework"),
             "param_name" => "swiper_bg",
             "value" => "#000",
@@ -150,7 +152,21 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ),
 
-
+        array(
+            "type" => "toggle",
+            "heading" => __("Lazy Load", "mk_framework"),
+            "param_name" => "lazyload",
+            "value" => "false",
+        ),
+        
+        array(
+            "type" => "toggle",
+            "heading" => __("Disable Lazyload", "mk_framework"),
+            "param_name" => "disable_lazyload",
+            "value" => "false",
+            "description" => __("Disable Lazyload is only available when 'Global Lazyload' is enabled in the Theme Options.", "mk_framework"),
+        ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

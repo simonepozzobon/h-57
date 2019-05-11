@@ -2,6 +2,7 @@
     vc_map(array(
     "name" => __("Icon Box Gradient", "mk_framework") ,
     "base" => "mk_icon_box_gradient",
+	'html_template' => dirname( __FILE__ ) . '/mk_icon_box_gradient.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-icon-box vc_mk_element-icon',
     'description' => __('Powerful & versatile Icon Boxes.', 'mk_framework') ,
@@ -22,11 +23,10 @@
         ) ,
 
         array(
-            "type" => "textfield",
-            "heading" => __("Icon Class Name", "mk_framework") ,
+            "type" => "icon_selector",
+            "heading" => __("Icon", "mk_framework") ,
             "param_name" => "icon",
             "value" => "mk-li-smile",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework") ,
         ) ,
         array(
             "heading" => __("Container Shape", 'mk_framework') ,
@@ -57,7 +57,7 @@
             "description" => __("", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Container Color", "mk_framework") ,
             "param_name" => "container_color",
             "edit_field_class" => "vc_col-sm-6 vc_column",
@@ -72,7 +72,7 @@
         ) ,
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Container Hover Color", "mk_framework") ,
             "param_name" => "container_hover_color",
             "edit_field_class" => "vc_col-sm-6 vc_column",
@@ -86,7 +86,7 @@
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("From", "mk_framework") ,
             "param_name" => "grandient_color_from",
             "edit_field_class" => "vc_col-sm-3 vc_column",
@@ -100,7 +100,7 @@
             ) ,
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("To", "mk_framework") ,
             "param_name" => "grandient_color_to",
             "edit_field_class" => "vc_col-sm-3 vc_column",
@@ -150,7 +150,7 @@
             ) ,
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Gradient Fallback Color", "mk_framework") ,
             "param_name" => "grandient_color_fallback",
             //"edit_field_class" => "vc_col-sm-3",
@@ -165,7 +165,7 @@
         ),
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Color", "mk_framework") ,
             "param_name" => "icon_color",
             "edit_field_class" => "vc_col-sm-6 vc_column",
@@ -174,7 +174,7 @@
         ) ,
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Hover Color", "mk_framework") ,
             "param_name" => "icon_hover_color",
             "edit_field_class" => "vc_col-sm-6 vc_column",
@@ -214,7 +214,7 @@
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Title Font Color", "mk_framework") ,
             "param_name" => "title_color",
             "value" => "",
@@ -251,7 +251,7 @@
             "description" => __("Enter your content.", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Description Color", "mk_framework") ,
             "param_name" => "content_color",
             "value" => "",
@@ -276,6 +276,7 @@
             "description" => __("", "mk_framework")
         ) ,
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

@@ -28,7 +28,8 @@ extract( shortcode_atts( array(
 	'content_color'		 		=> '',
 	'align' 					=> 'center',
 	'read_more_url' 			=> '',
-	'animation' 				=> '',	
+	'animation' 				=> '',
+	'visibility' 				=> '',
 	'el_class' 					=> '',
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_icon_box_gradient');

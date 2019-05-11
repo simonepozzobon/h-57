@@ -2,6 +2,7 @@
     vc_map(array(
         "name" => __("Animated Columns", "mk_framework") ,
         "base" => "mk_animated_columns",
+		'html_template' => dirname( __FILE__ ) . '/mk_animated_columns.php',
         'icon' => 'icon-mk-animated-columns vc_mk_element-icon',
         'description' => __('Columns with cool animations.', 'mk_framework') ,
         "category" => __('General', 'mk_framework') ,
@@ -80,21 +81,21 @@
                 "description" => __("", "mk_framework")
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Columns Border Color", "mk_framework") ,
                 "param_name" => "border_color",
                 "value" => "",
                 "description" => __("", "mk_framework")
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Columns background Color", "mk_framework") ,
                 "param_name" => "bg_color",
                 "value" => "",
                 "description" => __("", "mk_framework")
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Columns background Hover Color", "mk_framework") ,
                 "param_name" => "bg_hover_color",
                 "value" => "",
@@ -116,7 +117,7 @@
             ) ,
 
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Icon Color", "mk_framework") ,
                 "param_name" => "icon_color",
                 "value" => "",
@@ -124,7 +125,7 @@
             ) ,
 
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Icon Hover Color", "mk_framework") ,
                 "param_name" => "icon_hover_color",
                 "value" => "",
@@ -132,14 +133,14 @@
             ) ,
 
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Text Color (Active)", "mk_framework") ,
                 "param_name" => "txt_color",
                 "value" => "",
                 "description" => __("The color of title and description inside the column. Description text though, is 70% translucent.", "mk_framework")
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Text Color (Hover)", "mk_framework") ,
                 "param_name" => "txt_hover_color",
                 "value" => "",
@@ -147,7 +148,7 @@
             ) ,
 
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Button Color (Active)", "mk_framework") ,
                 "param_name" => "btn_color",
                 "value" => "",
@@ -155,21 +156,21 @@
             ) ,
 
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Button Color (Hover)", "mk_framework") ,
                 "param_name" => "btn_hover_color",
                 "value" => "",
                 "description" => __("Column's button color will change to this color once the user's mouse rolls over on a particular column.", "mk_framework")
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Button Text Color (Hover)", "mk_framework") ,
                 "param_name" => "btn_hover_txt_color",
                 "value" => "",
                 "description" => __("", "mk_framework")
             ) ,
             $add_css_animations,
-
+            $add_device_visibility,
             array(
                 "type" => "textfield",
                 "heading" => __("Extra class name", "mk_framework") ,

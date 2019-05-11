@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Message Box", "mk_framework") ,
     "base" => "mk_message_box",
+	'html_template' => dirname( __FILE__ ) . '/mk_message_box.php',
     'icon' => 'icon-mk-message-box vc_mk_element-icon',
     "category" => __('General', 'mk_framework') ,
     'description' => __('Message Box with multiple types.', 'mk_framework') ,
@@ -27,6 +28,7 @@ vc_map(array(
             ) ,
             "description" => __("", "mk_framework")
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

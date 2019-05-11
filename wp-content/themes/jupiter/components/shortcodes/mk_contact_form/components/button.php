@@ -2,15 +2,15 @@
     <button class="<?php echo $view_params['button_class']; ?>" data-style="move-up" tabindex="<?php echo $view_params['tab_index']; ?>">
         <span class="mk-progress-button-content">
             <?php 
-            	if(!empty($view_params['button_text'])) {
-            	
-            		_e($view_params['button_text'], 'mk_framework' );
-            	
-            	} else {
+                if(!empty($view_params['button_text'])) {
+                
+                    echo $view_params['button_text'];
+                
+                } else {
 
-            		_e( 'Submit', 'mk_framework' );
+                    _e( 'Submit', 'mk_framework' );
 
-            	}
+                }
             ?>
         </span>
         <span class="mk-progress">

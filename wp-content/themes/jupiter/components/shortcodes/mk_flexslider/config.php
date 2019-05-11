@@ -16,6 +16,7 @@ extract( shortcode_atts( array(
 	"caption_bg_color" 		=> "",
 	"caption_color" 		=> "#fff",
 	"caption_bg_opacity" 		=> 0.8,
+	'visibility' 			=> '',
 	"el_class" 			=> '',
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_flexslider');

@@ -1,8 +1,9 @@
 <?php
 if (class_exists('woocommerce')) {
     vc_map(array(
+		"name" => __("WooCommerce Carousel", "mk_framework") ,
         "base" => "mk_woocommerce_recent_carousel",
-        "name" => __("WooCommerce Carousel", "mk_framework") ,
+		'html_template' => dirname( __FILE__ ) . '/mk_woocommerce_recent_carousel.php',
         "category" => __('Plugins', 'mk_framework') ,
         'icon' => 'icon-mk-woo-recent-carousel vc_mk_element-icon',
         "params" => array(
@@ -57,13 +58,18 @@ if (class_exists('woocommerce')) {
                 "max" => "8",
                 "step" => "1",
                 "unit" => 'products',
-                "description" => __("", "mk_framework") ,
-                "dependency" => array(
-                    'element' => "style",
-                    'value' => array(
-                        'modern'
-                    )
-                )
+				'description' => __( '', 'mk_framework' ),
+            ) ,
+            array(
+                "type" => "range",
+                'heading'     => __( 'How many Products?', 'mk_framework' ),
+                "param_name" => "per_page",
+                "value" => "-1",
+                "min" => "-1",
+                "max" => "50",
+                "step" => "1",
+                "unit" => 'posts',
+                'description' => __( 'How many Products you would like to show? ( -1 means unlimited, please note that unlimited will be overridden by the limit you defined at : Wordpress Sidebar > Settings > Reading > Blog pages show at most.)', 'mk_framework' ),
             ) ,
             array(
                 'type'        => 'autocomplete',
@@ -75,16 +81,10 @@ if (class_exists('woocommerce')) {
                                     'unique_values' => true,
                                 ),
                 'description' => __( 'Search for category name to get autocomplete suggestions', 'mk_framework' ),
-                 "dependency" => array(
-                    'element' => "style",
-                    'value' => array(
-                        'modern'
-                    )
-                )
             ),
             array(
                 'type'        => 'autocomplete',
-                'heading'     => __( 'Select specific Posts', 'mk_framework' ),
+				'heading'     => __( 'Select specific Products', 'mk_framework' ),
                 'param_name'  => 'posts',
                 'settings' => array(
                                     'multiple' => true,
@@ -92,12 +92,6 @@ if (class_exists('woocommerce')) {
                                     'unique_values' => true,
                                 ),
                 'description' => __( 'Search for post ID or post title to get autocomplete suggestions', 'mk_framework' ),
-                 "dependency" => array(
-                    'element' => "style",
-                    'value' => array(
-                        'modern'
-                    )
-                )
             ),
 
             array(
@@ -110,24 +104,13 @@ if (class_exists('woocommerce')) {
                                     'unique_values' => true,
                                 ),
                 'description' => __( 'Search for user ID, Username, Email Address to get autocomplete suggestions', 'mk_framework' ),
-                 "dependency" => array(
-                    'element' => "style",
-                    'value' => array(
-                        'modern'
-                    )
-                )
+				'dependency'  => array(
+					'element' => 'style',
+					'value'   => array(
+						'modern',
+					),
+				),
             ),
-            array(
-                "type" => "range",
-                "heading" => __("How many Posts?", "mk_framework") ,
-                "param_name" => "per_page",
-                "value" => "-1",
-                "min" => "-1",
-                "max" => "50",
-                "step" => "1",
-                "unit" => 'posts',
-                "description" => __("How many Posts you would like to show? ( -1 means unlimited, please note that unlimited will be overridden by the limit you defined at : Wordpress Sidebar > Settings > Reading > Blog pages show at most.)", "mk_framework")
-            ) ,
             array(
                 "heading" => __("Order", 'mk_framework') ,
                 "description" => __("Designates the ascending or descending order of the 'orderby' parameter.", 'mk_framework') ,
@@ -145,13 +128,74 @@ if (class_exists('woocommerce')) {
                 "value" => $mk_orderby,
                 "type" => "dropdown"
             ) ,
+            $add_device_visibility,
             array(
                 "type" => "textfield",
                 "heading" => __("Extra class name", "mk_framework") ,
                 "param_name" => "el_class",
                 "value" => "",
                 "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in Custom CSS Shortcode or Masterkey Custom CSS option.", "mk_framework")
-            )
+			),
+			array(
+				'type'             => 'alpha_colorpicker',
+				'heading'          => __( 'Carousel Arrow Color', 'mk_framework' ),
+				'param_name'       => 'arrow_color',
+				'edit_field_class' => 'vc_col-sm-12 vc_column',
+				'value'            => 'rgba(34,34,34,1)',
+				'description'      => __( '', 'mk_framework' ),
+				'dependency'       => array(
+					'element' => 'style',
+					'value'   => array(
+						'classic',
+					),
+				),
+				'group'            => 'Colors',
+			),
+			array(
+				'type'             => 'alpha_colorpicker',
+				'heading'          => __( 'Carousel Arrow Background Color', 'mk_framework' ),
+				'param_name'       => 'arrow_bg_color',
+				'edit_field_class' => 'vc_col-sm-12 vc_column',
+				'value'            => 'rgba(255,255,255,1)',
+				'description'      => __( '', 'mk_framework' ),
+				'dependency'       => array(
+					'element' => 'style',
+					'value'   => array(
+						'classic',
+					),
+				),
+				'group'            => 'Colors',
+			),
+			array(
+				'type'             => 'alpha_colorpicker',
+				'heading'          => __( 'Carousel Arrow Hover Color', 'mk_framework' ),
+				'param_name'       => 'arrow_hover_color',
+				'edit_field_class' => 'vc_col-sm-12 vc_column',
+				'value'            => 'rgba(255,255,255,1)',
+				'description'      => __( '', 'mk_framework' ),
+				'dependency'       => array(
+					'element' => 'style',
+					'value'   => array(
+						'classic',
+					),
+				),
+				'group'            => 'Colors',
+			),
+			array(
+				'type'             => 'alpha_colorpicker',
+				'heading'          => __( 'Carousel Arrow Hover Background Color', 'mk_framework' ),
+				'param_name'       => 'arrow_hover_bg_color',
+				'edit_field_class' => 'vc_col-sm-12 vc_column',
+				'value'            => 'rgba(34,34,34,1)',
+				'description'      => __( '', 'mk_framework' ),
+				'dependency'       => array(
+					'element' => 'style',
+					'value'   => array(
+						'classic',
+					),
+				),
+				'group'            => 'Colors',
+			),
         )
     ));
 }

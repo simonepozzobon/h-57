@@ -5,26 +5,26 @@ if (empty($view_params['url'])) return false;
 
 
 if (!get_post_meta(get_the_ID() , '_blog_post_tweet')) {
-    
+
     global $mk_options;
     $consumer_key = $mk_options['twitter_consumer_key'];
     $consumer_secret = $mk_options['twitter_consumer_secret'];
     $access_token = $mk_options['twitter_access_token'];
     $access_token_secret = $mk_options['twitter_access_token_secret'];
-    
+
     if (!$consumer_key && !$consumer_secret && !$access_token && !$access_token_secret && !$view_params['url']) return false;
-    
-    $id = uniqid();
-    
+
+    $id = Mk_Static_Files::shortcode_id();
+
     $token = get_option('mk_twitter_token_' . get_the_ID());
-    
+
     delete_option('mk_twitter_token_' . get_the_ID());
-    
+
     if (!$token) {
-        
+
         $credentials = $consumer_key . ':' . $consumer_secret;
         $toSend = base64_encode($credentials);
-        
+
         $args = array(
             'method' => 'POST',
             'httpversion' => '1.1',
@@ -37,12 +37,12 @@ if (!get_post_meta(get_the_ID() , '_blog_post_tweet')) {
                 'grant_type' => 'client_credentials'
             )
         );
-        
+
         add_filter('https_ssl_verify', '__return_false');
         $response = wp_remote_post('https://api.twitter.com/oauth2/token', $args);
-        
+
         $keys = json_decode(wp_remote_retrieve_body($response));
-        
+
         if ($keys) {
             update_option('mk_twitter_token_' . get_the_ID(), $keys->access_token);
             $token = $keys->access_token;
@@ -56,14 +56,14 @@ if (!get_post_meta(get_the_ID() , '_blog_post_tweet')) {
         )
     );
 
-    
+
     $twitterId = explode('/', $view_params['url']);
     add_filter('https_ssl_verify', '__return_false');
     $api_url = 'https://api.twitter.com/1.1/statuses/lookup.json?id=' . $twitterId[5];
     $response = wp_remote_get($api_url, $args);
-    
+
     $twitter = json_decode(wp_remote_retrieve_body($response) , true);
-    
+
 
     update_post_meta(get_the_ID() , '_blog_post_tweet', $twitter);
 }

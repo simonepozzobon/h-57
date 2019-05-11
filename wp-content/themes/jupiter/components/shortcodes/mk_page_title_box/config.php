@@ -25,6 +25,7 @@ extract(shortcode_atts(array(
     'bg_image_portrait'     => '',
     'attachment'            => 'scroll',
     'bg_position'           => 'left top',
+    'bg_repeat'             => 'repeat',
     'bg_stretch'            => 'false',
     'bg_effects'            => '',
     'section_height'        => 400,
@@ -36,6 +37,7 @@ extract(shortcode_atts(array(
     'subtitle_size_smallscreen'      => '0',
     'subtitle_size_tablet'           => '0',
     'subtitle_size_phone'            => '0',
+    'visibility' 			=> '',
     'el_class'              => ''
 ), $atts));
 Mk_Static_Files::addAssets('mk_page_title_box');

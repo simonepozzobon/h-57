@@ -14,6 +14,7 @@ extract(shortcode_atts(array(
     'categories'        => '',
     'animation'         => '',
     'description'       => 'true',
+    'visibility'        => '',
     'el_class'          => '',
     'offset'            => 0,
     'orderby'           => 'date',

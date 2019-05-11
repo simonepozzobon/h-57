@@ -21,6 +21,7 @@ extract( shortcode_atts( array(
     'read_more_url'                 => '',
     'align'                         => 'center',
     'link_target'                   => '_self',
+    'visibility'                   => '',
     'el_class'                      => ''
     ),$atts )
 );

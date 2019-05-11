@@ -121,8 +121,8 @@
 .mk-category-loop.simple-title-effect .mk-loop-item .item-holder figcaption .item-title,
 .mk-category-loop.simple-title-effect .mk-loop-item .item-holder figcaption .item-desc {
   -webkit-transform: translateY(0);
-      -ms-transform: translateY(0);
-          transform: translateY(0);
+          -ms-transform: translateY(0);
+      transform: translateY(0);
   -webkit-backface-visibility: hidden;
 }
 .mk-category-loop.simple-title-effect .mk-loop-item .item-holder figcaption .caption {
@@ -145,8 +145,8 @@
 .mk-category-loop.simple-title-effect .mk-loop-item .item-holder:hover figcaption .item-title,
 .mk-category-loop.simple-title-effect .mk-loop-item .item-holder:hover figcaption .item-desc {
   -webkit-transform: translateY(-40px);
-      -ms-transform: translateY(-40px);
-          transform: translateY(-40px);
+          -ms-transform: translateY(-40px);
+      transform: translateY(-40px);
 }
 .mk-category-loop.simple-title-effect .mk-loop-item .item-holder:hover figcaption .item-desc {
   opacity: 1;
@@ -173,20 +173,20 @@
   border-style: solid;
   content: '';
   -webkit-transform: scale(1.1);
-      -ms-transform: scale(1.1);
-          transform: scale(1.1);
+          -ms-transform: scale(1.1);
+      transform: scale(1.1);
   z-index: 3;
 }
 .mk-category-loop.framed-title-effect .mk-loop-item .item-holder figcaption .item-desc {
   -webkit-transform: scale(1.5);
-      -ms-transform: scale(1.5);
-          transform: scale(1.5);
+          -ms-transform: scale(1.5);
+      transform: scale(1.5);
 }
 .mk-category-loop.framed-title-effect .mk-loop-item .item-holder:hover figcaption:before,
 .mk-category-loop.framed-title-effect .mk-loop-item .item-holder:hover figcaption .item-desc {
   -webkit-transform: scale(1);
-      -ms-transform: scale(1);
-          transform: scale(1);
+          -ms-transform: scale(1);
+      transform: scale(1);
   opacity: 1;
 }
 .mk-category-loop.modern-title-effect .mk-loop-item .item-holder figcaption .item-title,
@@ -334,13 +334,13 @@
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: scale(1.12);
-      -ms-transform: scale(1.12);
-          transform: scale(1.12);
+          -ms-transform: scale(1.12);
+      transform: scale(1.12);
 }
 .mk-category-loop.zoom-image-effect .mk-loop-item .item-holder:hover img {
   -webkit-transform: scale(1);
-      -ms-transform: scale(1);
-          transform: scale(1);
+          -ms-transform: scale(1);
+      transform: scale(1);
 }
 .mk-category-loop.slide-image-effect .mk-loop-item .item-holder {
   overflow: hidden;

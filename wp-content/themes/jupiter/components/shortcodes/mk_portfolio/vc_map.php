@@ -2,7 +2,9 @@
 vc_map(array(
     "name" => __("Portfolio", "mk_framework"),
     "base" => "mk_portfolio",
+	'html_template' => dirname( __FILE__ ) . '/mk_portfolio.php',
     'icon' => 'icon-mk-portfolio vc_mk_element-icon',
+    "admin_enqueue_js" => THEME_COMPONENTS . "/shortcodes/mk_portfolio/vc_admin.js",
     "category" => __('Loops', 'mk_framework'),
     'description' => __( 'Portfolio loops are here.', 'mk_framework' ),
     "params" => array(
@@ -159,11 +161,10 @@ vc_map(array(
             "description" => __("If do not need portfolio single post you can remove permalink from image hover icon and title.", "mk_framework")
         ),
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Permalink Icon", "mk_framework"),
             "param_name" => "permalink_icon_name",
             "value" => "mk-jupiter-icon-arrow-circle",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework"),
             "dependency" => array(
                 'element' => "permalink_icon",
                 'value' => array(
@@ -179,11 +180,10 @@ vc_map(array(
             "description" => __("If do not need portfolio single post you can remove zoom link from image hover icon and title.", "mk_framework")
         ),
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Zoom Icon", "mk_framework"),
             "param_name" => "zoom_icon_name",
             "value" => "mk-jupiter-icon-plus-circle",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework"),
             "dependency" => array(
                 'element' => "zoom_icon",
                 'value' => array(
@@ -266,7 +266,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Sortable Background Custom Color (Outline Style)", "mk_framework"),
             "param_name" => "sortable_bg_color",
             "value" => "#1a1a1a",
@@ -279,7 +279,7 @@ vc_map(array(
             )
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Sortable Text Custom Color (Outline Style)", "mk_framework"),
             "param_name" => "sortable_txt_color",
             "value" => "#cccccc",
@@ -390,6 +390,20 @@ vc_map(array(
                 )
             )
         ),
+        array(
+            "type" => "toggle",
+            "heading" => __("Lazyload", "mk_framework"),
+            "param_name" => "lazyload",
+            "value" => "false",
+        ),
+        array(
+            "type" => "toggle",
+            "heading" => __("Disable Lazyload", "mk_framework"),
+            "param_name" => "disable_lazyload",
+            "value" => "false",
+            "description" => __("Disable Lazyload is only available when 'Global Lazyload' is enabled in the Theme Options.", "mk_framework"),
+        ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

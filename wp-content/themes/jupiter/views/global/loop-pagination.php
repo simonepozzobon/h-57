@@ -6,8 +6,17 @@ if($maxPages <= 1) return false;
 
 // Classic Pagination
 if ($view_params['pagination_style'] == 1) {
+
+	/**
+	 * Get current pagination ID, then set it as initial pagination number.
+	 *
+	 * @var integer
+	 * @since 5.9.8
+	 */
+	$init_pagination_id = get_query_var( 'paged', 1 );
+	$init_pagination_id = ( 0 === $init_pagination_id ) ? get_query_var( 'page', 1 ) : $init_pagination_id;
 		?>
-		<div class="mk-pagination mk-grid js-el clearfix" data-number-pages="8" data-max-pages="<?php echo $maxPages; ?>" data-mk-component="Pagination">
+		<div class="mk-pagination mk-grid js-el clearfix" data-init-pagination="<?php echo esc_attr( $init_pagination_id ); ?>" data-number-pages="8" data-max-pages="<?php echo $maxPages; ?>" data-mk-component="Pagination">
 			
 				<a href="#" class="mk-pagination-previous pagination-arrows is-vis-hidden js-pagination-prev"><?php Mk_SVG_Icons::get_svg_icon_by_class_name(true, 'mk-icon-angle-left'); ?></a>
 				<div class="mk-pagination-inner">

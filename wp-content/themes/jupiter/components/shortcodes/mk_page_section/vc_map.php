@@ -2,16 +2,33 @@
 vc_map(array(
     "name" => __("Page Section", "mk_framework") ,
     "base" => "mk_page_section",
+	'html_template' => dirname( __FILE__ ) . '/mk_page_section.php',
+	'front_enqueue_js' => THEME_COMPONENTS . "/shortcodes/mk_page_section/vc_front.js",
     "category" => __('General', 'mk_framework') ,
     "as_parent" => array(
         'only' => 'vc_row',
     ) ,
+	'class' => 'vc_main-sortable-element',
     'icon' => 'icon-mk-page-section vc_mk_element-icon',
     "content_element" => true,
     "is_container" => true,
-    "show_settings_on_create" => true,
+    "show_settings_on_create" => false,
     'description' => __('Customisable full width page section.', 'mk_framework') ,
     "params" => array(
+        array(
+            "type" => "dropdown",
+            "heading" => __("Vertical Align", "mk_framework") ,
+            "param_name" => "vertical_align",
+            "width" => 300,
+            "value" => array(
+                __('Select Option', "mk_framework") => "",
+                __('Top', "mk_framework") => "top",
+                __('Center', "mk_framework") => "center",
+                __('Bottom', "mk_framework") => "bottom",
+            ) ,
+            "description" => __("Vertical alignment of elements within this column.", "mk_framework")
+        ) ,
+
         array(
             "type" => "dropdown",
             "heading" => __("Section Layout", "mk_framework") ,
@@ -42,7 +59,7 @@ vc_map(array(
         ) ,
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Background Color", "mk_framework") ,
             "param_name" => "bg_color",
             "value" => "",
@@ -65,7 +82,7 @@ vc_map(array(
             "description" => __("*Experimental feature. Compatible with Chrome, Opera, Firefox and partially Safari", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Top and Bottom Border Color", "mk_framework") ,
             "param_name" => "border_color",
             "value" => "",
@@ -239,7 +256,13 @@ vc_map(array(
             "heading" => __("Background Video Preview image (fallback image)", "mk_framework") ,
             "param_name" => "poster_image",
             "value" => "",
-            "description" => __("This Image will be showed up until video is loaded. If video is not supported or could not load on user's machine, the image will stay in background.", "mk_framework")
+            "description" => __("This Image will be showed up until video is loaded. If video is not supported or could not load on user's machine, the image will stay in background.", "mk_framework"),
+            "dependency" => array(
+                'element' => "bg_video",
+                'value' => array(
+                    'yes'
+                )
+            )
         ) ,
         array(
             "heading" => __("Stream Host Website", 'mk_framework') ,
@@ -285,13 +308,19 @@ vc_map(array(
             )
         ) ,
 
-        
+
         array(
             "type" => "toggle",
             "heading" => __("Video Loop?", "mk_framework"),
             "param_name" => "video_loop",
             "value" => "true",
             "description" => __("", "mk_framework"),
+            "dependency" => array(
+                'element' => "bg_video",
+                'value' => array(
+                    'yes'
+                )
+            )
         ),
         array(
             "type" => "toggle",
@@ -318,7 +347,7 @@ vc_map(array(
         ) ,
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Overlay Color", "mk_framework") ,
             "param_name" => "video_color_mask",
             "value" => "",
@@ -326,7 +355,7 @@ vc_map(array(
         ) ,
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Overlay Color End", "mk_framework") ,
             "param_name" => "gr_end",
             "value" => "",
@@ -547,6 +576,12 @@ vc_map(array(
                 )
             )
         ) ,
+        array(
+            "type" => "toggle",
+            "heading" => __("Lazy Load", "mk_framework") ,
+            "param_name" => "lazyload",
+            "value" => "false",
+        ) ,
 
 
         array(
@@ -585,7 +620,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Shape Color", "mk_framework") ,
             "param_name" => "top_shape_color",
             "group" => __('Shape Divider ', 'mk_framework') ,
@@ -593,7 +628,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Background Color", "mk_framework") ,
             "param_name" => "top_shape_bg_color",
             "group" => __('Shape Divider ', 'mk_framework') ,
@@ -646,7 +681,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Shape Color", "mk_framework") ,
             "param_name" => "bottom_shape_color",
             "group" => __('Shape Divider ', 'mk_framework') ,
@@ -654,7 +689,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Background Color", "mk_framework") ,
             "param_name" => "bottom_shape_bg_color",
             "group" => __('Shape Divider ', 'mk_framework') ,

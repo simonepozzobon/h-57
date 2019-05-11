@@ -1,4 +1,5 @@
 <?php
+if(!function_exists('is_woocommerce')) return false;
 
 global $mk_options;
 
@@ -77,4 +78,21 @@ Mk_Static_Files::addGlobalStyle('
 		}
 	}
 ');
+
+
+if($mk_options['woocommerce_catalog'] == 'true') {
+Mk_Static_Files::addGlobalStyle('
+	.single-product .entry-summary .woocommerce-product-rating,
+	.single-product .entry-summary .variations_form.cart,
+	.single-product .entry-summary .price,
+	.single-product .product .out-of-stock, 
+	.single-product .product>.onsale {
+		display:none !important;
+	}
+	');
+
+}
+
+
+
 

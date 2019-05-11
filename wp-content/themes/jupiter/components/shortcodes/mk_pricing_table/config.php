@@ -5,7 +5,8 @@ extract( shortcode_atts( array(
 	'tables' 		=> '',
 	'orderby'		=> 'date',
 	'order'			=> 'DESC',
-	'el_class' 		=>'',
+	'visibility' 	=> '',
+	'el_class' 		=> ''
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_pricing_table');
 Mk_Static_Files::addAssets('mk_pricing_table_2');

@@ -14,6 +14,7 @@ $id = Mk_Static_Files::shortcode_id();
 $box_container = pq( '.mk-iconBox-gradient' );
 $box_container->attr( 'id', 'iconBox-gr-'.$id );
 $box_container->addClass($el_class);
+$box_container->addClass( $visibility );
 
 //icon
 $box_container->find('.icon')->find('i')->append(Mk_SVG_Icons::get_svg_icon_by_class_name(false, $icon, $icon_size));
@@ -84,7 +85,7 @@ if( $color_style == 'gradient_color' ){
 						  ->addClass( 'linear-gradient' );
 		$svg->find( 'lineargradient' )
 			->attr('id', 'lineargradient-'.$id);
-		
+
 		$svg->find( 'lineargradient' )
 			->find( '#start_color' )
 			->attr( 'stop-color', $grandient_color_from );
@@ -121,7 +122,7 @@ if( $color_style == 'gradient_color' ){
 			#iconBox-gr-'.$id.' .icon svg:not(.mk-svg-icon) path {
 		    	fill:url(#lineargradient-'.$id.');
 		   }
-		', $id); 
+		', $id);
 	}else if ( $grandient_color_style == 'radial' ) {
 		$svg->find( 'radialgradient' )
 			->attr('id', 'radialgradient-'.$id);
@@ -171,7 +172,7 @@ Mk_Static_Files::addCSS('
 		color: '.$content_color.';
 	}
 	#iconBox-gr-'.$id.' .icon:hover i svg {
-		svg: '.$icon_hover_color.'; 
+		svg: '.$icon_hover_color.';
 	}
 	.mk-iconBox-gradient .icon {
 		border-radius: 50%;

@@ -3,7 +3,9 @@
 vc_map(array(
     "name" => __("Blog", "mk_framework"),
     "base" => "mk_blog",
+	'html_template' => dirname( __FILE__ ) . '/mk_blog.php',
     'icon' => 'icon-mk-blog vc_mk_element-icon',
+    "admin_enqueue_js" => THEME_COMPONENTS . "/shortcodes/mk_blog/vc_admin.js",
     "category" => __('Loops', 'mk_framework'),
     'description' => __( 'Blog loops are here.', 'mk_framework' ),
     "params" => array(
@@ -320,6 +322,20 @@ vc_map(array(
             "value" => $mk_orderby,
             "type" => "dropdown"
         ),
+        array(
+            "type" => "toggle",
+            "heading" => __("Lazyload", "mk_framework"),
+            "param_name" => "lazyload",
+            "value" => "false",
+        ),
+        array(
+            "type" => "toggle",
+            "heading" => __("Disable Lazyload", "mk_framework"),
+            "param_name" => "disable_lazyload",
+            "value" => "false",
+            "description" => __("Disable Lazyload is only available when 'Global Lazyload' is enabled in the Theme Options.", "mk_framework"),
+        ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

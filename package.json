@@ -1,0 +1,24 @@
+{
+    "private": true,
+    "name": "h-57",
+    "version": "1.0.0",
+    "description": "Aggiornamenti",
+    "main": "/_dev/js/app.js",
+    "scripts": {
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "dev": "npm run development"
+    },
+    "author": "Simone Pozzoon",
+    "license": "Copyright",
+    "devDependencies": {
+        "browser-sync": "^2.26.5",
+        "browser-sync-webpack-plugin": "2.0.1"
+    },
+    "dependencies": {
+        "cross-env": "^5.2.0",
+        "laravel-mix": "^4.0.15"
+    }
+}

@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Title Box", "mk_framework") ,
     "base" => "mk_title_box",
+	'html_template' => dirname( __FILE__ ) . '/mk_title_box.php',
     "category" => __('Typography', 'mk_framework') ,
     'icon' => 'icon-mk-title-box vc_mk_element-icon',
     'description' => __('Adds title text into a highlight box.', 'mk_framework') ,
@@ -16,14 +17,14 @@ vc_map(array(
             "description" => __("Allowed Tags [br] [strong] [i] [u] [b] [a] [small]. Please note that [p] tags will be striped out.", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Text Color", "mk_framework") ,
             "param_name" => "color",
             "value" => "#393836",
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Highlight Background Color", "mk_framework") ,
             "param_name" => "highlight_color",
             "value" => "",
@@ -92,7 +93,7 @@ vc_map(array(
             "description" => __("Using this option you can set a frame around the title.", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Stroke Color", "mk_framework") ,
             "param_name" => "stroke_color",
             "value" => "",
@@ -146,6 +147,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

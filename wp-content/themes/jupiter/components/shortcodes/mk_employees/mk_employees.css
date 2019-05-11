@@ -33,16 +33,16 @@
 }
 .mk-employees.classic .employee-hover-overlay {
   -webkit-transform: rotate(45deg) scale(0, 2);
-      -ms-transform: rotate(45deg) scale(0, 2);
-          transform: rotate(45deg) scale(0, 2);
+          -ms-transform: rotate(45deg) scale(0, 2);
+      transform: rotate(45deg) scale(0, 2);
   transition: all 0.3s ease-in-out;
   pointer-events: none;
 }
 .mk-employees.classic .mk-employee-item:hover .employee-hover-overlay {
   background: rgba(0, 0, 0, 0.3);
   -webkit-transform: rotate(45deg) scale(1.5, 2);
-      -ms-transform: rotate(45deg) scale(1.5, 2);
-          transform: rotate(45deg) scale(1.5, 2);
+          -ms-transform: rotate(45deg) scale(1.5, 2);
+      transform: rotate(45deg) scale(1.5, 2);
 }
 .mk-employees.classic .mk-employeee-networks {
   position: absolute;
@@ -84,7 +84,8 @@
 .mk-employees.simple.mk-employees-grayscale .team-thumbnail img {
   -webkit-filter: grayscale(100%);
           filter: grayscale(100%);
-          filter: gray; /* IE6-9 */
+          -webkit-filter: gray;
+                  filter: gray; /* IE6-9 */
   transition: all .3s;
 }
 .mk-employees.simple.mk-employees-grayscale .mk-employee-item:hover img {
@@ -149,7 +150,7 @@
   letter-spacing: 1px;
 }
 .mk-employees.boxed .mk-employeee-networks a {
-  padding: 0 8px;
+  padding: 0 6px;
 }
 /* ==========================================================================
    GLOBAL RULLSETS

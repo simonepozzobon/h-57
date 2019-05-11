@@ -53,7 +53,7 @@ switch ($view_params['column']) {
    
     $output = '<article id="' . get_the_ID() . '" class="mk-blog-spotlight-item '.$post_type.'-post-type mk-isotop-item ' . $mk_column_css . ' ' . $post_type . '-post-type">' . "\n";
     $output.= '<div class="featured-image">';
-    $output.= '<img alt="' . the_title_attribute(array('echo' => false)) . '" title="' . the_title_attribute(array('echo' => false)) . '" src="'.$featured_image_src['dummy'].'" '.$featured_image_src['data-set'].' width="'.esc_attr($image_size_atts['width']).'" height="'.esc_attr($image_size_atts['height']).'" itemprop="image" />';
+    $output.= '<img class="blog-image" alt="' . the_title_attribute(array('echo' => false)) . '" title="' . the_title_attribute(array('echo' => false)) . '" src="'.$featured_image_src['dummy'].'" '.$featured_image_src['data-set'].' width="'.esc_attr($image_size_atts['width']).'" height="'.esc_attr($image_size_atts['height']).'" itemprop="image" />';
     $output.= '<div class="image-hover-overlay"></div>';
     
     // start:[item-wrapper]

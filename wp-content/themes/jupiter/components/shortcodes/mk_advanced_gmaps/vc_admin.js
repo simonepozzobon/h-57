@@ -153,3 +153,9 @@ function mk_gmap_iterator($id) {
 	    }
 	}
 }
+
+vc.events.on( 'shortcodes:mk_advanced_gmaps:update', function ( model ) {
+	setTimeout( function() {
+		vc.frame_window.MK.api.advancedgmaps();
+	}, 1000);
+});

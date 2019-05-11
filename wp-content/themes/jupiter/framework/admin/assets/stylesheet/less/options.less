@@ -6,23 +6,23 @@
 .vc_edit_form_elements  {
 		color:#525252;
 
-		input[type=text], 
-		input[type=password], 
-		input[type=checkbox], 
-		input[type=color], 
-		input[type=date], 
-		input[type=datetime], 
-		input[type=datetime-local], 
-		input[type=email], 
-		input[type=month], 
-		input[type=number], 
-		input[type=radio], 
-		input[type=tel], 
-		input[type=time], 
-		input[type=url], 
-		input[type=week], 
-		input[type=search], 
-		select, 
+		input[type=text],
+		input[type=password],
+		input[type=checkbox],
+		input[type=color],
+		input[type=date],
+		input[type=datetime],
+		input[type=datetime-local],
+		input[type=email],
+		input[type=month],
+		input[type=number],
+		input[type=radio],
+		input[type=tel],
+		input[type=time],
+		input[type=url],
+		input[type=week],
+		input[type=search],
+		select,
 		textarea {
 			.box-shadow(none) !important;
 			.border-radius(6px);
@@ -135,10 +135,32 @@
 	-moz-appearance: none;
 	appearance: none;
 	option {
-		padding: 0 4px; 
+		padding: 0 4px;
 	}
 }
- 
+
+.mk-upload-wrap {
+	display: flex;
+}
+
+.mk-upload-width-wrap {
+	width: 82px;
+	min-width: 82px;
+	margin-top: -28px;
+	margin-left: 10px;
+
+	input {
+		width: 67%;
+	}
+
+	.unit {
+		font-family: georgia;
+		color: #aaaaaa;
+		font-style: italic;
+		margin-left: 5px;
+	}
+}
+
 /* Toggle Button */
 .mk-toggle-button {
 	display: block;
@@ -507,7 +529,7 @@ html[dir="rtl"] {
 			position: absolute;
 			top: -10px;
 			right: -10px;
-			display: block; 
+			display: block;
 			width: 35px;
 			height: 35px;
 			background: url(../../images/selector-tick.png) no-repeat;
@@ -515,7 +537,7 @@ html[dir="rtl"] {
 		}
 		&.current {
 			border: 3px solid #14a5ed;
-		} 
+		}
 	}
 	&.shape-selector {
 		a {
@@ -530,7 +552,7 @@ html[dir="rtl"] {
 }
 .mk-visual-selector {
   margin-top: 20px;
-  
+
 }
 
 /* Message Boxes */
@@ -678,7 +700,7 @@ html[dir="rtl"] {
 .mk-transparent-bg-indicator {
 	background-image: url(../../images/transparent-bg.png);
 	z-index: 1;
-} 
+}
 .mk-bg-edit-panel {
 	z-index: 90;
 	display: none;
@@ -784,7 +806,7 @@ html[dir="rtl"] {
 		&.scroll {
 			background-position: -78px -47px;
 		}
-		
+
 	}
 }
 .bg-position-option a.selected {
@@ -826,7 +848,7 @@ html[dir="rtl"] {
 		margin: 10px 30px 10px 0px;
 		display: block;
 	}
-	
+
 	.custom-image-preview-block {
 		overflow: hidden;
 		max-width: 400px !important;
@@ -890,10 +912,10 @@ html[dir="rtl"] {
 .wp-picker-holder {
 	position: absolute;
 	z-index: 100;
-} 
+}
 .mk-general-bg-selector .vc_color-picker .wp-picker-holder {
 	position: absolute !important;
-	z-index: 100;	
+	z-index: 100;
 }
 .wp-color-picker {
 	padding: 1px 6px !important;
@@ -920,7 +942,7 @@ html[dir="rtl"] {
 }
 .vc_color-picker .wp-picker-holder .vc_alpha-container {
 	bottom: -50px !important;
-    border-top: none !important;	
+    border-top: none !important;
 }
 .color-picker-holder .wp-picker-holder .vc_alpha-container label {
 	display: block;
@@ -1119,7 +1141,7 @@ html[dir="rtl"] {
 	&.toolbar-false {
 		.mk-header-preview div{
 			top:-24px;
-		}	
+		}
 	}
 }
 .style-1-align-center {
@@ -1128,18 +1150,18 @@ html[dir="rtl"] {
 	}
 	&.toolbar-false {
 		.mk-header-preview div{
-			top:-24px; 
-		}	
+			top:-24px;
+		}
 	}
 }
 .style-1-align-right {
 	.mk-header-preview div {
-		background-position: 0 -620px; 
+		background-position: 0 -620px;
 	}
 	&.toolbar-false {
 		.mk-header-preview div{
 			top:-24px;
-		}	
+		}
 	}
 }
 .style-2-align-left {
@@ -1149,7 +1171,7 @@ html[dir="rtl"] {
 	&.toolbar-false {
 		.mk-header-preview div{
 			top:-24px;
-		}	
+		}
 	}
 }
 .style-2-align-center {
@@ -1159,7 +1181,7 @@ html[dir="rtl"] {
 	&.toolbar-false {
 		.mk-header-preview div{
 			top:-24px;
-		}	
+		}
 	}
 }
 .style-2-align-right {
@@ -1169,7 +1191,7 @@ html[dir="rtl"] {
 	&.toolbar-false {
 		.mk-header-preview div{
 			top:-24px;
-		}	
+		}
 	}
 }
 .style-3-align-left {
@@ -1179,7 +1201,7 @@ html[dir="rtl"] {
 	&.toolbar-false {
 		.mk-header-preview div{
 			top:-24px;
-		}	
+		}
 	}
 }
 .style-3-align-center {
@@ -1189,7 +1211,7 @@ html[dir="rtl"] {
 	&.toolbar-false {
 		.mk-header-preview div{
 			top:-24px;
-		}	
+		}
 	}
 }
 .style-3-align-right {
@@ -1199,7 +1221,7 @@ html[dir="rtl"] {
 	&.toolbar-false {
 		.mk-header-preview div{
 			top:-24px;
-		}	
+		}
 	}
 }
 .style-4-align-left {
@@ -1208,8 +1230,8 @@ html[dir="rtl"] {
 	}
 	&.toolbar-false {
 		.mk-header-preview div{
-			background-position: 0 -1729px; 
-		}	
+			background-position: 0 -1729px;
+		}
 	}
 }
 .style-4-align-center {
@@ -1219,7 +1241,7 @@ html[dir="rtl"] {
 	&.toolbar-false {
 		.mk-header-preview div{
 			background-position: 0 -1707px;
-		}	
+		}
 	}
 }
 .style-4-align-right {
@@ -1229,7 +1251,7 @@ html[dir="rtl"] {
 	&.toolbar-false {
 		.mk-header-preview div{
 			background-position: 0 -1908px;
-		}	
+		}
 	}
 }
 
@@ -1252,7 +1274,7 @@ html[dir="rtl"] {
 }
 .gallery_images .attachment.details {
 	width: auto !important;
-} 
+}
 .gallery_images .attachment.details > div
 {
     width: 100px;
@@ -1268,7 +1290,7 @@ html[dir="rtl"] {
 .attachment.details div:hover .check
 {
     display: block;
-} 
+}
 
 .gallery_images:after, #gallery_images_container:after
 {
@@ -1304,9 +1326,9 @@ html[dir="rtl"] {
 .post-type-slideshow,
 .post-type-banner_builder,
 .post-type-animated-columns,
-.post-type-tab_slider {	
+.post-type-tab_slider {
 	.preview.button {
-		display: none; 
+		display: none;
 	}
 	#preview-action:after {
 		content: "To preview this post type you need to create a page/post and add it inside Page Composer via appropriate shortcode.";
@@ -1317,14 +1339,9 @@ html[dir="rtl"] {
 		display: block;
 		clear: both;
 		text-align: left;
-		padding: 10px;	
-	
-	} 
-}
+		padding: 10px;
 
-.composer-switch a {
-	padding: 4px 40px !important;
-	.border-radiuses(4px, 4px, 0, 0);
+	}
 }
 
 .chosen-container {
@@ -1713,4 +1730,18 @@ html[dir="rtl"] {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* Fix the z-index issue inside visual composer content editor dropdown */
+.vc_ui-panel.vc_ui-panel-window {
+	z-index: 65000 !important;
+}
+
+/* Fix WPBakery color picker UI issue */
+.wp-picker-container.vc_color-picker.wp-picker-active .wp-color-result-text {
+	display: none;
+}
+
+.wp-picker-container.vc_color-picker .wp-picker-input-wrap label {
+	margin-top: 0;
 }

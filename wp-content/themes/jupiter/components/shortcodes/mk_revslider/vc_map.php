@@ -17,6 +17,7 @@ if (is_plugin_active('revslider/revslider.php')) {
     vc_map(array(
         "name" => __("Revolution Slider", "mk_framework"),
         "base" => "mk_revslider",
+		'html_template' => dirname( __FILE__ ) . '/mk_revslider.php',
         'icon' => 'icon-mk-image-slideshow vc_mk_element-icon',
         "category" => __('Slideshows', 'mk_framework'),
         "params" => array(

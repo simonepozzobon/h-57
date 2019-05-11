@@ -21,6 +21,7 @@ extract( shortcode_atts( array(
 	'margin_top' 			=> 0,
 	'margin_bottom' 		=> 20,
 	'animation'  			=> '',
-	'el_class' 				=> '',
+	'visibility' 			=> '',
+	'el_class' 				=> ''
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_ornamental_title');

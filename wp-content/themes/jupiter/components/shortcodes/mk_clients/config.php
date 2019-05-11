@@ -18,6 +18,7 @@ extract( shortcode_atts( array(
 	'margin_bottom' 	=> 20,
 	'autoplay' 			=> 'true',
 	'cover' 			=> 'false',
+	'visibility' 		=> '',
 	'el_class' 			=> '',
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_clients');

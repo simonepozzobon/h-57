@@ -1,20 +1,12 @@
 <?php
 
 /**
- * template part for blog single content single.php. views/blog/components
+ * Template part for blog single content single.php. views/blog/components
  *
- * @author      Artbees
- * @package     jupiter/views
- * @version     5.0.0
+ * @author  Artbees
+ * @package jupiter/views
+ * @since   5.0.0
+ * @since   5.9.1 Removed if conditions.
  */
 
-global $mk_options;
-
-
-if($mk_options['blog_single_comments'] == 'true') :
-
-	if ( get_post_meta( $post->ID, '_disable_comments', true ) != 'false' ) {
-		comments_template( '', true );
-	}
-
-endif;
+comments_template( '', true );

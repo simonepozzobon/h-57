@@ -29,7 +29,7 @@
 
     if (!Mk_Image_Resize::is_default_thumb($featured_image_src['default'])) {
         $output .= '<div class="featured-image" ><a href="' . esc_url( get_permalink() ) . '" title="' . the_title_attribute(array('echo' => false)) . '">';
-        $output .= '<img alt="' . the_title_attribute(array('echo' => false)) . '" title="' . the_title_attribute(array('echo' => false)) . '" src="'.$featured_image_src['dummy'].'" '.$featured_image_src['data-set'].' width="'.esc_attr($image_size_atts['width']).'" height="'.esc_attr($image_size_atts['height']).'" itemprop="image" />';
+        $output .= '<img class="blog-image" alt="' . the_title_attribute(array('echo' => false)) . '" title="' . the_title_attribute(array('echo' => false)) . '" src="'.$featured_image_src['dummy'].'" '.$featured_image_src['data-set'].' width="'.esc_attr($image_size_atts['width']).'" height="'.esc_attr($image_size_atts['height']).'" itemprop="image" />';
         $output .= '<div class="image-hover-overlay"></div>';
 
         $post_type_icon = 'mk-li-' . $post_type;

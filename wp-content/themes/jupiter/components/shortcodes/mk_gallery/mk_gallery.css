@@ -12,6 +12,9 @@
   overflow: hidden;
   line-height: 4px;
 }
+.mk-gallery-lazyload .mk-gallery-image {
+  background-color: #e0e0e0;
+}
 .mk-gallery .item-holder img {
   width: 100%;
 }
@@ -97,14 +100,14 @@
 }
 .mk-gallery .hover-slow_zoom img {
   -webkit-transform: scale(1.04);
-      -ms-transform: scale(1.04);
-          transform: scale(1.04);
+          -ms-transform: scale(1.04);
+      transform: scale(1.04);
   transition: all 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .mk-gallery .hover-slow_zoom:hover img {
   -webkit-transform: scale(1.11);
-      -ms-transform: scale(1.11);
-          transform: scale(1.11);
+          -ms-transform: scale(1.11);
+      transform: scale(1.11);
 }
 .mk-gallery .hover-blur .item-holder .gallery-inner img {
   -webkit-filter: blur(0);
@@ -148,7 +151,9 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
 }
 
 .mk-gallery .hover-grayscale .mk-image-lightbox {
@@ -176,7 +181,8 @@
       -ms-filter: grayscale(100%);
        -o-filter: grayscale(100%);
           filter: grayscale(100%);
-          filter: gray;
+          -webkit-filter: gray;
+                  filter: gray;
 }
 .mk-gallery .hover-grayscale .item-holder:hover .image-hover-overlay img {
   opacity: 0;
@@ -225,8 +231,8 @@
 }
 .mk-gallery .hover-overlay_layer img {
   -webkit-transform: scale(1);
-      -ms-transform: scale(1);
-          transform: scale(1);
+          -ms-transform: scale(1);
+      transform: scale(1);
   transition: all 0.3s ease-in-out;
 }
 .mk-gallery .hover-overlay_layer:hover .image-hover-overlay {
@@ -240,8 +246,8 @@
 }
 .mk-gallery .hover-overlay_layer:hover img {
   -webkit-transform: scale(1.04);
-      -ms-transform: scale(1.04);
-          transform: scale(1.04);
+          -ms-transform: scale(1.04);
+      transform: scale(1.04);
 }
 .mk-gallery .hover-fadebox.hover-title-true .mk-image-lightbox svg {
   top: 35%;
@@ -273,7 +279,7 @@
   filter: gray;
   -webkit-filter: grayscale(1);
 }
-// Hover state for device screen <= 1024px
+/* Hover state for device screen <= 1024px */
 @media handheld, only screen and (max-width: 1024px) {
   .mk-gallery .hover-fadebox.hover-state .image-hover-overlay {
     opacity: 0.85;

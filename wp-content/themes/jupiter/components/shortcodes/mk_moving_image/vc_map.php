@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Moving Image", "mk_framework") ,
     "base" => "mk_moving_image",
+	'html_template' => dirname( __FILE__ ) . '/mk_moving_image.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-moving-image vc_mk_element-icon',
     'description' => __('Images powered by CSS3 moving animations.', 'mk_framework') ,

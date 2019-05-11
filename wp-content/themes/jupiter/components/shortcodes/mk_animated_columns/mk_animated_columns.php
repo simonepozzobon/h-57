@@ -51,14 +51,13 @@
 	        $column_css = 'a_4col o3col o2col';
 	        break;
 	}
-
-
+	
 	$r = new WP_Query( $query );
 	global $post;
 
 	$border_color_css = (!empty($border_color)) ? 'has-border ' : '';
 ?>
-	<div id="animated-columns-<?php echo $id ?>" class="mk-animated-columns clearfix <?php echo $style; ?>-style <?php echo $column_css; ?> <?php echo $border_color_css; echo get_viewport_animation_class($animation); echo $el_class; ?>">
+	<div id="animated-columns-<?php echo $id ?>" class="mk-animated-columns clearfix <?php echo $style; ?>-style <?php echo $column_css; ?> <?php echo $border_color_css; echo get_viewport_animation_class($animation); echo $el_class . ' ' . $visibility; ?>">
 <?php
 	while ( $r->have_posts() ) { $r->the_post();
 

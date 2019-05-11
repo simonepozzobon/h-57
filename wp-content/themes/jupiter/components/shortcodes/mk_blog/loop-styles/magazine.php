@@ -30,7 +30,7 @@ $output = '<article id="' . get_the_ID('Y-m-d') . '" class="mk-blog-magazine-ite
 if (has_post_thumbnail()) {
     
     $output.= '<div class="featured-image"><a title="' . the_title_attribute(array('echo' => false)) . '" href="' . esc_url( get_permalink() ) . '">';
-    $output.= '  <img alt="' . the_title_attribute(array('echo' => false)) . '" title="' . the_title_attribute(array('echo' => false)) . '" src="' . $featured_image_src['dummy'] . '" '.$featured_image_src['data-set'].' itemprop="image" />';
+    $output.= '  <img class="blog-image" alt="' . the_title_attribute(array('echo' => false)) . '" title="' . the_title_attribute(array('echo' => false)) . '" src="' . $featured_image_src['dummy'] . '" '.$featured_image_src['data-set'].' itemprop="image" />';
     $output.= '  <div class="image-gradient-overlay"></div>';
     $output.= '</a></div>';
 }
@@ -60,7 +60,6 @@ if ($view_params['i'] == 1) {
         if ($view_params['comments_share'] != 'false') {
             $output.= mk_get_shortcode_view('mk_blog', 'components/comments', true);
         }
-        $output.= mk_get_shortcode_view('mk_blog', 'components/love-this', true);
         $output.= '</div>';
     
 }

@@ -1,14 +1,13 @@
 <?php
 
 /**
- * template part for blog single meta single.php. views/blog/components
+ * Template part for blog single meta single.php. views/blog/components
  *
- * @author      Artbees
- * @package     jupiter/views
- * @version     5.0.0
+ * @author  Artbees
+ * @package jupiter/views
+ * @since   5.0.0
+ * @since   5.9.1 Removed Clear & Bold style if condition.
  */
-
-if(mk_get_blog_single_style() == 'bold') return false;
 
 global $mk_options;
 
@@ -35,9 +34,6 @@ if($mk_options['blog_single_title'] == 'true') : ?>
 
 
 <div class="single-social-section">
-
-	<div class="mk-love-holder"><?php echo Mk_Love_Post::send_love(); ?></div>
-
 	<?php
 	if($mk_options['blog_single_comments'] == 'true') :
 			if ( get_post_meta( $post->ID, '_disable_comments', true ) != 'false' ) { ?>

@@ -45,6 +45,7 @@ if(!empty($view_params['border_color']) && $view_params['gutter_space'] == 0 && 
 $class[] = 'bg-cover-' . $view_params['cover'];
 $class[] = $view_params['el_class'];
 $class[] = 'border-' . $view_params['border_style'];
+$class[] = $view_params['visibility'];
 
 ?>
 

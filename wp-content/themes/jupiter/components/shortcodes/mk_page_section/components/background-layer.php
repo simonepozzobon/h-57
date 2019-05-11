@@ -10,6 +10,7 @@ $has_portrait 		= (!empty($view_params['bg_image_portrait']));
 $has_parallax 		= ($view_params['parallax'] == 'true');
 $has_clipper 		= (!$is_smooth_scroll) || ($is_fixed && !$has_parallax);
 $has_blend_mode 	= ($view_params['blend_mode'] !== 'none');
+$lazyload 			= $view_params['lazyload'];
 $is_adaptive_height = ( $view_params['adaptive_height'] === 'true' ); 
 
 // Nothing to do here if not full layout or doesn't have any images to show.
@@ -50,7 +51,7 @@ if($has_clipper) { ?>
 	<?php } ?>	
 
 	<div class="background-layer-holder">
-		<div id="<?php echo $id ?>" class="<?php echo implode(' ', $class); ?>" <?php echo implode(' ', $layer_config) .' '. $blend .' '. $imageset ?> >
+		<div id="<?php echo $id ?>" data-mk-lazyload="<?php echo $lazyload; ?>" class="<?php echo implode(' ', $class); ?>" <?php echo implode(' ', $layer_config) .' '. $blend .' '. $imageset ?> >
 			<?php if ( $is_adaptive_height ) : ?>
 				<img class="mk-adaptive-image <?php echo mk_get_bg_cover_class( $view_params['bg_stretch'] ); ?>" src="" title="" />
 			<?php endif; ?>

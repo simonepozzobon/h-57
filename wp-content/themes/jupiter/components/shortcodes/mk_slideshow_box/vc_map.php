@@ -3,9 +3,11 @@
 vc_map(array(
     "name" => __("Slideshow Box", "mk_framework") ,
     "base" => "mk_slideshow_box",
+	'html_template' => dirname( __FILE__ ) . '/mk_slideshow_box.php',
     "as_parent" => array(
         'except' => 'mk_page_section'
     ) ,
+	'front_enqueue_js' => THEME_COMPONENTS . '/shortcodes/mk_slideshow_box/vc_front.js',
     "content_element" => true,
     "show_settings_on_create" => true,
     "description" => __("Slideshow Box For your contents.", "mk_framework") ,
@@ -78,7 +80,7 @@ vc_map(array(
             "value" => "1000"
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Color Overlay", "mk_framework") ,
             "param_name" => "overlay",
             "value" => "",
@@ -145,6 +147,31 @@ vc_map(array(
             "description" => __("The space between the content and bottom border of slideshow content section", "mk_framework")
         ) ,
         array(
+            "heading" => __("Order", 'mk_framework') ,
+            "description" => __("Designates the ascending or descending order of the 'orderby' parameter.", 'mk_framework') ,
+            "param_name" => "order",
+            "value" => array(
+                __("ASC (ascending order)", 'mk_framework') => "ASC",
+                __("DESC (descending order)", 'mk_framework') => "DESC"
+            ) ,
+            "type" => "dropdown"
+        ) ,
+        array(
+            "heading" => __("Orderby", 'mk_framework') ,
+            "description" => __("Sorts retrieved slidebox items by parameter.", 'mk_framework') ,
+            "param_name" => "orderby",
+            "value" => array(
+                        __("Date", 'mk_framework') => "date",
+                        __("Posts In (manually selected posts)", 'mk_framework') => "post__in",
+                        __("Post Id", 'mk_framework') => "id",
+                        __("Title", 'mk_framework') => "title",
+                        __("Random", 'mk_framework') => "rand",
+                        __("Author", 'mk_framework') => "author"
+                    ),
+            "type" => "dropdown"
+        ) ,
+        $add_device_visibility,
+        array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,
             "param_name" => "el_class",
@@ -153,4 +180,4 @@ vc_map(array(
         ) ,
     ) ,
     "js_view" => 'VcColumnView'
-));
+)); 

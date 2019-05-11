@@ -11,6 +11,7 @@
 		'order'             		=> 'DESC',
 		'orderby'           	=> 'date',
 		'el_class'          	=> '',
-		'enable_excerpt'    	=> 'false'
+		'enable_excerpt'    	=> 'false',
+		'visibility'        	=> ''
 	), $atts));
 Mk_Static_Files::addAssets('mk_blog_carousel');

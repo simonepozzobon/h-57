@@ -1,5 +1,7 @@
 <?php
-if (!defined('THEME_FRAMEWORK')) exit('No direct script access allowed');
+if ( ! defined( 'THEME_FRAMEWORK' ) ) {
+	exit( 'No direct script access allowed' );
+}
 
 /**
  * Add Toggle Option to Visual Composer Params
@@ -13,28 +15,28 @@ if (!defined('THEME_FRAMEWORK')) exit('No direct script access allowed');
 
 
 
-if (function_exists('mk_add_shortcode_param')) {
-    mk_add_shortcode_param('toggle', 'mk_toggle_param_field');
+if ( function_exists( 'mk_add_shortcode_param' ) ) {
+	mk_add_shortcode_param( 'toggle', 'mk_toggle_param_field' );
 }
 
 
-function mk_toggle_param_field($settings, $value) {
-    $param_name = isset($settings['param_name']) ? $settings['param_name'] : '';
-    $type = isset($settings['type']) ? $settings['type'] : '';
-    $output = '';
-    $uniqeID = uniqid($settings['param_name']);
-    $output.= '<span class="mk-toggle-button mk-composer-toggle" id="toggle-switch-' . $uniqeID . '">';
-	    $output.= '<span class="toggle-handle"></span>';
-	    $output.= '<input type="hidden" class="wpb_vc_param_value ' . $param_name . ' ' . $type . '" value="' . $value . '" name="' . $param_name . '"/>';
-	$output.= '</span>';
-    
-    $output.= '<script type="text/javascript">
+function mk_toggle_param_field( $settings, $value ) {
+	$param_name = isset( $settings['param_name'] ) ? $settings['param_name'] : '';
+	$type = isset( $settings['type'] ) ? $settings['type'] : '';
+	$output = '';
+	$uniqeID = uniqid( $settings['param_name'] );
+	$output .= '<span class="mk-toggle-button mk-composer-toggle" id="toggle-switch-' . $uniqeID . '">';
+		$output .= '<span class="toggle-handle"></span>';
+		$output .= '<input type="hidden" class="wpb_vc_param_value ' . $param_name . ' ' . $type . '" value="' . $value . '" name="' . $param_name . '"/>';
+	$output .= '</span>';
+
+		$output .= '<script type="text/javascript">
 
     	(function($) {
-	       mk_toggle_option("'.$uniqeID.'");
+	       mk_toggle_option("' . $uniqeID . '");
         })(jQuery);
 
     </script>';
-    
-    return $output;
+
+		return $output;
 }

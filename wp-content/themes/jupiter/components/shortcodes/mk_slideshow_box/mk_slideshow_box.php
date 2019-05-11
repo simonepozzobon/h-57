@@ -11,17 +11,24 @@ $query = array(
     'post_type' => 'attachment',
     'post_mime_type' => 'image',
     'post_status' => 'inherit',
+    'orderby' => $orderby,
+    'order' => $order,
 );
 
 if ($images) {
-    $query['post__in'] = explode(',', $images);
+
+	if($orderby == 'post__in' && $order == 'DESC') {
+		$query['post__in'] = array_reverse(explode(',', $images));
+	} else {
+    	$query['post__in'] = explode(',', $images);
+	}
 }
 
 $r = new WP_Query($query);
 
 ?>
 
-<div id="mk-slideshow-box-<?php echo $id; ?>" class="mk-slideshow-box mk-page-section full-width-<?php echo $full_width_cnt; ?> full-height-<?php echo $full_height; ?> <?php echo $el_class; ?> <?php if( $full_height == 'true' ) echo 'js-el' ?>" <?php if( $full_height == 'true' ) echo 'data-mk-component="FullHeight"' ?> data-transitionspeed="<?php echo $transition_speed; ?>" data-slideshowspeed="<?php echo $slideshow_speed; ?>">
+<div id="mk-slideshow-box-<?php echo $id; ?>" class="mk-slideshow-box mk-page-section full-width-<?php echo $full_width_cnt; ?> full-height-<?php echo $full_height; ?> <?php echo $el_class . ' ' . $visibility; ?> <?php if( $full_height == 'true' ) echo 'js-el' ?>" <?php if( $full_height == 'true' ) echo 'data-mk-component="FullHeight"' ?> data-transitionspeed="<?php echo $transition_speed; ?>" data-slideshowspeed="<?php echo $slideshow_speed; ?>">
 	
 	<div style="background-color:<?php echo $overlay; ?>;" class="mk-slideshow-box-color-mask"></div>
 

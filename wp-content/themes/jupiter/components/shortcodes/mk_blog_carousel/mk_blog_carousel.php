@@ -5,6 +5,7 @@ include( $path . '/config.php' );
 
 global $post;
 
+$class = '';
 $query = array(
     'post_type' => $post_type,
     'posts_per_page' => (int) $count
@@ -51,9 +52,12 @@ $slider_atts[] = 'data-minItems="1"';
 $slider_atts[] = 'data-maxItems="4"'; 
 $slider_atts[] = 'data-move="1"';
 
+$class .= ' ' . $el_class;
+$class .= ' ' . $visibility;
+
 ?>
 
-<div class="posts-carousel <?php echo $el_class; ?>">
+<div class="posts-carousel <?php echo $class; ?>">
 
     <?php echo mk_get_shortcode_view('mk_blog_carousel', 'components/shortcode-heading', true, ['title' => $title, 'view_all' => $view_all]); ?>
 

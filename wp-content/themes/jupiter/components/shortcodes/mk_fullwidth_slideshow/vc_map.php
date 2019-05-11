@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Fullwidth Slideshow", "mk_framework"),
     "base" => "mk_fullwidth_slideshow",
+	'html_template' => dirname( __FILE__ ) . '/mk_fullwidth_slideshow.php',
     'icon' => 'icon-mk-fullwidth-slideshow vc_mk_element-icon',
     "category" => __('Slideshows', 'mk_framework'),
     'description' => __( 'Fullwdith image slider.', 'mk_framework' ),
@@ -18,14 +19,14 @@ vc_map(array(
             "type" => "range"
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Top and Bottom Borders Color", "mk_framework"),
             "param_name" => "border_color",
             "value" => "",
             "description" => __("", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Box Background Color", "mk_framework"),
             "param_name" => "bg_color",
             "value" => "",
@@ -151,6 +152,7 @@ vc_map(array(
             "value" => "true",
             "description" => __("", "mk_framework")
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

@@ -10,8 +10,6 @@
 
 global $mk_options;
 
-if (empty($mk_options['header_start_tour_text'])) return false;
-
 ?>
 
 <a href="<?php echo esc_url( $mk_options['header_start_tour_page'] ); ?>" class="mk-header-start-tour add-header-height">

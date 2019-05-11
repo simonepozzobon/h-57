@@ -2,8 +2,10 @@
 vc_map(array(
     "name" => __("Swipe Slideshow", "mk_framework"),
     "base" => "mk_swipe_slideshow",
+	'html_template' => dirname( __FILE__ ) . '/mk_swipe_slideshow.php',
     'icon' => 'icon-mk-swipe-slideshow vc_mk_element-icon',
     "category" => __('Slideshows', 'mk_framework'),
+    "admin_enqueue_js" => THEME_COMPONENTS . "/shortcodes/mk_swipe_slideshow/vc_admin.js",
     'description' => __( 'Swipe enabled slideshow.', 'mk_framework' ),
     "params" => array(
         array(
@@ -92,6 +94,20 @@ vc_map(array(
             "param_name" => "direction_nav",
             "value" => "true",
             "description" => __("", "mk_framework")
+        ),
+        $add_device_visibility,
+        array(
+            "type" => "toggle",
+            "heading" => __("Lazyload", "mk_framework"),
+            "param_name" => "lazyload",
+            "value" => "false",
+        ),
+        array(
+            "type" => "toggle",
+            "heading" => __("Disable Lazyload", "mk_framework"),
+            "param_name" => "disable_lazyload",
+            "value" => "false",
+            "description" => __("Disable Lazyload is only available when 'Global Lazyload' is enabled in the Theme Options.", "mk_framework"),
         ),
         array(
             "type" => "textfield",

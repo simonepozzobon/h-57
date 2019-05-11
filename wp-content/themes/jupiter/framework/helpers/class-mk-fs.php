@@ -31,11 +31,6 @@ class Mk_Fs {
 	public $wp_filesystem = null;
 
 	/**
-	 * @var string
-	 */
-	private $form_html = '';
-
-	/**
 	 * @var array
 	 */
 	private $creds_data = [];
@@ -43,28 +38,29 @@ class Mk_Fs {
 	/**
 	 * @var boolean
 	 */
-	private $initiated = false;
+	private $initialized = false;
 
 	/**
 	 * Constructor
 	 *
-	 * @param (array) $args The arguments for the object options. Default: []
+	 * @param (array)   $args The arguments for the object options. Default: []
 	 * @param (boolean) $init Whether to initialise the object instantly. Default: false.
 	 * @param (boolean) $force Whether to force create new instance of $wp_filesystem object. Default: false.
 	 */
 	public function __construct( $args = [], $init = false, $force = false ) {
 		$this->errors = new WP_Error();
 
-		$args = wp_parse_args( (array) $args, [
-			'form_post'                    => '',    // (string)  The URL to post the form to. Default: ''.
+		$args = wp_parse_args(
+			(array) $args, [
+				'form_post'                    => '',    // (string)  The URL to post the form to. Default: ''.
 			'type'                         => '',    // (string)  Chosen type of filesystem. Default: ''.
 			'error'                        => false, // (boolean) Whether the current request has failed to connect. Default: false.
 			'context'                      => '',    // (string)  Full path to the directory that is tested for being writable. Default: WP_CONTENT_DIR.
 			'extra_fields'                 => null,  // (array)   Extra POST fields in array key value pair format. Default: null.
 			'allow_relaxed_file_ownership' => false, // (boolean) Whether to allow Group/World writable. Default: false.
-			'print_form'                   => false, // (boolean) Whether to print the credentials form to output. Default: false.
 			'override'                     => true,  // (boolean) Whether to override some built-in function with custom function. Default: true.
-		] );
+			]
+		);
 
 		foreach ( $args as $key => $value ) {
 			$this->setOption( $key, $value );
@@ -85,23 +81,14 @@ class Mk_Fs {
 
 		global $wp_filesystem;
 
-		$this->initiated = true;
+		$this->initialized = true;
 
-		if ( !$force && $wp_filesystem && $wp_filesystem instanceof WP_Filesystem_Base ) {
+		if ( ! $force && $wp_filesystem && $wp_filesystem instanceof WP_Filesystem_Base ) {
 
 			$this->wp_filesystem = $wp_filesystem;
 			return true;
 
-		}else{
-
-			$ob_level = ob_get_level();
-
-			if( $ob_level ){
-				$buffered_content = ob_get_contents();
-				ob_end_clean();
-			}
-
-			ob_start();
+		} else {
 
 			$this->creds_data = request_filesystem_credentials(
 				$this->getOption( 'form_post' ),
@@ -112,27 +99,12 @@ class Mk_Fs {
 				$this->getOption( 'allow_relaxed_file_ownership' )
 			);
 
-			$this->form_html = ob_get_contents();
+			if ( ! WP_Filesystem( $this->creds_data, $this->getOption( 'context' ), $this->getOption( 'allow_relaxed_file_ownership' ) ) ) {
 
-			ob_end_clean();
-
-			if( $ob_level ){
-				ob_start();
-				echo $buffered_content;
-			}
-
-			if ( !empty( $this->form_html ) && $this->getOption( 'print_form' ) ) {
-				echo $this->form_html;
-			}
-
-			if ( !WP_Filesystem( $this->creds_data, $this->getOption( 'context' ), $this->getOption( 'allow_relaxed_file_ownership' ) ) ) {
-
-				if ( !$this->creds_data ){
-					$this->add_error( 'filesystem_credentials_not_found', __( 'There is no filesystem credentials found. Please confirm your credentials.', 'mk_framework' ) );
-				} elseif ( isset( $wp_filesystem->errors ) && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->get_error_code() ) {
-					$this->add_error( $wp_filesystem->errors->get_error_code(), $wp_filesystem->errors->get_error_message() );
+				if ( isset( $wp_filesystem->errors ) && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->get_error_code() ) {
+					$this->add_error( $wp_filesystem->errors->get_error_code(), $wp_filesystem->errors->get_error_message(), $wp_filesystem->errors->get_error_data() );
 				} else {
-					$this->add_error( 'unable_to_connect_to_filesystem', __( 'Unable to connect to the filesystem. Please confirm your credentials.', 'mk_framework' ) );
+					$this->add_error( 'unable_to_connect_to_filesystem', __( 'Unable to connect to the filesystem. Please confirm your credentials.', 'mk_framework' ), $this->creds_data );
 				}
 
 				return false;
@@ -142,28 +114,26 @@ class Mk_Fs {
 
 				return true;
 			}
-
 		}
 	}
 
 	/**
 	 * Magic method to call the wp_filesystem method
 	 *
-	 * Refer to wp-admin/includes/class-wp-filesystem-base.php for complete methods available
-	 *
 	 * @param  string $method
 	 * @param  array  $args
 	 * @return mixed
+	 * @see wp-admin/includes/class-wp-filesystem-base.php for complete methods available
 	 */
 	public function __call( $method, $args ) {
 
 		// Try to initialize the wp_filesystem object
-		if ( !$this->wp_filesystem instanceof WP_Filesystem_Base && !$this->initiated ) {
+		if ( ! $this->initialized ) {
 			$this->init();
 		}
 
-		// Stop execution if there was any error already exists
-		if ( $this->get_error_code() ) {
+		// Stop execution if wp_filesystem objetc is empty
+		if ( ! $this->wp_filesystem || ! $this->wp_filesystem instanceof WP_Filesystem_Base ) {
 			return false;
 		}
 
@@ -173,9 +143,8 @@ class Mk_Fs {
 			case 'put_contents':
 			case 'copy':
 			case 'is_writable':
-
 				if ( $this->getOption( 'override' ) ) {
-					$result = call_user_func_array( [ $this, $method . '_custom' ], $args );
+					$result = call_user_func_array( [ $this, $method . '_override' ], $args );
 				} else {
 					$result = call_user_func_array( [ $this->wp_filesystem, $method ], $args );
 				}
@@ -184,14 +153,12 @@ class Mk_Fs {
 
 			case 'zip':
 			case 'unzip':
-
 				$result = call_user_func_array( [ $this, $method . '_custom' ], $args );
 
 				break;
 
 			default:
-
-				if ( !is_callable( [ $this->wp_filesystem, $method ] ) ) {
+				if ( ! is_callable( [ $this->wp_filesystem, $method ] ) ) {
 					$this->add_error( 'invalid_wp_filesystem_method', __( 'Invalid method for $wp_filesystem object!', 'mk_framework' ) );
 					$result = false;
 				} else {
@@ -209,20 +176,20 @@ class Mk_Fs {
 	/**
 	 * Create directory recursively
 	 *
-	 * @param  string $path
-	 * @param  false $chmod
-	 * @param  false $chown
-	 * @param  false $chgrp
+	 * @param  (string)  $path
+	 * @param  (boolean) $chmod
+	 * @param  (boolean) $chown
+	 * @param  (boolean) $chgrp
 	 * @return boolean
 	 */
-	private function mkdir_custom( $path, $chmod = false, $chown = false, $chgrp = false ) {
+	private function mkdir_override( $path, $chmod = false, $chown = false, $chgrp = false ) {
 		// Check if $path already exists
 		if ( $this->is_dir( $path ) ) {
 			return true;
 		} else {
 
 			// If file exists has same name with directory, delete it
-			if( $this->exists( $path ) ){
+			if ( $this->exists( $path ) ) {
 				$this->delete( $path );
 			}
 
@@ -257,7 +224,7 @@ class Mk_Fs {
 					}
 
 					// Create the $new_folder
-					if ( !$this->wp_filesystem->mkdir( $new_folder, $chmod, $chown, $chgrp ) ) {
+					if ( ! $this->wp_filesystem->mkdir( $new_folder, $chmod, $chown, $chgrp ) ) {
 						$this->add_error( 'can_not_create_directory', sprintf( __( 'Can\'t create directory %s', 'mk_framework' ), $new_folder ) );
 						return false;
 					}
@@ -270,21 +237,21 @@ class Mk_Fs {
 	/**
 	 * Write contents to a file
 	 *
-	 * @param  string $file
-	 * @param  string $contents
-	 * @param  boolean    $mode
+	 * @param  (string)  $file
+	 * @param  (string)  $contents
+	 * @param  (boolean) $mode
 	 * @return boolean
 	 */
-	private function put_contents_custom( $file, $contents, $mode = false ) {
+	private function put_contents_override( $file, $contents, $mode = false ) {
 
-		if( $this->is_dir( $file ) ){
+		if ( $this->is_dir( $file ) ) {
 			$this->add_error( 'directory_exists_has_same_name', sprintf( __( 'A directory exists has same name %s', 'mk_framework' ), $new_folder ) );
 			return false;
 		}
 
 		$path = dirname( $file );
 
-		if ( !$this->is_dir( $path ) ) {
+		if ( ! $this->is_dir( $path ) ) {
 			$this->mkdir( $path );
 		}
 
@@ -294,20 +261,30 @@ class Mk_Fs {
 	/**
 	 * Copy file
 	 *
-	 * @param  $source
-	 * @param  $destination
-	 * @param  true        $overwrite
-	 * @param  false       $mode
+	 * @param  (string)  $source
+	 * @param  (string)  $destination
+	 * @param  (boolean) $overwrite
+	 * @param  (boolean) $mode
 	 * @return boolean
 	 */
-	private function copy_custom( $source, $destination, $overwrite = true, $mode = false ) {
-		if ( !$overwrite && $this->exists( $destination ) ) {
+	private function copy_override( $source, $destination, $overwrite = true, $mode = false ) {
+		if ( ! $overwrite && $this->exists( $destination ) ) {
 			$this->add_error( 'file_already_exists', sprintf( __( 'File already exists %s', 'mk_framework' ), $new_folder ) );
 			return false;
 		}
 
-		if ( !$this->exists( $source ) || $this->is_file( $source ) || $this->is_readable( $source ) ) {
-			$this->add_error( 'zip_source_file_not_exists_or_invalid', sprintf( __( 'Zip source file not exists or invalid: %s', 'mk_framework' ), $source ) );
+		if ( ! $this->exists( $source ) ) {
+			$this->add_error( 'copy_source_file_not_exists', sprintf( __( 'Copy source file not exists: %s', 'mk_framework' ), $source ) );
+			return false;
+		}
+
+		if ( ! $this->is_file( $source ) ) {
+			$this->add_error( 'copy_source_file_not_valid', sprintf( __( 'Copy source file not valid: %s', 'mk_framework' ), $source ) );
+			return false;
+		}
+
+		if ( ! $this->is_readable( $source ) ) {
+			$this->add_error( 'copy_source_file_not_readable', sprintf( __( 'Copy source file not readable: %s', 'mk_framework' ), $source ) );
 			return false;
 		}
 
@@ -323,10 +300,10 @@ class Mk_Fs {
 	/**
 	 * Check if file or directory is writable
 	 *
-	 * @param  $file
+	 * @param  (string) $file
 	 * @return boolean
 	 */
-	private function is_writable_custom( $file ) {
+	private function is_writable_override( $file ) {
 
 		if ( $this->is_dir( $file ) ) {
 			$temp_file = trailingslashit( $file ) . time() . '-' . uniqid() . '.tmp';
@@ -340,7 +317,7 @@ class Mk_Fs {
 			return $is_writable;
 		} else {
 			// Create the file if not exists
-			if ( !$this->exists( $file ) ) {
+			if ( ! $this->exists( $file ) ) {
 				$this->put_contents( $file, '' );
 			}
 			return $this->wp_filesystem->is_writable( $file );
@@ -350,14 +327,14 @@ class Mk_Fs {
 	/**
 	 * Create zip file
 	 *
-	 * @param  array   $files
-	 * @param  string  $destination
-	 * @param  boolean $overwrite
+	 * @param  (array)   $files
+	 * @param  (string)  $destination
+	 * @param  (boolean) $overwrite
 	 * @return boolean
 	 */
-	private function zip_custom( $files = [], $destination = '', $overwrite = false ) {
+	public function zip_custom( $files = [], $destination = '', $overwrite = false ) {
 		// If the zip file already exists and overwrite is false, return false
-		if ( $this->exists( $destination ) && !$overwrite ) {
+		if ( $this->exists( $destination ) && ! $overwrite ) {
 			return false;
 		}
 
@@ -375,10 +352,14 @@ class Mk_Fs {
 			}
 		}
 
-		// If we have good files...
-		if ( count( $valid_files ) ) {
-			$temp_file = tempnam( sys_get_temp_dir(), 'zip' );
+		// If we did not have good files...
+		if ( empty( $valid_files ) ) {
+			return false;
+		}
 
+		$temp_file = tempnam( sys_get_temp_dir(), 'zip' );
+
+		if ( class_exists( 'ZipArchive', false ) ) {
 			$zip = new ZipArchive();
 
 			// Try open the temp file.
@@ -392,33 +373,56 @@ class Mk_Fs {
 			// close the zip -- done!
 			$zip->close();
 
-			// Copy the temp file to destination.
-			$this->copy( $temp_file, $destination );
-
-			// Try delete the temp file.
-			@$this->delete( $temp_file );
-
-			// check to make sure the file exists.
-			return $this->exists( $destination );
 		} else {
-			return false;
+
+			mbstring_binary_safe_encoding();
+
+			require_once( ABSPATH . 'wp-admin/includes/class-pclzip.php' );
+
+			$zip = new PclZip( $temp_file );
+
+			foreach ( $valid_files as $file_name => $file_path ) {
+				$zip->create( $file_path, $file_name );
+			}
+
+			reset_mbstring_encoding();
 		}
+
+		// Copy the temp file to destination.
+		$this->copy( $temp_file, $destination );
+
+		// Try delete the temp file.
+		@$this->delete( $temp_file );
+
+		// check to make sure the file exists.
+		return $this->exists( $destination );
 	}
 
 	/**
-	 * Extract zip file
+	 * Extract zip file.
 	 *
-	 * @param  $file
-	 * @return boolean
+	 * @param  [type] $source The source zip file.
+	 * @param  [type] $destination The destination path.
+	 * @return [type]              [description]
 	 */
-	private function unzip_custom( $source, $destination ) {
-		if ( !$this->exists( $source ) || $this->is_file( $source ) || $this->is_readable( $source ) ) {
-			$this->add_error( 'zip_source_file_not_exists_or_invalid', sprintf( __( 'Zip source file not exists or invalid: %s', 'mk_framework' ), $source ) );
+	public function unzip_custom( $source, $destination ) {
+		if ( ! $this->exists( $source ) ) {
+			$this->add_error( 'zip_source_file_not_exists', sprintf( __( 'Zip source file not exists: %s', 'mk_framework' ), $source ) );
+			return false;
+		}
+
+		if ( ! $this->is_file( $source ) ) {
+			$this->add_error( 'zip_source_file_not_valid', sprintf( __( 'Zip source file not valid: %s', 'mk_framework' ), $source ) );
+			return false;
+		}
+
+		if ( ! $this->is_readable( $source ) ) {
+			$this->add_error( 'zip_source_file_not_readable', sprintf( __( 'Zip source file not readable: %s', 'mk_framework' ), $source ) );
 			return false;
 		}
 
 		// Check $destination is valid
-		if ( !$this->is_dir( $destination ) ) {
+		if ( ! $this->is_dir( $destination ) ) {
 
 			// If file exists has same name with $destination, delete it
 			if ( $this->exists( $destination ) ) {
@@ -426,14 +430,14 @@ class Mk_Fs {
 			}
 
 			// Try create new $destination path
-			if ( !$this->mkdir( $destination ) ) {
+			if ( ! $this->mkdir( $destination ) ) {
 				$this->add_error( 'fail_create_unzip_destination_directory', sprintf( __( 'Failed to create unzip destination directory: %s', 'mk_framework' ), $destination ) );
 				return false;
 			}
 		}
 
 		// Check $destination is writable
-		if ( !$this->is_writable( $destination ) ) {
+		if ( ! $this->is_writable( $destination ) ) {
 			$this->add_error( 'unzip_destination_not_writable', sprintf( __( 'Unzip destination is not writable: %s', 'mk_framework' ), $destination ) );
 			return false;
 		}
@@ -447,7 +451,7 @@ class Mk_Fs {
 		if ( is_wp_error( $unzip_file ) ) {
 			$this->add_error( $unzip_file->get_error_code(), $unzip_file->get_error_message() );
 			return false;
-		} elseif ( !$unzip_file ) {
+		} elseif ( ! $unzip_file ) {
 			$this->add_error( 'failed_unzipping_file', sprintf( __( 'Failed unzipping file: %s', 'mk_framework' ), $source ) );
 			return false;
 		}
@@ -457,14 +461,14 @@ class Mk_Fs {
 	/**
 	 * Set options data
 	 *
-	 * @param  $key
-	 * @param  $value
+	 * @param  (string) $key
+	 * @param  (string) $value
 	 * @return void
 	 */
 	public function setOption( $key, $value ) {
 		switch ( $key ) {
 			case 'context':
-				if( !empty( $value ) ){
+				if ( ! empty( $value ) ) {
 					$value = is_dir( $value ) ? $value : dirname( $value );
 					$value = untrailingslashit( $value );
 				}
@@ -476,8 +480,8 @@ class Mk_Fs {
 	/**
 	 * Get options data
 	 *
-	 * @param  string $key
-	 * @param  null $default
+	 * @param  (string)      $key
+	 * @param  (null|string) $default
 	 * @return mixed
 	 */
 	public function getOption( $key = null, $default = null ) {
@@ -491,7 +495,7 @@ class Mk_Fs {
 	/**
 	 * Delete options data
 	 *
-	 * @param  $key
+	 * @param  (string) $key
 	 * @return void
 	 */
 	public function deleteOption( $key ) {
@@ -519,15 +523,6 @@ class Mk_Fs {
 	}
 
 	/**
-	 * Get form HTML code
-	 *
-	 * @return string
-	 */
-	public function getFormHtml() {
-		return $this->form_html;
-	}
-
-	/**
 	 * Get credentials data
 	 *
 	 * @return mixed
@@ -541,7 +536,7 @@ class Mk_Fs {
 	 *
 	 * @return object Will return the WP_Error object
 	 */
-	public function get_errors(){
+	public function get_errors() {
 		return $this->errors;
 	}
 
@@ -550,7 +545,7 @@ class Mk_Fs {
 	 *
 	 * @return array
 	 */
-	public function get_error_codes(){
+	public function get_error_codes() {
 		return $this->errors->get_error_codes();
 	}
 
@@ -559,39 +554,46 @@ class Mk_Fs {
 	 *
 	 * @return string, int or Empty if there is no error codes
 	 */
-	public function get_error_code(){
+	public function get_error_code() {
 		return $this->errors->get_error_code();
 	}
 
 	/**
 	 * Retrieve all error messages or error messages matching code
 	 *
+	 * @param (string) $code
 	 * @return array
 	 */
-	public function get_error_messages( $code = '' ){
+	public function get_error_messages( $code = '' ) {
 		return $this->errors->get_error_messages( $code );
 	}
 
 	/**
 	 * Get the first error message available or error message matching code
 	 *
+	 * @param (string) $code
 	 * @return string
 	 */
-	public function get_error_message( $code = '' ){
+	public function get_error_message( $code = '' ) {
 		return $this->errors->get_error_message( $code );
 	}
 
 	/**
 	 * Append more error messages to list of error messages.
 	 *
+	 * @param (string) $code
+	 * @param (string) $message
+	 * @param (array)  $data
 	 * @return void
 	 */
-	public function add_error( $code, $message, $data = '' ){
+	public function add_error( $code, $message, $data = '' ) {
 		// Log the error
-		if( ( defined( 'MK_FS_LOG' ) && MK_FS_LOG ) && ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) ){
+		if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
 			error_log( 'Mk_Fs Error Code: ' . $code );
 			error_log( 'Mk_Fs Error Message: ' . $message );
-			error_log( 'Mk_Fs Error Data: ' . print_r( $data, true ) );
+			if ( $data && ! is_resource( $data ) ) {
+				error_log( 'Mk_Fs Error Data: ' . wp_json_encode( $data ) );
+			}
 		}
 		$this->errors->add( $code, $message, $data );
 	}

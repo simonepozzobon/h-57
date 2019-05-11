@@ -125,20 +125,20 @@ switch ($align) {
 
 ?>
 
-<div id="social-networks-<?php echo $id; ?>" class="mk-social-network-shortcode a_padding-0 a_margin-10-0 s_social a_m_list-reset <?php echo implode(' ', $class); ?> s_<?php echo $style; ?> social-align-<?php echo $align; ?> <?php echo $size; ?> <?php echo $el_class; ?>">
+<div id="social-networks-<?php echo $id; ?>" class="mk-social-network-shortcode a_padding-0 a_margin-10-0 s_social a_m_list-reset <?php echo implode(' ', $class); ?> s_<?php echo $style; ?> social-align-<?php echo $align; ?> <?php echo $size; ?> <?php echo $el_class . ' ' . $visibility; ?>">
 	<ul class="a_margin-0 a_padding-0 a_list-style-none">
 		<?php
 			foreach ($sites as $name => $link) {
-                // redirect Xing to use other families 
+                // redirect Xing to use other families
                 if($name == 'xing') {
                     switch ($style) {
                         case 'rounded': $icon_name = 'mk-moon-xing';   break; // icomoon
                         case 'circle' : $icon_name = 'mk-moon-xing-2'; break; // icomoon
                         case 'simple' : $icon_name = 'mk-icon-xing';   break; // font-awesome
                         default:        $icon_name = 'mk-icon-xing';
-                    } 
-                } else { 
-                    $icon_name = $icon_style . $name; 
+                    }
+                } else {
+                    $icon_name = $icon_style . $name;
                 }
                 if($name == 'whatsapp' &&  !empty($link)) {
                     $link = (stripos($link, 'tel:')) ? $link : 'tel:'.$link;
@@ -157,7 +157,7 @@ switch ($align) {
 Mk_Static_Files::addCSS('
 #social-networks-' . $id . ' a{
 	margin: ' . $margin . 'px;
-}	
+}
 #social-networks-' . $id . ' a svg{
 	fill:' . $icon_color . ';
 }

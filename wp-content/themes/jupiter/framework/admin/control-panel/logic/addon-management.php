@@ -100,17 +100,19 @@ class Mk_Addon_Management {
 		$this->setApiURL( V2ARTBEESAPI );
 
 		// Create validator instance
-		$this->validator = new Mk_Validator;
+		$this->validator = new Mk_Validator();
 
 		// Set API Calls template
 		$template = \Httpful\Request::init()
 			->method( \Httpful\Http::GET )
 			->withoutStrictSsl()
 			->expectsJson()
-			->addHeaders(array(
-				'api-key' => get_option( 'artbees_api_key' ),
-				'domain'  => $_SERVER['SERVER_NAME'],
-			));
+			->addHeaders(
+				array(
+					'api-key' => get_option( 'artbees_api_key' ),
+					'domain'  => $_SERVER['SERVER_NAME'],
+				)
+			);
 		\Httpful\Request::ini( $template );
 		if ( $ajax_mode === true ) {
 			add_action( 'wp_ajax_abb_addon_lazy_load', array( &$this, 'abbAddonLazyLoad' ) );
@@ -172,7 +174,7 @@ class Mk_Addon_Management {
 			}
 
 			return $this->setAddonSlug( $addon_slug )->install();
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -186,7 +188,7 @@ class Mk_Addon_Management {
 			}
 
 			return $this->setAddonSlug( $addon_slug )->uninstall();
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -200,7 +202,7 @@ class Mk_Addon_Management {
 			}
 
 			return $this->setAddonSlug( $addon_slug )->update();
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -236,12 +238,12 @@ class Mk_Addon_Management {
 
 			$this->message( 'Add-on activated successfully', true );
 			return true;
-		} catch (ValidateAddonException $e) {
+		} catch ( ValidateAddonException $e ) {
 			Abb_Logic_Helpers::deleteFileNDir( realpath( $addon_dir_path ) );
 			Abb_Logic_Helpers::deleteFileNDir( realpath( $addon_source_file ) );
 			$this->message( $e->getMessage(), false );
 			return false;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -276,7 +278,7 @@ class Mk_Addon_Management {
 
 			$this->message( 'Add-on removed successfully', true );
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}// End try().
@@ -327,7 +329,7 @@ class Mk_Addon_Management {
 
 			$this->message( 'Add-on updated successfully', true );
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}// End try().
@@ -349,13 +351,15 @@ class Mk_Addon_Management {
 		$exclude_addons = (empty( $exclude_addons ) == true ? array() : $exclude_addons);
 		$url            = $this->getApiURL() . 'tools/add-on';
 		$response       = \Httpful\Request::get( $url )
-			->addHeaders(array(
-				'from'       => $from,
-				'count'      => $count,
-				'category'   => $category,
-				'addon-slug' => $exclude_addons,
-				'addon-name' => $this->getAddonName(),
-			))
+			->addHeaders(
+				array(
+					'from'       => $from,
+					'count'      => $count,
+					'category'   => $category,
+					'addon-slug' => $exclude_addons,
+					'addon-name' => $this->getAddonName(),
+				)
+			)
 			->send();
 		if ( isset( $response->body->bool ) == false || $response->body->bool == false ) {
 			$this->message( $response->body->data, false );
@@ -372,12 +376,14 @@ class Mk_Addon_Management {
 		$url            = $this->getApiURL() . 'tools/add-on/{addon-name}';
 		$url            = str_replace( '{addon-name}', $this->getAddonName(), $url );
 		$response       = \Httpful\Request::get( $url )
-			->addHeaders(array(
-				'from'       => $from,
-				'count'      => $count,
-				'category'   => $category,
-				'addon-slug' => $exclude_addons,
-			))
+			->addHeaders(
+				array(
+					'from'       => $from,
+					'count'      => $count,
+					'category'   => $category,
+					'addon-slug' => $exclude_addons,
+				)
+			)
 			->send();
 		if ( isset( $response->body->bool ) == false || $response->body->bool == false ) {
 			$this->message( $response->body->data, false );
@@ -401,9 +407,11 @@ class Mk_Addon_Management {
 
 		$url      = $this->getApiURL() . 'tools/add-on-version';
 		$response = \Httpful\Request::get( $url )
-			->addHeaders(array(
-				'addons-slug' => json_encode( $addons ),
-			))
+			->addHeaders(
+				array(
+					'addons-slug' => json_encode( $addons ),
+				)
+			)
 			->send();
 		if ( isset( $response->body->bool ) == false || $response->body->bool == false ) {
 			throw new Exception( $response->body->data );

@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Padding Space", "mk_framework") ,
     "base" => "mk_padding_divider",
+	'html_template' => dirname( __FILE__ ) . '/mk_padding_divider.php',
     'icon' => 'icon-mk-padding-space vc_mk_element-icon',
     "category" => __('General', 'mk_framework') ,
     'description' => __('Adds space between elements', 'mk_framework') ,

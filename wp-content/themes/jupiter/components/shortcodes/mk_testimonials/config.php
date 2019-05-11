@@ -20,6 +20,7 @@ extract( shortcode_atts( array(
 	'font_weight' 		=> 'bold',
 	'text_transform' 	=> 'initial',
 	'letter_spacing' 	=> '0',
+	'visibility' 		=> '',
 	"el_class"			=> '',
 	'animation' 		=> '',
 ), $atts ) );

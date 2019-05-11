@@ -4,16 +4,16 @@ global $mk_options;
 vc_map(array(
     "name" => __("Icon Box", "mk_framework") ,
     "base" => "mk_icon_box",
+	'html_template' => dirname( __FILE__ ) . '/mk_icon_box.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-icon-box vc_mk_element-icon',
     'description' => __('Powerful & versatile Icon Boxes.', 'mk_framework') ,
     "params" => array(
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => '' ,
             "param_name" => "icon",
             "value" => "mk-li-smile",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework") ,
         ) ,
         array(
             "type" => "textfield",
@@ -136,14 +136,14 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Color", "mk_framework") ,
             "param_name" => "icon_color",
             "value" => $mk_options['skin_color'],
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Container (circle) Background Color", "mk_framework") ,
             "param_name" => "icon_circle_color",
             "value" => $mk_options['skin_color'],
@@ -157,7 +157,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Container (circle) Border Color", "mk_framework") ,
             "param_name" => "icon_circle_border_color",
             "value" => "",
@@ -171,21 +171,21 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Title Color", "mk_framework") ,
             "param_name" => "title_color",
             "value" => "",
             "description" => __("Optionally you can modify Title color inside this shortcode.", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Paragraph Color", "mk_framework") ,
             "param_name" => "txt_color",
             "value" => "",
             "description" => __("Optionally you can modify text color inside this shortcode.", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Paragraph Link Color", "mk_framework") ,
             "param_name" => "txt_link_color",
             "value" => "",

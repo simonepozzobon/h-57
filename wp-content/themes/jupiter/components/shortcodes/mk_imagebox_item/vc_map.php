@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Imagebox Item", "mk_framework"),
     "base" => "mk_imagebox_item",
+	'html_template' => dirname( __FILE__ ) . '/mk_imagebox_item.php',
     "as_child" => array('only' => 'mk_imagebox'),
     'icon' => 'icon-mk-content-box vc_mk_element-icon',
     "content_element" => true,
@@ -96,7 +97,7 @@ vc_map(array(
             // )
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Background Color", "mk_framework"),
             "param_name" => "background_color",
             "value" => "#eaeaea",
@@ -128,7 +129,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Title Color", "mk_framework"),
             "param_name" => "title_color",
             "value" => "",
@@ -143,7 +144,7 @@ vc_map(array(
             "description" => __("", "mk_framework"),
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Description Color", "mk_framework"),
             "param_name" => "text_color",
             "value" => "",
@@ -164,21 +165,21 @@ vc_map(array(
             "description" => __("", "mk_framework"),
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Button Background Color", "mk_framework"),
             "param_name" => "btn_background_color",
             "value" => "",
             "description" => __("", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Button Text Color", "mk_framework"),
             "param_name" => "btn_text_color",
             "value" => "",
             "description" => __("", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Button Hover Background Color", "mk_framework"),
             "param_name" => "btn_hover_background_color",
             "value" => "",

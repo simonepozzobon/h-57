@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Banner Builder", "mk_framework"),
     "base" => "mk_banner_builder",
+	'html_template' => dirname( __FILE__ ) . '/mk_banner_builder.php',
     'icon' => 'icon-mk-custom-box vc_mk_element-icon',
     "category" => __('Slideshows', 'mk_framework'),
     'description' => __( 'Banner Builder.', 'mk_framework' ),
@@ -99,6 +100,7 @@ vc_map(array(
             "unit" => 'ms',
             "description" => __("Speed of animation.", "mk_framework")
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

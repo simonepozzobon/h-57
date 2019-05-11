@@ -123,7 +123,7 @@ $json = str_replace("'", "&apos;", json_encode( $json ) );
 
 $style = array();
 $class = '';
-
+$class .= ' ' . $visibility;
 
 if( $map_height == 'custom' ) {
 	$style['mk_advanced_gmap'] = 'height: '. $height .'px;';

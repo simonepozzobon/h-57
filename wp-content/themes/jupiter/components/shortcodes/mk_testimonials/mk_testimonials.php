@@ -28,8 +28,16 @@ $atts = array(
     'animation_css' => get_viewport_animation_class($animation)
 );
 
+if ( ! empty( $visibility ) ) {
+	echo '<div class="' . $visibility . '">';
+}
+
 echo mk_get_shortcode_view('mk_testimonials', 'components/heading-title', true, ['title' => $title, 'skin' => $skin, 'style' => $style]);
 echo mk_get_shortcode_view('mk_testimonials', 'show-as/' . $show_as, true, $atts);
+
+if ( ! empty( $visibility ) ) {
+	echo '</div>';
+}
 
 Mk_Static_Files::addCSS("
     #testimonial_{$id} .mk-testimonial-quote,

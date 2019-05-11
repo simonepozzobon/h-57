@@ -47,8 +47,8 @@
 .mk-swipe-slideshow .swiper-arrows {
     top: 50%;
     -webkit-transform: translate(0, -50%);
-    -ms-transform: translate(0, -50%);
-    transform: translate(0, -50%);
+            -ms-transform: translate(0, -50%);
+        transform: translate(0, -50%);
     ms-transform: translate(0, -50%);
     background-color: rgba(0, 0, 0, 0.4);
 }
@@ -76,4 +76,8 @@
 
 .mk-slider-holder-img {
     visibility: hidden;
+}
+
+.mk-swipe-slideshow-lazyload .swiper-slide-image {
+    background-color: #e0e0e0;
 }

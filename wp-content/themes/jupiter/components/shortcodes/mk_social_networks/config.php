@@ -39,5 +39,6 @@ extract( shortcode_atts( array(
 	'weibo' 			=> "",
 	'xing' 				=> "",
 	'whatsapp' 			=> "",
+	'visibility'		=> "",
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_social_networks');

@@ -21,5 +21,6 @@ global $mk_options;
 		'el_class'              =>'',
 		'column_height'         => 500,
 		'animation'             => '',
+		'visibility'            => ''
 	), $atts ) );
 Mk_Static_Files::addAssets('mk_animated_columns');

@@ -14,6 +14,7 @@ $container->addClass($el_class);
 if ( $animation != '' ) {
 	$container->addClass(get_viewport_animation_class($animation));
 }
+$container->addClass( $visibility );
 
 echo mk_get_fontfamily( "#mk-blockquote-", $id, $font_family, $font_type );
 
@@ -23,7 +24,7 @@ if($style == 'quote-style') {
 	$container->append(Mk_SVG_Icons::get_svg_icon_by_class_name(false, 'mk-icon-quote-left'));
 }
 
-
+$app_styles = '';
 
 if ($force_font_size == 'true') {
 

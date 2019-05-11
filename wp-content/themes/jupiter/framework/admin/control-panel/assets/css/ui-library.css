@@ -52,12 +52,15 @@
   color: #222222;
 }
 .mka-clearfix {
-  clear: both;
+    zoom: 1;
 }
 .mka-clearfix:before,
 .mka-clearfix:after {
-  content: " ";
-  display: table;
+    content: "";
+    display: table;
+}
+.mka-clearfix:after {
+    clear: both;
 }
 .mka-hidden {
   display: none !important;
@@ -147,6 +150,33 @@ textarea.mka-textarea:focus {
 }
 
 
+/*---------------------------------------------------------------------------------*/
+/*  VFG Disabled Field - Override VFG style for disabled field.
+/*---------------------------------------------------------------------------------*/
+.form-group.disabled {
+  opacity: 0.3;
+  position: relative;
+  -webkit-user-select: none;  /* Chrome 49+ */
+  -moz-user-select: none;     /* Firefox 43+ */
+  -ms-user-select: none;      /* No support yet */
+  user-select: none;          /* Likely future */
+}
+.form-group.disabled:before {
+    content: " ";
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 15px;
+    right: 15px;
+    z-index: 99;
+}
+.mka-to-main fieldset.vue-form-generator .form-group.disabled > label {
+  color: inherit;
+  font-style: normal;
+}
+
+
 
 /*---------------------------------------------------------------------------------*/
 /*  Color Picker
@@ -157,7 +187,7 @@ textarea.mka-textarea:focus {
     position: absolute;
 }
 .wp-picker-container .wp-color-result {
-  margin-bottom: 1px;
+  margin-bottom: 4px;
 }
 
 
@@ -176,7 +206,7 @@ textarea.mka-textarea:focus {
   border: 0;
   border-radius: 25px;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
-  
+
   transition: background-color 0.1s ease, box-shadow 0.1s ease;
 }
 .mka-wrap .mka-button:hover {
@@ -828,6 +858,10 @@ textarea.mka-textarea:focus {
   cursor: pointer;
   line-height: 1.4;
   transition: background-color 0.3s ease;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .mka-select-list-item:hover,
 .mka-select-list-item:focus {
@@ -1432,6 +1466,9 @@ body.mka-modal-active {
   z-index: 9999;
   opacity: 0;
 }
+.mka-modal.mka-modal--hb-activation {
+  width: 530px;
+}
 .mka-modal-close-btn {
   position: absolute;
   right: 10px;
@@ -1632,7 +1669,10 @@ body.mka-modal-active {
   position: relative;
   -webkit-transition: background-color 0.1s ease, box-shadow 0.1s ease;
   transition: background-color 0.1s ease, box-shadow 0.1s ease;
-  margin: 0 12px 6px 0;
+  margin: 0 12px 10px 0;
+  color: #586e7f;
+}
+
 }
 .mka-multiselect-selected-item:hover,
 .mka-multiselect-selected-item:focus{
@@ -1656,7 +1696,7 @@ body.mka-modal-active {
   background-color: #f95759;
   cursor:pointer;
 }
-.mka-multiselect-selected-item-close:before, 
+.mka-multiselect-selected-item-close:before,
 .mka-multiselect-selected-item-close:after {
   position: absolute;
   left: 7px;
@@ -1702,4 +1742,17 @@ body.mka-modal-active {
 }
 .mka-multiselect-msg-success{
   color: #38cb97;
+}
+
+/*---------------------------------------------------------------------------------*/
+/* Header Builder Beta Version Icon
+/*---------------------------------------------------------------------------------*/
+.mk-hb-beta-icon {
+  background-image: url(../images/hb-beta.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  vertical-align: top;
+  height: 10px;
+  width: 27px;
 }

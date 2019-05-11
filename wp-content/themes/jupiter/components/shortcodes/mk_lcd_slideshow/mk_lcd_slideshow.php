@@ -20,8 +20,11 @@ $slider_atts[] = 'data-controlNav="false"';
 $slider_atts[] = 'data-directionNav="true"';
 $slider_atts[] = 'data-isCarousel="false"';
 
-mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
+if ( ! empty( $visibility ) ) {
+	echo '<div class="' . $visibility . '">';
+}
 
+mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
 
 <div id="lcd-slider-<?php echo $id; ?>" class="mk-lcd-slideshow mk-script-call mk-flexslider js-flexslider <?php echo implode(' ', $class); ?>" style="max-width:872px;" <?php echo implode(' ', $slider_atts); ?>>
 	<img style="display:none" class="mk-lcd-image" src="<?php echo THEME_IMAGES; ?>/theme-lcd-slideshow.png" alt="LCD" />
@@ -42,3 +45,7 @@ mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
 		</ul>
 	</div>
 </div>
+
+<?php if ( ! empty( $visibility ) ) : ?>
+</div>
+<?php endif; ?>

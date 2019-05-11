@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Pricing Table (Builder)", "mk_framework"),
     "base" => "mk_pricing_table_2",
+	'html_template' => dirname( __FILE__ ) . '/mk_pricing_table_2.php',
     'icon' => 'icon-mk-pricing-table vc_mk_element-icon',
     'description' => __( 'Shows Pricing table Posts.', 'mk_framework' ),
     "category" => __('Loops', 'mk_framework'),
@@ -54,6 +55,7 @@ vc_map(array(
             "value" => $mk_orderby,
             "type" => "dropdown"
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

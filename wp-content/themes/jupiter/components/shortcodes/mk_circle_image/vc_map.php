@@ -2,6 +2,7 @@
     vc_map(array(
         "name" => __("Circle Image Frame", "mk_framework") ,
         "base" => "mk_circle_image",
+		'html_template' => dirname( __FILE__ ) . '/mk_circle_image.php',
         "category" => __('General', 'mk_framework') ,
         'icon' => 'icon-mk-circle-image-frame vc_mk_element-icon',
         'description' => __('Adds a circled image element.', 'mk_framework') ,

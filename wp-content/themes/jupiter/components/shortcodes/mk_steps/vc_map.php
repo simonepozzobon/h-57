@@ -3,6 +3,7 @@
 vc_map(array(
     "name" => __("Process Builder", "mk_framework") ,
     "base" => "mk_steps",
+	'html_template' => dirname( __FILE__ ) . '/mk_steps.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-process-builder vc_mk_element-icon',
     'description' => __('Adds process steps element.', 'mk_framework') ,
@@ -26,18 +27,17 @@ vc_map(array(
             "description" => __("How many steps for the whole process? Each represented in a circular container.", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Container Hover Color", "mk_framework") ,
             "param_name" => "hover_color",
             "value" => $skin_color,
             "description" => __("This color will be showed up once user rolls over the circular container.", "mk_framework")
         ) ,
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Step 1 : Add Icon", "mk_framework") ,
             "param_name" => "icon_1",
             "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework")
         ) ,
         array(
             "type" => "textfield",
@@ -63,11 +63,10 @@ vc_map(array(
             "description" => __("If you add a URL the title will be converted to a link. add http://", "mk_framework")
         ) ,
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Step 2 : Add Icon", "mk_framework") ,
             "param_name" => "icon_2",
             "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework")
         ) ,
         array(
             "type" => "textfield",
@@ -93,11 +92,10 @@ vc_map(array(
             "description" => __("If you add a URL the title will be converted to a link. add http://", "mk_framework")
         ) ,
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Step 3 : Add Icon", "mk_framework") ,
             "param_name" => "icon_3",
             "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework")
         ) ,
         array(
             "type" => "textfield",
@@ -123,11 +121,10 @@ vc_map(array(
             "description" => __("If you add a URL the title will be converted to a link. add http://", "mk_framework")
         ) ,
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Step 4 : Add Icon", "mk_framework") ,
             "param_name" => "icon_4",
             "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework")
         ) ,
         array(
             "type" => "textfield",
@@ -153,11 +150,10 @@ vc_map(array(
             "description" => __("If you add a URL the title will be converted to a link. add http://", "mk_framework")
         ) ,
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Step 5 : Add Icon", "mk_framework") ,
             "param_name" => "icon_5",
             "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework")
         ) ,
         array(
             "type" => "textfield",
@@ -183,6 +179,7 @@ vc_map(array(
             "description" => __("If you add a URL the title will be converted to a link. add http://", "mk_framework")
         ) ,
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

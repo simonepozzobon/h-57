@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Edge One Pager", "mk_framework"),
     "base" => "mk_edge_one_pager",
+	'html_template' => dirname( __FILE__ ) . '/mk_edge_one_pager.php',
     'icon' => 'icon-mk-edge-one-pager vc_mk_element-icon',
     "category" => __('Slideshows', 'mk_framework'),
     'description' => __( 'Converts Edge Slider to vertical scroll.', 'mk_framework' ),

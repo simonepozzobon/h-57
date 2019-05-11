@@ -2,12 +2,14 @@
     vc_map(array(
     "name" => __("Content Box", "mk_framework") ,
     "base" => "mk_content_box",
+	'html_template' => dirname( __FILE__ ) . '/mk_content_box.php',
     "as_parent" => array(
         'except' => 'vc_row',
         'mk_page_section'
     ) ,
     "content_element" => true,
     "show_settings_on_create" => false,
+	'front_enqueue_js' => THEME_COMPONENTS . '/shortcodes/mk_content_box/vc_front.js',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-content-box vc_mk_element-icon',
     'description' => __('Content Box with heading', 'mk_framework') ,
@@ -20,11 +22,10 @@
             "description" => __("Add a title to your container box.", "mk_framework")
         ) ,
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Add Icon", "mk_framework") ,
             "param_name" => "icon",
             "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework")
         ) ,
         $add_css_animations,
         $add_device_visibility,

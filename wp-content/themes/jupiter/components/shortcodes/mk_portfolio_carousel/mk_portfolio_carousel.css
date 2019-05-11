@@ -21,8 +21,8 @@
 .portfolio-carousel.style-classic .flex-viewport ul li:hover .item-content {
   opacity: 1;
   -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
-          transform: translate(0, 0);
+          -ms-transform: translate(0, 0);
+      transform: translate(0, 0);
   transition-delay: 0.2s;
 }
 .portfolio-carousel.style-classic .flex-viewport ul li:hover .item-overlay {
@@ -95,8 +95,8 @@
   background-color: #222222;
   text-align: center;
   -webkit-transform: translate(0, 6px);
-      -ms-transform: translate(0, 6px);
-          transform: translate(0, 6px);
+          -ms-transform: translate(0, 6px);
+      transform: translate(0, 6px);
   border-radius: 2px;
   opacity: 0;
   transition-delay: 0s;

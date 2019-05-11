@@ -1,3 +1,7 @@
+.mk-blog-container-lazyload .swiper-slide-image,
+.mk-blog-container-lazyload .blog-image {
+  background-color: #e0e0e0;
+}
 .mk-blog-classic-item {
   margin-bottom: 40px;
   border: 1px solid #eeeeee;

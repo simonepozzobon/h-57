@@ -50,8 +50,23 @@
                 $this.find('.animated-column-item').each(function() {
                     var $this = $(this),
                         contentHeight = (iconHeight + 30) + (titleHeight + 10) + (descHeight + 70) + 34;
+                    /*
+                     * Fix AM-2418.
+                     *
+                     * Column height setting of VC Animated Column doesn't work when Animated Column
+                     * content is higher than the setting. So, check column height setting first.
+                     * - If the column height setting < Animated Column height, update the column
+                     *   height based on column height setting.
+                     */
+                    var $columnHeight = contentHeight * 1.5 + 50;
+                    var $minHeight = parseInt( $this.css( 'min-height' ), 10 );
+                    if ( ! isNaN( $minHeight ) ) {
+                        if ( $minHeight < $columnHeight ) {
+                            $columnHeight = $minHeight;
+                        }
+                    }
 
-                    $this.height(contentHeight * 1.5 + 50);
+                    $this.height( $columnHeight );
 
                     var $box_height = $this.outerHeight(true),
                         $icon_height = $this.find('.animated-column-icon, .animated-column-holder .mk-svg-icon').height();
@@ -167,6 +182,6 @@
         });
     }
 
-    $(window).on('load', mk_animated_cols);
+    $(window).on('load vc_reload', mk_animated_cols);
 
 }(jQuery));

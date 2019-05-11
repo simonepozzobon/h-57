@@ -1,7 +1,6 @@
 <?php
-if (!defined('THEME_FRAMEWORK'))
-{
-    exit('No direct script access allowed');
+if ( ! defined( 'THEME_FRAMEWORK' ) ) {
+	exit( 'No direct script access allowed' );
 }
 
 /**
@@ -14,102 +13,101 @@ if (!defined('THEME_FRAMEWORK'))
  * @package     artbees
  */
 
-class Mk_Ajax_Subscribe
-{
+class Mk_Ajax_Subscribe {
 
-    public function __construct()
-    {
-        add_action('wp_ajax_nopriv_mk_ajax_subscribe', array(&$this,
-            'subscribe_to_list',
-        ));
-        add_action('wp_ajax_mk_ajax_subscribe', array(&$this,
-            'subscribe_to_list',
-        ));
-    }
 
-    public function subscribe_to_list()
-    {
+	public function __construct() {
+		add_action(
+			'wp_ajax_nopriv_mk_ajax_subscribe', array(
+				&$this,
+				'subscribe_to_list',
+			)
+		);
+		add_action(
+			'wp_ajax_mk_ajax_subscribe', array(
+				&$this,
+				'subscribe_to_list',
+			)
+		);
+	}
 
-        $email   = stripslashes($_POST['email']);
-        $list_id = stripslashes($_POST['list_id']);
-        $optin   = stripslashes($_POST['optin']);
+	public function subscribe_to_list() {
 
-        $result = $this->subscribe($email, $list_id, $optin);
+		$email   = stripslashes( $_POST['email'] );
+		$list_id = stripslashes( $_POST['list_id'] );
+		$optin   = stripslashes( $_POST['optin'] );
 
-        if (empty($result['status']) == false)
-        {
-            switch ($result['name'])
-            {
-                case 'Invalid_ApiKey':
-                    echo json_encode(
-                        array(
-                            'action_status' => false,
-                            'message'       => $result['error'],
-                        )
-                    );
-                    break;
-                case 'List_DoesNotExist':
-                    echo json_encode(
-                        array(
-                            'action_status' => false,
-                            'message'       => $result['error'],
-                        )
-                    );
-                    break;
-                case 'ValidationError':
-                    echo json_encode(
-                        array(
-                            'action_status' => false,
-                            'message'       => __('Oops! Enter a valid Email address', 'mk_framework'),
-                        )
-                    );
-                    break;
+		$result = $this->subscribe( $email, $list_id, $optin );
 
-                case 'List_AlreadySubscribed':
-                    echo json_encode(
-                        array(
-                            'action_status' => false,
-                            'message'       => __('This email already subscribed to the list.', 'mk_framework'),
-                        )
-                    );
-                    break;
+		if ( empty( $result['status'] ) == false ) {
+			switch ( $result['name'] ) {
+				case 'Invalid_ApiKey':
+					echo json_encode(
+						array(
+							'action_status' => false,
+							'message'       => $result['error'],
+						)
+					);
+					break;
+				case 'List_DoesNotExist':
+					echo json_encode(
+						array(
+							'action_status' => false,
+							'message'       => $result['error'],
+						)
+					);
+					break;
+				case 'ValidationError':
+					echo json_encode(
+						array(
+							'action_status' => false,
+							'message'       => __( 'Oops! Enter a valid Email address', 'mk_framework' ),
+						)
+					);
+					break;
 
-                case 'curl_package_disabled':
-                    echo json_encode(
-                        array(
-                            'action_status' => false,
-                            'message'       => __('Curl is disabled. Please enable curl in server php.ini settings.', 'mk_framework'),
-                        )
-                    );
-                    break;
-            }
-        }
-        elseif (isset($result['email']))
-        {
-            echo json_encode(
-                array(
-                    'action_status' => true,
-                    'message'       => $result['email'] . __(' has been subscribed.', 'mk_framework'),
-                )
-            );
-        }
-        wp_die();
-    }
+				case 'List_AlreadySubscribed':
+					echo json_encode(
+						array(
+							'action_status' => false,
+							'message'       => __( 'This email already subscribed to the list.', 'mk_framework' ),
+						)
+					);
+					break;
 
-    private function subscribe($email, $list_id, $optin)
-    {
+				case 'curl_package_disabled':
+					echo json_encode(
+						array(
+							'action_status' => false,
+							'message'       => __( 'Curl is disabled. Please enable curl in server php.ini settings.', 'mk_framework' ),
+						)
+					);
+					break;
+			}
+		} elseif ( isset( $result['email'] ) ) {
+			echo json_encode(
+				array(
+					'action_status' => true,
+					'message'       => $result['email'] . __( ' has been subscribed.', 'mk_framework' ),
+				)
+			);
+		}
+		wp_die();
+	}
 
-        $path    = pathinfo(__FILE__);
-        $dirname = $path['dirname'];
-        require_once THEME_HELPERS . '/MailChimpApi.php';
+	private function subscribe( $email, $list_id, $optin ) {
 
-        global $mk_options;
+		$path    = pathinfo( __FILE__ );
+		$dirname = $path['dirname'];
+		require_once THEME_HELPERS . '/MailChimpApi.php';
 
-        $mailchimp = new MK_MailChimp( trim( $mk_options['mailchimp_api_key'] ) );
+		global $mk_options;
 
-        // return $mailchimp->get_lists();
-        return $mailchimp->subscribe($email, $list_id, $optin);
-    }
+		$mailchimp = new MK_MailChimp( trim( $mk_options['mailchimp_api_key'] ) );
+
+		// return $mailchimp->get_lists();
+		return $mailchimp->subscribe( $email, $list_id, $optin );
+	}
 }
 
 new Mk_Ajax_Subscribe();

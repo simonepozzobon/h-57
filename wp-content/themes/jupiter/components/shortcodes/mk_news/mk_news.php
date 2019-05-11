@@ -5,7 +5,7 @@ include ($path . '/config.php');
 
 global $wp_query;
 
-$id = uniqid();
+$id = Mk_Static_Files::shortcode_id();
 
 $categories = is_archive() ? $wp_query->query['news_category'] : $categories;
 $count = is_archive() ? get_option('posts_per_page') : $count;
@@ -26,7 +26,7 @@ $r = $query['wp_query'];
 if (is_singular()) {
     global $post;
     $layout = get_post_meta($post->ID, '_layout', true);
-} 
+}
 else {
     $layout = 'full';
 }
@@ -46,7 +46,7 @@ $data_config[] = 'data-loop-iterator="'.$r->query['posts_per_page'].'"';
 
 ?>
 
-<section id="mk-news-section-<?php echo $id; ?>" <?php echo implode(' ', $data_config); ?> class="mk-news-container js-loop clearfix <?php echo $el_class; ?>">
+<section id="mk-news-section-<?php echo $id; ?>" <?php echo implode(' ', $data_config); ?> class="mk-news-container js-loop clearfix <?php echo $el_class . ' ' . $visibility; ?>">
     <?php
         if ($r->have_posts()):
             while ($r->have_posts()):
@@ -60,7 +60,7 @@ $data_config[] = 'data-loop-iterator="'.$r->query['posts_per_page'].'"';
 <?php
 
 if( $pagination === 'true' ) {
-    echo mk_get_view('global', 'loop-pagination', true, ['pagination_style' => $pagination_style, 'r' => $r]); 
+    echo mk_get_view('global', 'loop-pagination', true, ['pagination_style' => $pagination_style, 'r' => $r]);
 }
 
 wp_nonce_field('mk-load-more', 'safe_load_more');

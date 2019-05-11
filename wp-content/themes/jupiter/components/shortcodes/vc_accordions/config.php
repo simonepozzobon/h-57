@@ -10,6 +10,7 @@ extract( shortcode_atts( array(
 	'open_toggle' 			=> 0,
 	'responsive' 			=> 'true',
 	'action_style' 			=> 'accordion-style',
+	'visibility' 			=> '',
 	'el_class' 				=> ''
 ), $atts ) );
 

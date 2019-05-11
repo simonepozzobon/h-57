@@ -9,6 +9,9 @@ extract( shortcode_atts( array(
 	"slideshow_speed" 	=> 7000,
 	"direction" 		=> 'horizontal',
 	"direction_nav" 	=> "true",
+	"lazyload" 			=> "false",
+	"disable_lazyload"	=> "false",
+	'visibility'		=> '',
 	"el_class" 			=> ''
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_swipe_slideshow');

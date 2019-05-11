@@ -1,14 +1,13 @@
 <?php
 
 /**
- * template part for Similar Posts module located in single.php. views/blog/components
+ * Template part for Similar Posts module located in single.php. views/blog/components
  *
- * @author      Artbees
- * @package     jupiter/views
- * @version     5.1
+ * @author  Artbees
+ * @package jupiter/views
+ * @since   5.1.0
+ * @since   5.9.1 Removed Clear & Bold style if condition.
  */
-
-if(mk_get_blog_single_style() == 'bold') return false;
 
 global $post, $mk_options;
 

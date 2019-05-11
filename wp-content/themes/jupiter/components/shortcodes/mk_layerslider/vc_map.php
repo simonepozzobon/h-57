@@ -33,7 +33,7 @@ if (is_plugin_active('LayerSlider/layerslider.php')) {
             }
         } 
         else {
-            $layer_sliders[__('No sliders found', 'js_composer') ] = 0;
+            $layer_sliders[__('No sliders found', 'mk_framework') ] = 0;
         }
     } 
     else {
@@ -48,12 +48,13 @@ if (is_plugin_active('LayerSlider/layerslider.php')) {
             }
         } 
         else {
-            $layer_sliders[__('No sliders found', 'js_composer') ] = 0;
+            $layer_sliders[__('No sliders found', 'mk_framework') ] = 0;
         }
     }
     vc_map(array(
         "name" => __("Layerslider", "mk_framework") ,
         "base" => "mk_layerslider",
+		'html_template' => dirname( __FILE__ ) . '/mk_layerslider.php',
         'icon' => 'icon-mk-layerslider vc_mk_element-icon',
         "category" => __('Slideshows', 'mk_framework') ,
         "params" => array(
@@ -65,6 +66,7 @@ if (is_plugin_active('LayerSlider/layerslider.php')) {
                 "value" => $layer_sliders,
                 "description" => __("", "mk_framework")
             ) ,
+            $add_device_visibility,
             array(
                 "type" => "textfield",
                 "heading" => __("Extra class name", "mk_framework") ,

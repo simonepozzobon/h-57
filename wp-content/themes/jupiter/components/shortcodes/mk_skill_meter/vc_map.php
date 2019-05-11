@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Skill Meter", "mk_framework") ,
     "base" => "mk_skill_meter",
+	'html_template' => dirname( __FILE__ ) . '/mk_skill_meter.php',
     'icon' => 'icon-mk-skill-meter vc_mk_element-icon',
     'description' => __('Show skills in bars by percent.', 'mk_framework') ,
     "params" => array(
@@ -37,34 +38,34 @@ vc_map(array(
         ) ,
         
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Title Text Color", "mk_framework") ,
             "param_name" => "txt_color",
             "value" => '',
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Percentage Text Color", "mk_framework") ,
             "param_name" => "percent_color",
             "value" => 'rgba(0,0,0,0.5)',
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Bar Track Color", "mk_framework") ,
             "param_name" => "bar_color",
             "value" => 'rgba(0,0,0,0.12)',
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Bar Progress Color", "mk_framework") ,
             "param_name" => "color",
             "value" => $skin_color,
             "description" => __("", "mk_framework")
         ) ,
-        
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

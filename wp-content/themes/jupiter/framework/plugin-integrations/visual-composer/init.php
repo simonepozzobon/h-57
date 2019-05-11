@@ -1,5 +1,7 @@
 <?php
-if (!defined('THEME_FRAMEWORK')) exit('No direct script access allowed');
+if ( ! defined( 'THEME_FRAMEWORK' ) ) {
+	exit( 'No direct script access allowed' );
+}
 
 /**
  * Adds support to Visual Composer page builder. It also adds some features, elimniates some features from the plugin that plays not well with the theme.
@@ -12,64 +14,75 @@ if (!defined('THEME_FRAMEWORK')) exit('No direct script access allowed');
  */
 
 
-// Do not proceed if Visual Composer plugin is not active
-if (!class_exists('WPBakeryShortCode')) return false;
+// Do not proceed if Visual Composer plugin is not active.
+if ( ! class_exists( 'WPBakeryShortCode' ) ) {
+	return false;
+}
 
-// Disable some Visual Composer actions hook during template installation
+// Disable some Visual Composer actions hook during template installation.
 $mk_disable_vc_hook_on_template_installation_actions = [
-	'abb_install_template_procedure', 
+	'abb_install_template_procedure',
 	'abb_install_plugin',
 	'abb_update_plugin',
 	'abb_remove_plugin',
 	'abb_get_templates_categories',
 	'abb_template_lazy_load',
-	'abb_is_restore_db'
+	'abb_is_restore_db',
 ];
 
-if( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) && ( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], $mk_disable_vc_hook_on_template_installation_actions ) ) ){
+if ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) && ( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], $mk_disable_vc_hook_on_template_installation_actions ) ) ) {
 
 	add_action( 'admin_init', 'mk_disable_vc_hook_on_template_installation' );
 
-	function mk_disable_vc_hook_on_template_installation(){
+	function mk_disable_vc_hook_on_template_installation() {
 
 		/**
 		 * @since 4.5 used to call update file once option is changed
 		 */
-		remove_action( 'update_option_wpb_js_compiled_js_composer_less', array(
-			'Vc_Settings',
-			'buildCustomColorCss',
-		) );
+		remove_action(
+			'update_option_wpb_js_compiled_js_composer_less', array(
+				'Vc_Settings',
+				'buildCustomColorCss',
+			)
+		);
 
 		/**
 		 * @since 4.5 used to call update file once option is changed
 		 */
-		remove_action( 'update_option_wpb_js_custom_css', array(
-			'Vc_Settings',
-			'buildCustomCss',
-		) );
+		remove_action(
+			'update_option_wpb_js_custom_css', array(
+				'Vc_Settings',
+				'buildCustomCss',
+			)
+		);
 
 		/**
 		 * @since 4.5 used to call update file once option is changed
 		 */
-		remove_action( 'add_option_wpb_js_compiled_js_composer_less', array(
-			'Vc_Settings',
-			'buildCustomColorCss',
-		) );
+		remove_action(
+			'add_option_wpb_js_compiled_js_composer_less', array(
+				'Vc_Settings',
+				'buildCustomColorCss',
+			)
+		);
 
 		/**
 		 * @since 4.5 used to call update file once option is changed
 		 */
-		remove_action( 'add_option_wpb_js_custom_css', array(
-			'Vc_Settings',
-			'buildCustomCss',
-		) );
+		remove_action(
+			'add_option_wpb_js_custom_css', array(
+				'Vc_Settings',
+				'buildCustomCss',
+			)
+		);
 
-		remove_action( 'vc_after_init', array(
-			'Vc_Manager',
-			'rebuild',
-		) );
+		remove_action(
+			'vc_after_init', array(
+				'Vc_Manager',
+				'rebuild',
+			)
+		);
 	}
-
 }
 
 /**
@@ -78,29 +91,30 @@ if( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) && ( isset( $_REQUEST['action'] ) 
  * @param string $param_name
  * @param string $param_function
  */
-function mk_add_shortcode_param($param_name, $param_function) {
-    if(version_compare(WPB_VC_VERSION, '5.0', '>=')) {
-        vc_add_shortcode_param($param_name, $param_function);
-    } else {
-        add_shortcode_param($param_name, $param_function);
-    }
+function mk_add_shortcode_param( $param_name, $param_function ) {
+	if ( version_compare( WPB_VC_VERSION, '5.0', '>=' ) ) {
+		vc_add_shortcode_param( $param_name, $param_function );
+	} else {
+		add_shortcode_param( $param_name, $param_function );
+	}
 }
 
 
 
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/autocomplete.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/group_heading.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/hidden_input.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/item_id.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/multiselect.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/range.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/theme_fonts.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/toggle.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/upload.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/visual_selector.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/gmap_iterator.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/icon_selector.php");
-include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/message.php");
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/autocomplete.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/group_heading.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/hidden_input.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/item_id.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/multiselect.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/range.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/theme_fonts.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/toggle.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/upload.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/visual_selector.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/gmap_iterator.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/icon_selector.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/alpha_colorpicker.php' );
+include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/fields/message.php' );
 
 
 
@@ -109,36 +123,18 @@ include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/fields/message.php");
 *
 * Set Visual Composer to act as bundled with the theme
 * Load theme built-in shortcodes template files located in components/shortcodes
-* Disable Frontend of Visual Composer due to the incompatibilities 
+* Disable Frontend of Visual Composer due to the incompatibilities
 *
 */
 
-if(!function_exists('mk_set_visual_composer_as_bundled')) {
+if ( ! function_exists( 'mk_set_visual_composer_as_bundled' ) ) {
 	function mk_set_visual_composer_as_bundled() {
-	    
 
-	    vc_set_as_theme();
-
-	    
-	    if (defined('MODIFIED_VC_ACTIVATED')) {
-	        $child_dir = get_stylesheet_directory() . '/components/shortcodes';
-	        $parent_dir = get_template_directory() . '/components/shortcodes';
-	        
-	        vc_set_shortcodes_parent_templates_dir($parent_dir);
-	        vc_set_shortcodes_templates_dir($child_dir);
-	    } 
-	    else {
-	        
-	        $child_dir = get_template_directory() . '/components/shortcodes';
-	        $parent_dir = get_template_directory() . '/components/shortcodes';
-	        vc_set_shortcodes_templates_dir($parent_dir);
-	        vc_set_shortcodes_templates_dir($child_dir);
-	    }
-	    
-	    vc_disable_frontend();
+		vc_set_as_theme();
+		vc_set_shortcodes_templates_dir( get_stylesheet_directory() . '/components/shortcodes' );
 	}
 
-	add_action('vc_before_init', 'mk_set_visual_composer_as_bundled');
+	add_action( 'vc_before_init', 'mk_set_visual_composer_as_bundled' );
 }
 
 
@@ -152,58 +148,63 @@ if(!function_exists('mk_set_visual_composer_as_bundled')) {
 *
 */
 
-if(!function_exists('mk_visual_composer_mapper')) {
+if ( ! function_exists( 'mk_visual_composer_mapper' ) ) {
 	function mk_visual_composer_mapper() {
 
-		include (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/global-params.php");
-	   
-	    $shortcodes_dir = get_template_directory() . '/components/shortcodes/*/vc_map.php';
-	    
-	    $shortcodes = glob($shortcodes_dir);
-	    
-	    if(is_array($shortcodes) && !empty($shortcodes)) {
-		    foreach ($shortcodes as $shortcode) {
+		include( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/global-params.php' );
 
-		        $shortcode_name = array_reverse(explode('/', $shortcode));
-		        $shortcode_name = $shortcode_name[1];
+		$shortcodes_dir = get_template_directory() . '/components/shortcodes/*/vc_map.php';
 
-		        if(file_exists(get_stylesheet_directory() . '/components/shortcodes/'.$shortcode_name.'/vc_map.php')) {
-		            include_once(get_stylesheet_directory() . '/components/shortcodes/'.$shortcode_name.'/vc_map.php');
-		        } else {
-		            include_once ($shortcode);
-		        }
+			$shortcodes = glob( $shortcodes_dir );
 
-		    }
+		if ( is_array( $shortcodes ) && ! empty( $shortcodes ) ) {
+			foreach ( $shortcodes as $shortcode ) {
+
+				$shortcode_name = array_reverse( explode( '/', $shortcode ) );
+				$shortcode_name = $shortcode_name[1];
+
+				$vc_map_path_child_theme = get_stylesheet_directory() . '/components/shortcodes/' . $shortcode_name . '/vc_map.php';
+
+				if ( is_child_theme() ) {
+					if ( file_exists( $vc_map_path_child_theme ) ) {
+							include_once( $vc_map_path_child_theme );
+					} else {
+						include_once( $shortcode );
+					}
+				} else {
+					include_once( $shortcode );
+				}
+			}
 		}
 
+		// For custom post types added in child theme
+		$external_shortcodes_dir = get_stylesheet_directory() . '/components/shortcodes/*/vc_map.php';
 
-	    // For custom post types added in child theme
-	    $external_shortcodes_dir = get_stylesheet_directory() . '/components/shortcodes/*/vc_map.php';
+		$external_shortcodes = glob( $external_shortcodes_dir );
 
-	    $external_shortcodes = glob($external_shortcodes_dir);
-	    
-	    if(is_array($external_shortcodes) && !empty($external_shortcodes)) {
-		    foreach ($external_shortcodes as $shortcode) {
+		if ( is_array( $external_shortcodes ) && ! empty( $external_shortcodes ) ) {
+			foreach ( $external_shortcodes as $shortcode ) {
 
-		        $shortcode_name = array_reverse(explode('/', $shortcode));
-		        $shortcode_name = $shortcode_name[1];
-		        
-		        include_once(get_stylesheet_directory() . '/components/shortcodes/'.$shortcode_name.'/vc_map.php');
-		    }
+				$shortcode_name = array_reverse( explode( '/', $shortcode ) );
+				$shortcode_name = $shortcode_name[1];
+
+						include_once( get_stylesheet_directory() . '/components/shortcodes/' . $shortcode_name . '/vc_map.php' );
+			}
 		}
 	}
 
-	add_action('vc_mapper_init_before', 'mk_visual_composer_mapper');
+	add_action( 'vc_mapper_init_before', 'mk_visual_composer_mapper' );
 }
 
 
 
-require_once (THEME_PLUGIN_INTEGRATIONS . "/visual-composer/page-section.php");
+require_once( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/page-section.php' );
+require_once( THEME_PLUGIN_INTEGRATIONS . '/visual-composer/accordions.php' );
 
 
 /*
 *
-* Initialising theme built-in shortcodes for Visual Composer to detect them. 
+* Initialising theme built-in shortcodes for Visual Composer to detect them.
 */
 class WPBakeryShortCode_mk_category extends WPBakeryShortCode{}
 class WPBakeryShortCode_mk_products extends WPBakeryShortCode{}
@@ -280,6 +281,20 @@ class WPBakeryShortCode_mk_page_title_box extends WPBakeryShortCode{}
 class WPBakeryShortCode_mk_imagebox_item extends WPBakeryShortCode{}
 class WPBakeryShortCode_mk_theatre_slider extends WPBakeryShortCode{}
 class WPBakeryShortCode_mk_subscribe extends WPBakeryShortCode{}
+
+/**
+ * WPBakeryShortCode_Mk_Photo_Roller class.
+ *
+ * @since 5.9.7
+ */
+class WPBakeryShortCode_Mk_Photo_Roller extends WPBakeryShortCode {}
+
+/**
+ * WPBakeryShortCode_Mk_Flickr class.
+ *
+ * @since 6.0.0
+ */
+class WPBakeryShortCode_Mk_Flickr extends WPBakeryShortCode {}
 
 /*
 * Shortcodes that will be as container for other shortcodes. inheriting WPBakeryShortCodesContainer

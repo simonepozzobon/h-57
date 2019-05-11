@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Image Slideshow", "mk_framework"),
     "base" => "mk_image_slideshow",
+	'html_template' => dirname( __FILE__ ) . '/mk_image_slideshow.php',
     'icon' => 'icon-mk-image-slideshow vc_mk_element-icon',
     "category" => __('Slideshows', 'mk_framework'),
     'description' => __( 'Simple image slideshow.', 'mk_framework' ),
@@ -117,6 +118,7 @@ vc_map(array(
             "value" => "true",
             "description" => __("The next/pervious buttons to navigate between slides", "mk_framework")
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

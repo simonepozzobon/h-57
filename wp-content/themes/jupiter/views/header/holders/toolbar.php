@@ -1,65 +1,82 @@
 <?php
 
 /**
- * template part for header toolbar. views/header/holders
+ * Template part for header toolbar. views/header/holders
  *
- * @author 		Artbees
- * @package 	jupiter/views
- * @version     5.0.0
+ * @author Artbees
+ * @package jupiter/views
+ * @since 5.0.0
+ * @since 5.9.3 Add Polylang plugin check.
  */
 
 global $mk_options;
 
-if (is_header_toolbar_show() != 'true' || (isset($view_params['is_shortcode']) && $view_params['is_shortcode']) ) return false;
-
-if( $mk_options['enable_header_date'] != 'true' &&
-    (empty($mk_options['header_toolbar_phone']) || $mk_options['header_toolbar_phone'] == '') &&
-    (empty($mk_options['header_toolbar_email'])  || $mk_options['header_toolbar_email'] == '') &&
-    (empty($mk_options['header_toolbar_tagline'])  || $mk_options['header_toolbar_tagline'] == '') &&
-    $mk_options['header_search_location'] != 'toolbar' &&
-    $mk_options['header_toolbar_login'] != 'true' &&
-    $mk_options['header_social_location'] != 'toolbar' &&
-    $mk_options['header_toolbar_subscribe'] != 'true' && 
-    has_nav_menu( 'toolbar-menu' ) != true ) return false;
 ?>
 
 <div class="mk-header-toolbar">
 
-    <?php if($mk_options['header_grid'] == 'true') { ?>
-        <div class="mk-grid header-grid">
-            
-    <?php } ?>
+	<?php if ( $mk_options['header_grid'] == 'true' ) { ?>
+		<div class="mk-grid header-grid">
+	<?php } ?>
 
-        <div class="mk-toolbar-holder">
-        <?php
+		<div class="mk-header-toolbar-holder">
 
-            do_action('header_toolbar_before');
+		<?php
 
-            mk_get_header_view('toolbar', 'nav');
+		do_action( 'header_toolbar_before' );
 
-            mk_get_header_view('toolbar', 'date');
+		if ( has_nav_menu( 'toolbar-menu' ) ) {
+			mk_get_header_view( 'toolbar', 'nav' );
+		}
 
-            mk_get_header_view('toolbar', 'contact');
+		if ( ! empty( $mk_options['enable_header_date'] ) && $mk_options['enable_header_date'] === 'true' ) {
+			mk_get_header_view( 'toolbar', 'date' );
+		}
 
-            mk_get_header_view('toolbar', 'tagline');
+		if ( ! empty( $mk_options['header_toolbar_phone'] ) || ! empty( $mk_options['header_toolbar_email'] ) ) {
+			mk_get_header_view( 'toolbar', 'contact' );
+		}
 
-            mk_get_header_view('toolbar', 'wpml-nav');
+		if ( ! empty( $mk_options['header_toolbar_tagline'] ) ) {
+			mk_get_header_view( 'toolbar', 'tagline' );
+		}
 
-            mk_get_header_view('global', 'search', ['location' => 'toolbar']);
+		if ( ( is_plugin_active( 'polylang/polylang.php' ) || defined( 'ICL_SITEPRESS_VERSION' ) ) && defined( 'ICL_LANGUAGE_CODE' ) ) {
+			mk_get_header_view( 'toolbar', 'language-nav' );
+		}
 
-            mk_get_header_view('global', 'social', ['location' => 'toolbar']);
+		if ( ! empty( $mk_options['header_search_location'] ) && $mk_options['header_search_location'] === 'toolbar' ) {
+			mk_get_header_view(
+				'global', 'search', [
+					'location' => 'toolbar',
+				]
+			);
+		}
 
-            mk_get_header_view('toolbar', 'login');
+		if ( ! empty( $mk_options['header_social_location'] ) && $mk_options['header_social_location'] === 'toolbar' ) {
+			mk_get_header_view(
+				'global', 'social', [
+					'location' => 'toolbar',
+				]
+			);
+		}
 
-            mk_get_header_view('toolbar', 'subscribe');
+		if ( ! empty( $mk_options['header_toolbar_login'] ) && $mk_options['header_toolbar_login'] === 'true' ) {
+			mk_get_header_view( 'toolbar', 'login' );
+		}
 
-            do_action('header_toolbar_after');
-        ?>
+		if ( ! empty( $mk_options['header_toolbar_subscribe'] ) && $mk_options['header_toolbar_subscribe'] === 'true' ) {
+			mk_get_header_view( 'toolbar', 'subscribe' );
+		}
 
-        </div>   
+		do_action( 'header_toolbar_after' );
 
-    <?php if($mk_options['header_grid'] == 'true') { ?>
-            </div>
-    <?php } ?>
-    
+		?>
+
+		</div>
+
+	<?php if ( $mk_options['header_grid'] == 'true' ) { ?>
+		</div>
+	<?php } ?>
+
 </div>

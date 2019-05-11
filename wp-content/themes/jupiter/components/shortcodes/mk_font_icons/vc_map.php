@@ -2,16 +2,16 @@
 vc_map(array(
     "name" => __("Font icons", "mk_framework") ,
     "base" => "mk_font_icons",
+	'html_template' => dirname( __FILE__ ) . '/mk_font_icons.php',
     'icon' => 'icon-mk-font-icon vc_mk_element-icon',
     "category" => __('Typography', 'mk_framework') ,
     'description' => __('Advanced font icon element', 'mk_framework') ,
     "params" => array(
         array(
-            "type" => "textfield",
+            "type" => "icon_selector",
             "heading" => __("Add Icon", "mk_framework") ,
             "param_name" => "icon",
             "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework")
         ) ,
         array(
             "type" => "dropdown",
@@ -25,7 +25,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Color", "mk_framework") ,
             "param_name" => "color",
             "value" => "",
@@ -38,7 +38,7 @@ vc_map(array(
             )
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("From", "mk_framework") ,
             "param_name" => "grandient_color_from",
             "edit_field_class" => "vc_col-sm-3 vc_column",
@@ -52,7 +52,7 @@ vc_map(array(
             ) ,
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("To", "mk_framework") ,
             "param_name" => "grandient_color_to",
             "edit_field_class" => "vc_col-sm-3 vc_column",
@@ -103,7 +103,7 @@ vc_map(array(
         ),
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Gradient Fallback Color", "mk_framework") ,
             "param_name" => "grandient_color_fallback",
             //"edit_field_class" => "vc_col-sm-3",
@@ -163,7 +163,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Circle Color", "mk_framework") ,
             "param_name" => "circle_color",
             "value" => "",
@@ -211,7 +211,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Circle Border Color", "mk_framework") ,
             "param_name" => "circle_border_color",
             "value" => "",
@@ -251,6 +251,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

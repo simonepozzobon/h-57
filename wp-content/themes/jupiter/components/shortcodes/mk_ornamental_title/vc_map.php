@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Ornamental Title", "mk_framework") ,
     "base" => "mk_ornamental_title",
+	'html_template' => dirname( __FILE__ ) . '/mk_ornamental_title.php',
     'icon' => 'icon-mk-fancy-title vc_mk_element-icon',
     "category" => __('Typography', 'mk_framework') ,
     'description' => __('Advanced headings with cool styles.', 'mk_framework') ,
@@ -58,7 +59,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Text Color", "mk_framework") ,
             "param_name" => "text_color",
             "value" => "",
@@ -193,7 +194,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Ornament Color", "mk_framework") ,
             "param_name" => "ornament_color",
             "value" => "",
@@ -233,6 +234,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

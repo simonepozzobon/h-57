@@ -19,9 +19,12 @@ $r = $query['wp_query'];
 
 $id = Mk_Static_Files::shortcode_id();
 
+$class = $el_class;
+$class .= ' ' . $visibility;
+
 ?>
 
-<div class="mk-faq-wrapper <?php echo $el_class;?>" id="faq-list-<?php echo $id; ?>">
+<div class="mk-faq-wrapper <?php echo $class;?>" id="faq-list-<?php echo $id; ?>">
 
     <?php echo mk_get_shortcode_view('mk_faq', 'components/sortable', true, ['sortable' => $sortable, 'style' => $style, 'cat' => $cat, 'sortable_all_text' => $view_all_text]); ?>
 

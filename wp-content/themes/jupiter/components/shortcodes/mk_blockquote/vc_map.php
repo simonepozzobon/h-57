@@ -2,6 +2,7 @@
     vc_map(array(
         "name" => __("Blockquote", "mk_framework") ,
         "base" => "mk_blockquote",
+		'html_template' => dirname( __FILE__ ) . '/mk_blockquote.php',
         "category" => __('Typography', 'mk_framework') ,
         'icon' => 'icon-mk-blockquote vc_mk_element-icon',
         'description' => __('Blockquote modules', 'mk_framework') ,
@@ -121,6 +122,7 @@
                 )
             ) ,
             $add_css_animations,
+            $add_device_visibility,
             array(
                 "type" => "textfield",
                 "heading" => __("Extra class name", "mk_framework") ,

@@ -133,7 +133,15 @@
                         html += '</div>';
                         }
                         if ( options.showLearnmoreButton ) {
-                        html += '<a href="' + options.learnmoreButton + '" class="mka-modal-readmore-btn">More Help</a>';
+                            var learnmoreLabel = 'More Help';
+                            if ( options.learnmoreLabel ) {
+                                learnmoreLabel = options.learnmoreLabel;
+                            }
+                            var learnmoreTarget = '';
+                            if ( options.learnmoreTarget ) {
+                                learnmoreTarget = 'target="' + options.learnmoreTarget + '"';
+                            }
+                        html += '<a ' + learnmoreTarget + ' href="' + options.learnmoreButton + '" class="mka-modal-readmore-btn">' + learnmoreLabel + '</a>';
                         }
                     html += '</div>';
                     }
@@ -224,6 +232,7 @@
                 if (plugin.options.closeOnOutsideClick) {
                     e.preventDefault();
                     plugin.close();
+                    plugin.onOutside();
                 }
             });
 
@@ -276,6 +285,15 @@
             var onClose = this.options.onClose;
             if ( typeof onClose === 'function' ) {
                 onClose.call(this.element);
+            }
+
+        },
+
+        onOutside: function() {
+
+            var onOutside = this.options.onOutside;
+            if ( typeof onOutside === 'function' ) {
+                onOutside.call(this.element);
             }
 
         }
@@ -336,12 +354,15 @@
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         learnmoreButton: '#',
+        learnmoreLabel: 'More Help',
+        learnmoreTarget: '',
         closeOnConfirm: true,
         closeOnCancel: true,
         closeOnOutsideClick: true,
         onConfirm: null,
         onCancel: null,
         onClose: null,
+        onOutside: null,
     };
 
 })( jQuery, window, document );

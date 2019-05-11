@@ -25,8 +25,14 @@ extract( shortcode_atts( array(
 	'default_text' 			=> 'Skills',
 	'default_text_color' 	=> '#fff',
 	'animation' 			=> '',
-	'el_class' 				=> '',
+	'visibility' 			=> '',
+	'el_class' 				=> ''
 ), $atts ) );
 
-wp_print_scripts( 'jquery-raphael' );
+if ( vc_is_page_editable() ) {
+	wp_enqueue_script( 'jquery-raphael' );
+} else {
+	wp_print_scripts( 'jquery-raphael' );
+}
+
 Mk_Static_Files::addAssets('mk_skill_meter_chart');

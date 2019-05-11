@@ -10,6 +10,7 @@ extract( shortcode_atts( array(
 	'image_size'			=> 'crop',
 	'hide_last_row'			=> 'false',
 	'description'			=> 'false',
+	'visibility' 			=> '',
 	'el_class' 				=> '',
 	'columns' 				=> '4',
 	'layout_style' 			=> 'grid',

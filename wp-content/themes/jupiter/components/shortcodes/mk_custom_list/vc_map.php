@@ -2,6 +2,7 @@
 	vc_map(array(
 	    "name" => __("Custom List", "mk_framework") ,
 	    "base" => "mk_custom_list",
+		'html_template' => dirname( __FILE__ ) . '/mk_custom_list.php',
 	    "category" => __('Typography', 'mk_framework') ,
 	    'icon' => 'icon-mk-custom-list vc_mk_element-icon',
 	    'description' => __('Powerful list styles with icons.', 'mk_framework') ,
@@ -22,14 +23,13 @@
 	            "description" => __("", "mk_framework")
 	        ) ,
 	        array(
-	            "type" => "textfield",
+	            "type" => "icon_selector",
 	            "heading" => __("Add Icon", "mk_framework") ,
 	            "param_name" => "style",
-	            "value" => "f00c",
-	            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the class name or icon Character code.", "mk_framework")
+	            "value" => "mk-icon-check",
 	        ) ,
 	        array(
-	            "type" => "colorpicker",
+	            "type" => "alpha_colorpicker",
 	            "heading" => __("Icons Color", "mk_framework") ,
 	            "param_name" => "icon_color",
 	            "value" => $skin_color,
@@ -63,6 +63,7 @@
 	            "group" => "Design",
 	        ) ,
 	        $add_css_animations,
+            $add_device_visibility,
 	        array(
 	            "type" => "textfield",
 	            "heading" => __("Extra class name", "mk_framework") ,

@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Social Networks", "mk_framework"),
     "base" => "mk_social_networks",
+	'html_template' => dirname( __FILE__ ) . '/mk_social_networks.php',
     'icon' => 'icon-mk-social-networks vc_mk_element-icon',
     'description' => __( 'Adds social network icons.', 'mk_framework' ),
     "category" => __('Social', 'mk_framework'),
@@ -45,7 +46,7 @@ vc_map(array(
             "description" => __("The distance between icons. This margin will be applied to all directions.", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Border Color", "mk_framework"),
             "param_name" => "border_color",
             "value" => "#ccc",
@@ -60,7 +61,7 @@ vc_map(array(
             )
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Background Color", "mk_framework"),
             "param_name" => "bg_color",
             "value" => "",
@@ -75,7 +76,7 @@ vc_map(array(
             )
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Background Hover Color", "mk_framework"),
             "param_name" => "bg_hover_color",
             "value" => "#232323",
@@ -90,14 +91,14 @@ vc_map(array(
             )
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icons Color", "mk_framework"),
             "param_name" => "icon_color",
             "value" => "#ccc",
             "description" => __("(default: #ccc)", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icons Hover Color", "mk_framework"),
             "param_name" => "icon_hover_color",
             "value" => "#eee",
@@ -325,6 +326,7 @@ vc_map(array(
             "value" => "",
             "description" => __("Enter the full URL of your corresponding social network. Include (http://). If left blank, this social network icon will not be shown.", "mk_framework")
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

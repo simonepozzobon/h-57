@@ -1,9 +1,6 @@
 <?php
-if (!is_singular('portfolio')) return false;
 
 global $post, $mk_options;
-
-if ($mk_options['enable_portfolio_similar_posts'] != 'true' || get_post_meta($post->ID, '_portfolio_similar', true) == 'false') return false;
 
 $backup = $post;
 $cats = wp_get_object_terms($post->ID, 'portfolio_category');

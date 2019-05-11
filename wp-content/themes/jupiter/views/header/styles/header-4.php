@@ -6,7 +6,7 @@
  * @package     jupiter/views
  * @version     5.0.0
  */
-global $mk_options;
+global $woocommerce, $mk_options;
 
 $header_class = array(
         'sh_id' => Mk_Static_Files::shortcode_id(),
@@ -21,7 +21,9 @@ $is_transparent = (isset($view_params['is_transparent'])) ? ($view_params['is_tr
     <header <?php echo get_header_json_data($header_class['is_shortcode'], 4); ?> <?php echo mk_get_header_class($header_class); ?> <?php echo get_schema_markup('header'); ?>>
         <?php if (is_header_show()): ?>
             <div class="mk-header-holder">
-                <?php mk_get_header_view('holders', 'toolbar'); ?>
+                <?php if ( is_header_toolbar_show() === 'true' ) {
+                    mk_get_header_view( 'holders', 'toolbar' ); 
+                } ?>
                 <div class="mk-header-inner">
                     
                     <div class="mk-header-bg <?php echo mk_get_bg_cover_class($mk_options['header_size']); ?>"></div>
@@ -30,10 +32,14 @@ $is_transparent = (isset($view_params['is_transparent'])) ? ($view_params['is_tr
                         <div class="mk-toolbar-resposnive-icon"><?php Mk_SVG_Icons::get_svg_icon_by_class_name(true, 'mk-icon-chevron-down'); ?></div>
                     <?php } ?>
 
+                    <div class="mk-header-content add-header-height">
                     <?php
                         mk_get_header_view('global', 'main-menu-burger-icon', ['header_style' => 4]);                            
-                        mk_get_header_view('master', 'logo');
+                        if ( ! empty( $mk_options['hide_header_logo'] ) && $mk_options['hide_header_logo'] === 'true' ) { 
+                            mk_get_header_view( 'master', 'logo' );
+                        }
                     ?>
+                    </div>
 
                     <div class="clearboth"></div>
 
@@ -47,16 +53,27 @@ $is_transparent = (isset($view_params['is_transparent'])) ? ($view_params['is_tr
                             'fallback_cb' => '',
                             'walker' => new header_icon_walker() ,
                         ));
-
-                        mk_get_header_view('master', 'checkout', ['header_style' => 4]);
+                        
+                        if ( $woocommerce && $mk_options['woocommerce_catalog'] === 'false' && $mk_options['shopping_cart'] === 'true' ) { 
+                            mk_get_header_view( 'master', 'checkout', ['header_style' => 4] );
+                        }
                      ?>
 
                     <div class="mk-header-right">
                         <?php
                             do_action('header_right_before');
-                            mk_get_header_view('master', 'start-tour');
-                            mk_get_header_view('global', 'search', ['location' => 'header']);
-                            mk_get_header_view('global', 'social', ['location' => 'header']);
+                            
+                            if ( ! empty( $mk_options['header_start_tour_text'] ) ) {
+                                mk_get_header_view('master', 'start-tour');
+                            }
+                            
+                            if ( ! empty( $mk_options['header_search_location'] ) && $mk_options['header_search_location'] === 'header' ) {
+                                mk_get_header_view('global', 'search', ['location' => 'header']);
+                            }
+                            
+                            if ( ! empty( $mk_options['header_social_location'] ) && $mk_options['header_social_location'] === 'header' ) {
+                                mk_get_header_view('global', 'social', ['location' => 'header']);
+                            }
                         ?>
                         
                         <div class="clearboth"></div>

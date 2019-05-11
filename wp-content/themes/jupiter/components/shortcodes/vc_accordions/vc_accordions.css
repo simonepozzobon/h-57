@@ -67,10 +67,19 @@ We need to set height and vertical-align because the <i> has not any class anymo
 }
 .mk-accordion.fancy-style .mk-accordion-single.current .mk-accordion-tab:before,
 .mk-accordion.fancy-style .mk-accordion-single.current .mk-accordion-tab > .mk-svg-icon {
-  -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	transform: rotate(90deg);
 }
+
+@media handheld, only screen and (max-width: 767px) {
+	.mobile-false .mk-accordion-tab > .mk-svg-icon {
+		-webkit-transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		transform: rotate(90deg);
+	}
+}
+
 .mk-accordion.fancy-style .mk-accordion-pane {
   display: none;
   padding: 20px;
@@ -127,14 +136,14 @@ We need to set height and vertical-align because the <i> has not any class anymo
 }
 .mk-accordion.simple-style .mk-accordion-single.current .mk-accordion-tab:before {
   -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+      transform: rotate(90deg);
   color: #252525;
 }
 .mk-accordion.simple-style .mk-accordion-single.current .mk-accordion-tab > .mk-svg-icon {
   -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+      transform: rotate(90deg);
   fill: #252525;
 }
 .mk-accordion.simple-style .mk-accordion-pane {
@@ -149,9 +158,6 @@ We need to set height and vertical-align because the <i> has not any class anymo
   }
 }
 @media handheld, only screen and (max-width: 767px) {
-  .mk-accordion.mobile-false .mk-accordion-single {
-    margin-bottom: 15px;
-  }
   .mk-accordion.mobile-false .mk-accordion-pane {
     display: block !important;
   }
@@ -221,8 +227,8 @@ We need to set height and vertical-align because the <i> has not any class anymo
 .mk-toggle.fancy-style .mk-toggle-title.active-toggle:before,
 .mk-toggle.fancy-style .mk-toggle-title.active-toggle > .mk-svg-icon {
   -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+      transform: rotate(90deg);
 }
 .mk-toggle.simple-style .mk-toggle-title {
   position: relative;
@@ -269,8 +275,8 @@ We need to set height and vertical-align because the <i> has not any class anymo
   left: auto;
   right:-4px;
   -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+      transform: rotate(90deg);
 }
 .mk-toggle .mk-toggle-pane {
   position: relative;

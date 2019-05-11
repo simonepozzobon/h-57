@@ -3,6 +3,7 @@
 vc_map(array(
     "name" => __("News", "mk_framework"),
     "base" => "mk_news",
+	'html_template' => dirname( __FILE__ ) . '/mk_news.php',
    'icon' => 'icon-mk-news vc_mk_element-icon',
     "category" => __('Loops', 'mk_framework'),
     'description' => __( 'News Loop is here.', 'mk_framework' ),
@@ -109,6 +110,7 @@ vc_map(array(
             "value" => $mk_orderby,
             "type" => "dropdown"
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

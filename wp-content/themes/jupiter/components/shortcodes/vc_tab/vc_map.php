@@ -1,24 +1,31 @@
 <?php
-vc_map(array(
-    "name" => __("Tab", "mk_framework") ,
-    "base" => "vc_tab",
-    "allowed_container_element" => 'vc_row',
-    "is_container" => true,
-    "content_element" => false,
-    "params" => array(
-        array(
-            "type" => "textfield",
-            "heading" => __("Title", "mk_framework") ,
-            "param_name" => "title",
-            "description" => __("Tab title.", "mk_framework")
-        ) ,
-        array(
-            "type" => "textfield",
-            "heading" => __("Add Icon (optional)", "mk_framework") ,
-            "param_name" => "icon",
-            "value" => "",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework")
-        )
-    ) ,
-    'js_view' => 'VcTabView'
-));
+
+vc_map( array(
+	'name' => __( 'Tab', 'mk_framework' ),
+	'base' => 'vc_tab',
+	'html_template' => dirname( __FILE__ ) . '/vc_tab.php',
+	'allowed_container_element' => 'vc_row',
+	'front_enqueue_js' => THEME_COMPONENTS . '/shortcodes/vc_tab/vc_front.js',
+	'is_container' => true,
+	'content_element' => false,
+	'params' => array(
+		array(
+			'type' => 'textfield',
+			'heading' => __( 'Title', 'mk_framework' ),
+			'param_name' => 'title',
+			'description' => __( 'Tab title.', 'mk_framework' ),
+		) ,
+		array(
+			'type' => 'icon_selector',
+			'heading' => __( 'Add Icon (optional)', 'mk_framework' ),
+			'param_name' => 'icon',
+			'value' => '',
+		),
+		array(
+			'type' => 'tab_id',
+			'heading' => __( 'Tab ID', 'js_composer' ),
+			'param_name' => 'tab_id',
+		),
+	),
+	'js_view' => 'VcTabView',
+) );

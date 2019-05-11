@@ -2,9 +2,12 @@
 vc_map(array(
     "name" => __("Advanced Google Maps", "mk_framework"),
     "base" => "mk_advanced_gmaps",
+	'html_template' => dirname( __FILE__ ) . '/mk_advanced_gmaps.php',
     'icon' => 'icon-mk-advanced-google-maps vc_mk_element-icon',
     "admin_enqueue_js" => THEME_COMPONENTS . "/shortcodes/mk_advanced_gmaps/vc_admin.js",
     "admin_enqueue_css" => THEME_COMPONENTS . "/shortcodes/mk_advanced_gmaps/vc_admin.css",
+    'front_enqueue_js' => THEME_COMPONENTS . '/shortcodes/mk_advanced_gmaps/vc_admin.js',
+    'front_enqueue_css' => THEME_COMPONENTS . '/shortcodes/mk_advanced_gmaps/vc_admin.css',
     'description' => __( 'Powerful Google Maps element.', 'mk_framework' ),
     "category" => __('Social', 'mk_framework'),
     "params" => array(
@@ -144,14 +147,14 @@ vc_map(array(
         ),
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Content Box Background Color", "mk_framework"),
             "param_name" => "content_bg_color",
             "value" => "#fff",
             "description" => __("", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Content Box Font Color", "mk_framework"),
             "param_name" => "content_font_color",
             "value" => "#777",
@@ -286,7 +289,7 @@ vc_map(array(
             )
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Hue", "mk_framework"),
             "param_name" => "hue",
             "value" => "#ccc",
@@ -332,6 +335,7 @@ vc_map(array(
                 )
             )
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

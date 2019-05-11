@@ -59,21 +59,19 @@ $query_options = array(
             'order' => $order,
 );
 
-
-// Fixed for post__in order - JPM-1821
-
 if($orderby == 'post__in') {
+
     $images_ids_list = explode(',', $images);
     
     if($order == 'DESC') {
-        rsort($images_ids_list);
+        $sorted_images = implode(',', array_reverse($images_ids_list));
     } else {
-        sort($images_ids_list);
+        $sorted_images = implode(',', $images_ids_list);
     }
-    
-    $sorted_images = implode(',', $images_ids_list);
+
     $query_options['posts'] = $sorted_images;
 }
+
 
 $query = mk_wp_query($query_options);
 
@@ -99,6 +97,7 @@ $atts = array(
     'height' => $height,
     'column' => $column,
     'id' => $id,
+    'lazyload' => $lazyload,
     'i' => 0
     );
 
@@ -111,6 +110,12 @@ if($style != 'grid') {
     $data_config[] = 'data-mk-component="Masonry"';
     $data_config[] = 'data-masonry-config=\'{"container":"#gallery-loop-'.$id.'", "item":".js-gallery-item", "cols": "4"}\'';
 } 
+
+$lazylaod_class = '';
+$global_lazyload = ( !empty( $mk_options['global_lazyload'] ) ) ? $mk_options['global_lazyload'] : 'false';
+if ( ($global_lazyload == 'true' && $disable_lazyload == 'false') || ($global_lazyload == 'false' && $lazyload == 'true') ) {
+     $lazylaod_class = 'mk-gallery-lazyload';
+}
 
 $data_config[] = 'data-query="'.base64_encode(json_encode($query_options)).'"';
 $data_config[] = 'data-loop-atts="'.base64_encode(json_encode($atts)).'"';
@@ -126,7 +131,7 @@ echo mk_get_shortcode_view('mk_gallery', 'components/hover-blur-svg', true, ['ho
 <?php mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
 
 
-<section id="gallery-loop-<?php echo $id; ?>" <?php echo implode(' ', $data_config); ?> class="mk-gallery <?php echo $mansory_style. $el_class; ?> js-loop js-el clearfix">
+<section id="gallery-loop-<?php echo $id; ?>" <?php echo implode(' ', $data_config); ?> class="mk-gallery <?php echo $mansory_style. $el_class . ' ' . $visibility; ?> js-loop js-el clearfix <?php echo $lazylaod_class; ?>">
 
     <?php 
     $style = ($style != 'grid') ? 'masonry' : $style;

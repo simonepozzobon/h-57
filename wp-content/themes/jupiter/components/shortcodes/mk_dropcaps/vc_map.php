@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Dropcaps", "mk_framework") ,
     "base" => "mk_dropcaps",
+	'html_template' => dirname( __FILE__ ) . '/mk_dropcaps.php',
     'icon' => 'icon-mk-dropcaps vc_mk_element-icon',
     "category" => __('Typography', 'mk_framework') ,
     'description' => __('Dropcaps element shortcode.', 'mk_framework') ,
@@ -59,7 +60,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Background Color", "mk_framework") ,
             "param_name" => "background_color",
             "value" => "",
@@ -72,7 +73,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Text Color", "mk_framework") ,
             "param_name" => "text_color",
             "value" => "",
@@ -84,6 +85,7 @@ vc_map(array(
                 )
             )
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

@@ -6,7 +6,7 @@ include( $path . '/config.php' );
 
 if ( $images == '' ) return null;
 
-$id = uniqid();
+$id = Mk_Static_Files::shortcode_id();
 
 $images = explode( ',', $images );
 
@@ -28,9 +28,11 @@ $container_class[] = get_viewport_animation_class($animation);
 $container_class[] = $size.'-laptop';
 $container_class[] = $el_class;
 
+if ( ! empty( $visibility ) ) {
+	echo '<div class="' . $visibility . '">';
+}
 
 mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
-
 
 <div <?php echo implode(' ', $slider_atts); ?> style="max-height:481px;max-width:836px;" class="<?php echo implode(' ', $container_class); ?>" id="flexslider_<?php echo $id; ?>">
 	<img style="display:none" class="mk-laptop-image" alt="Laptop Slideshow" src="<?php echo THEME_IMAGES; ?>/theme-laptop-full.png" alt="laptop" />
@@ -38,7 +40,7 @@ mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
 		<ul class="mk-flex-slides" style="max-width:635px;max-height:405px;">
 
 		<?php foreach ( $images as $attach_id ) {
-				$featured_image_src = Mk_Image_Resize::resize_by_id_adaptive($attach_id, 'crop', 635, 405, $crop = true, $dummy = true); 
+				$featured_image_src = Mk_Image_Resize::resize_by_id_adaptive($attach_id, 'crop', 635, 405, $crop = true, $dummy = true);
 				?>
 				<li>
 					<img alt="<?php echo trim(strip_tags( get_post_meta($attach_id, '_wp_attachment_image_alt', true) )); ?>" src="<?php echo $featured_image_src['dummy']; ?>" <?php echo $featured_image_src['data-set']; ?> />
@@ -48,3 +50,7 @@ mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
 		</ul>
 	</div>
 </div>
+
+<?php if ( ! empty( $visibility ) ) : ?>
+</div>
+<?php endif; ?>

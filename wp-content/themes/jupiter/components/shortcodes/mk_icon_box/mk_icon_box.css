@@ -6,8 +6,12 @@
 }
 
 .mk-box-icon .mk-main-ico {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
   margin: 0 auto;
 }
 .mk-box-icon .mk-main-ico .mk-svg-icon {
@@ -292,8 +296,11 @@
   border-style: solid;
   border-radius: 60px;
   text-align: center;
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
   display: flex !important;
-  align-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
   margin: 0 auto;
 }
 .mk-box-icon .rounded-circle .small {

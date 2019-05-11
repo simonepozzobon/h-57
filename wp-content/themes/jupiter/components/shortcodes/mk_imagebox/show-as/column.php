@@ -22,6 +22,6 @@ switch($view_params['column']) {
 ?>    
 
 <div id="mk-imagebox-<?php echo $view_params['id']; ?>" class="mk-imagebox column-style <?php echo $view_params['el_class']; ?>">
-    <div class="<?php echo $column_class; ?>"><?php echo wpb_js_remove_wpautop( $view_params['content'], true ); ?></div>
+    <div class="<?php echo $column_class; ?>"><?php echo wpb_js_remove_wpautop( $view_params['content'] ); ?></div>
     <div class="clearboth"></div>
 </div>

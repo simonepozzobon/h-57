@@ -1,14 +1,13 @@
 <?php
 
 /**
- * template part for blog single bold style social share single.php. views/blog/components
+ * Template part for blog single bold style social share single.php. views/blog/components
  *
- * @author      Artbees
- * @package     jupiter/views
- * @version     5.0.0
+ * @author  Artbees
+ * @package jupiter/views
+ * @since   5.0.0
+ * @since   5.9.1 Removed Clear & Bold style if condition.
  */
-
-if(mk_get_blog_single_style() != 'bold') return false;
 
 global $mk_options;
 

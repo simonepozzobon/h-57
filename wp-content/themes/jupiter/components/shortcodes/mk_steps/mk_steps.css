@@ -63,15 +63,19 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
 }
 @-webkit-keyframes toRightFromLeft {
   49% {
     -webkit-transform: translateX(100%) translateY(-50%);
+            transform: translateX(100%) translateY(-50%);
   }
   50% {
     opacity: 0;
     -webkit-transform: translateX(-100%) translateY(-50%);
+            transform: translateX(-100%) translateY(-50%);
   }
   51% {
     opacity: 1;
@@ -179,4 +183,3 @@
 .mk-process-steps.process-steps-5 .mk-process-icon svg {
   height: 60px;
 }
-/* ======= */

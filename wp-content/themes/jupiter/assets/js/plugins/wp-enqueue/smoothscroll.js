@@ -16,6 +16,12 @@
 // extension for browsers or native application
 // without getting a written permission first.
 //
+
+/* IMPORANT NOTICE
+ *
+ * Some part of the script has been changed manually.
+ * Log commits to see the changes.
+ */
 (function () {
   
 // Scroll Variables (tweakable)
@@ -91,7 +97,16 @@ function init() {
     var html = document.documentElement;
     var windowHeight = window.innerHeight; 
     var scrollHeight = body.scrollHeight;
-    
+    var rootScrollHeight = function () {
+        var adminbar = document.querySelector( '#wpadminbar' );
+
+        if ( ! adminbar ) {
+            return root.scrollHeight;
+        }
+
+        return root.scrollHeight - adminbar.offsetHeight;
+    }
+
     // check compat mode for root element
     root = (document.compatMode.indexOf('CSS') >= 0) ? html : body;
     activeElement = body;
@@ -120,7 +135,7 @@ function init() {
         var fullPageElem = document.createElement('div');
         fullPageElem.style.cssText = 'position:absolute; z-index:-10000; ' +
                                      'top:0; left:0; right:0; height:' + 
-                                      root.scrollHeight + 'px';
+                                      rootScrollHeight() + 'px';
         document.body.appendChild(fullPageElem);
         
         // DOM changed (throttled) to fix height
@@ -130,7 +145,7 @@ function init() {
             pendingRefresh = setTimeout(function () {
                 if (isExcluded) return; // could be running after cleanup
                 fullPageElem.style.height = '0';
-                fullPageElem.style.height = root.scrollHeight + 'px';
+                fullPageElem.style.height = rootScrollHeight() + 'px';
                 pendingRefresh = null;
             }, 500); // act rarely to stay fast
         };

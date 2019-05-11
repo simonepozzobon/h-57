@@ -16,10 +16,11 @@ if($line_height > '18') {
 
 Mk_Static_Files::addCSS($app_styles, $id);
 
-
+$class = $el_class;
+$class .= ' ' . $visibility;
 ?>
 
-<div id="mk-skill-meter-<?php echo $id; ?>" class="mk-skill-meter <?php echo $el_class; ?>">
+<div id="mk-skill-meter-<?php echo $id; ?>" class="mk-skill-meter <?php echo $class; ?>">
     <div class="mk-skill-meter-title"<?php echo $txt_color; ?>><?php echo $title; ?></div>
     <div class="mk-progress-bar" style="background-color:<?php echo $bar_color; ?>">
         <span class="progress-outer" data-width="<?php echo $percent; ?>" style="background-color:<?php echo $color; ?>;">

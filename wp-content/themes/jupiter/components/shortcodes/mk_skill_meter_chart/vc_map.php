@@ -3,6 +3,7 @@
 vc_map(array(
     "name" => __("Diagram Progress Bar", "mk_framework") ,
     "base" => "mk_skill_meter_chart",
+	'html_template' => dirname( __FILE__ ) . '/mk_skill_meter_chart.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-diagram-progress-bar vc_mk_element-icon',
     'description' => __('Show skills & data in diagram charts.', 'mk_framework') ,
@@ -19,7 +20,7 @@ vc_map(array(
             "description" => __("Measure your data in percent", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Data 1 : Arch Color", "mk_framework") ,
             "param_name" => "color_1",
             "value" => "#e74c3c",
@@ -45,7 +46,7 @@ vc_map(array(
             "description" => __("Measure your data in percent", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Data 2 : Arch Color", "mk_framework") ,
             "param_name" => "color_2",
             "value" => "#8c6645",
@@ -71,7 +72,7 @@ vc_map(array(
             "description" => __("Measure your data in percent", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Data 3 : Arch Color", "mk_framework") ,
             "param_name" => "color_3",
             "value" => "#265573",
@@ -97,7 +98,7 @@ vc_map(array(
             "description" => __("Measure your data in percent", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Data 4 : Arch Color", "mk_framework") ,
             "param_name" => "color_4",
             "value" => "#008b83",
@@ -123,7 +124,7 @@ vc_map(array(
             "description" => __("Measure your data in percent", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Data 5 : Arch Color", "mk_framework") ,
             "param_name" => "color_5",
             "value" => "#d96b52",
@@ -149,7 +150,7 @@ vc_map(array(
             "description" => __("Measure your data in percent", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Data 6 : Arch Color", "mk_framework") ,
             "param_name" => "color_6",
             "value" => "#82bf56",
@@ -175,7 +176,7 @@ vc_map(array(
             "description" => __("Measure your data in percent", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Data 7 : Arch Color", "mk_framework") ,
             "param_name" => "color_7",
             "value" => "#4ecdc4",
@@ -197,20 +198,21 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Center Circle Background Color", "mk_framework") ,
             "param_name" => "center_color",
             "value" => "#1e3641",
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Default Text Color", "mk_framework") ,
             "param_name" => "default_text_color",
             "value" => "#fff",
             "description" => __("", "mk_framework")
         ) ,
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

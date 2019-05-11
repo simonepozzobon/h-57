@@ -16,5 +16,6 @@ extract(shortcode_atts(array(
     'animation' => '',
     "font_family" => '',
     "font_type" => '',
+	'visibility' => ''
 ) , $atts));
 Mk_Static_Files::addAssets('mk_title_box');

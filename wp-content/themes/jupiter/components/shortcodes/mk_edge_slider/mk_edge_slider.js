@@ -38,8 +38,8 @@
 					var $slide = $( slide ),
 						title = $slide.find('.edge-slide-content .edge-title').first().text(),
 						skin = $slide.attr("data-header-skin"),
-						image = $slide.find('.mk-section-image').css('background-image') || 
-								$slide.find('.mk-video-section-touch').css('background-image'),
+						image = $slide.find('.mk-section-image').attr('data-thumb') || 
+								$slide.find('.mk-video-section-touch').attr('data-thumb'),
 						bgColor = $slide.find('.mk-section-image').css('background-color');
 
 
@@ -92,15 +92,15 @@
         		$prevTitle.text( self.slideContents[ prevId ].title );
         		$prevBg.css( 'background', 
         			self.slideContents[ prevId ].image !== 'none' ? 
-        				self.slideContents[ prevId ].image :
+        				'url(' + self.slideContents[ prevId ].image + ')' :
         				self.slideContents[ prevId ].bgColor );
             }
 
             if(self.slideContents[ nextId ]) {
-        		$nextTitle.text( self.slideContents[ nextId ].title ); 
+        		$nextTitle.text( self.slideContents[ nextId ].title );
         		$nextBg.css( 'background', 
         			self.slideContents[ nextId ].image !== 'none' ? 
-        				self.slideContents[ nextId ].image :
+        				'url(' + self.slideContents[ nextId ].image + ')' :
         				self.slideContents[ nextId ].bgColor );
             }
         };
@@ -206,6 +206,9 @@
 		this.el = el;
 		this.config = $.extend( config, callbacks );
 		this.slideContents = null; // cache slide contents
+
+        // Let mk_slider know it's EdgeSlider
+        this.config.edgeSlider = true;
 	};
 
 	MK.component.EdgeSlider.prototype = {

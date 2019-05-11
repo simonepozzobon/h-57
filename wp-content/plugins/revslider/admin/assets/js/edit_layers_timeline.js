@@ -1,3 +1,8 @@
+/************************************************
+ * REVOLUTION 5.4.6.4 EDIT LAYER TIMELINE JS 
+ * @version: 2.1 (06.03.2018)
+ * @author ThemePunch
+************************************************/
 
 /* perfect-scrollbar v0.6.11 */
 !function t(e,n,r){function o(l,a){if(!n[l]){if(!e[l]){var s="function"==typeof require&&require;if(!a&&s)return s(l,!0);if(i)return i(l,!0);var c=new Error("Cannot find module '"+l+"'");throw c.code="MODULE_NOT_FOUND",c}var u=n[l]={exports:{}};e[l][0].call(u.exports,function(t){var n=e[l][1][t];return o(n?n:t)},u,u.exports,t,e,n,r)}return n[l].exports}for(var i="function"==typeof require&&require,l=0;l<r.length;l++)o(r[l]);return o}({1:[function(t,e,n){"use strict";function r(t){t.fn.perfectScrollbar=function(t){return this.each(function(){if("object"==typeof t||"undefined"==typeof t){var e=t;i.get(this)||o.initialize(this,e)}else{var n=t;"update"===n?o.update(this):"destroy"===n&&o.destroy(this)}})}}var o=t("../main"),i=t("../plugin/instances");if("function"==typeof define&&define.amd)define(["jquery"],r);else{var l=window.jQuery?window.jQuery:window.$;"undefined"!=typeof l&&r(l)}e.exports=r},{"../main":7,"../plugin/instances":18}],2:[function(t,e,n){"use strict";function r(t,e){var n=t.className.split(" ");n.indexOf(e)<0&&n.push(e),t.className=n.join(" ")}function o(t,e){var n=t.className.split(" "),r=n.indexOf(e);r>=0&&n.splice(r,1),t.className=n.join(" ")}n.add=function(t,e){t.classList?t.classList.add(e):r(t,e)},n.remove=function(t,e){t.classList?t.classList.remove(e):o(t,e)},n.list=function(t){return t.classList?Array.prototype.slice.apply(t.classList):t.className.split(" ")}},{}],3:[function(t,e,n){"use strict";function r(t,e){return window.getComputedStyle(t)[e]}function o(t,e,n){return"number"==typeof n&&(n=n.toString()+"px"),t.style[e]=n,t}function i(t,e){for(var n in e){var r=e[n];"number"==typeof r&&(r=r.toString()+"px"),t.style[n]=r}return t}var l={};l.e=function(t,e){var n=document.createElement(t);return n.className=e,n},l.appendTo=function(t,e){return e.appendChild(t),t},l.css=function(t,e,n){return"object"==typeof e?i(t,e):"undefined"==typeof n?r(t,e):o(t,e,n)},l.matches=function(t,e){return"undefined"!=typeof t.matches?t.matches(e):"undefined"!=typeof t.matchesSelector?t.matchesSelector(e):"undefined"!=typeof t.webkitMatchesSelector?t.webkitMatchesSelector(e):"undefined"!=typeof t.mozMatchesSelector?t.mozMatchesSelector(e):"undefined"!=typeof t.msMatchesSelector?t.msMatchesSelector(e):void 0},l.remove=function(t){"undefined"!=typeof t.remove?t.remove():t.parentNode&&t.parentNode.removeChild(t)},l.queryChildren=function(t,e){return Array.prototype.filter.call(t.childNodes,function(t){return l.matches(t,e)})},e.exports=l},{}],4:[function(t,e,n){"use strict";var r=function(t){this.element=t,this.events={}};r.prototype.bind=function(t,e){"undefined"==typeof this.events[t]&&(this.events[t]=[]),this.events[t].push(e),this.element.addEventListener(t,e,!1)},r.prototype.unbind=function(t,e){var n="undefined"!=typeof e;this.events[t]=this.events[t].filter(function(r){return n&&r!==e?!0:(this.element.removeEventListener(t,r,!1),!1)},this)},r.prototype.unbindAll=function(){for(var t in this.events)this.unbind(t)};var o=function(){this.eventElements=[]};o.prototype.eventElement=function(t){var e=this.eventElements.filter(function(e){return e.element===t})[0];return"undefined"==typeof e&&(e=new r(t),this.eventElements.push(e)),e},o.prototype.bind=function(t,e,n){this.eventElement(t).bind(e,n)},o.prototype.unbind=function(t,e,n){this.eventElement(t).unbind(e,n)},o.prototype.unbindAll=function(){for(var t=0;t<this.eventElements.length;t++)this.eventElements[t].unbindAll()},o.prototype.once=function(t,e,n){var r=this.eventElement(t),o=function(t){r.unbind(e,o),n(t)};r.bind(e,o)},e.exports=o},{}],5:[function(t,e,n){"use strict";e.exports=function(){function t(){return Math.floor(65536*(1+Math.random())).toString(16).substring(1)}return function(){return t()+t()+"-"+t()+"-"+t()+"-"+t()+"-"+t()+t()+t()}}()},{}],6:[function(t,e,n){"use strict";var r=t("./class"),o=t("./dom"),i=n.toInt=function(t){return parseInt(t,10)||0},l=n.clone=function(t){if(null===t)return null;if(t.constructor===Array)return t.map(l);if("object"==typeof t){var e={};for(var n in t)e[n]=l(t[n]);return e}return t};n.extend=function(t,e){var n=l(t);for(var r in e)n[r]=l(e[r]);return n},n.isEditable=function(t){return o.matches(t,"input,[contenteditable]")||o.matches(t,"select,[contenteditable]")||o.matches(t,"textarea,[contenteditable]")||o.matches(t,"button,[contenteditable]")},n.removePsClasses=function(t){for(var e=r.list(t),n=0;n<e.length;n++){var o=e[n];0===o.indexOf("ps-")&&r.remove(t,o)}},n.outerWidth=function(t){return i(o.css(t,"width"))+i(o.css(t,"paddingLeft"))+i(o.css(t,"paddingRight"))+i(o.css(t,"borderLeftWidth"))+i(o.css(t,"borderRightWidth"))},n.startScrolling=function(t,e){r.add(t,"ps-in-scrolling"),"undefined"!=typeof e?r.add(t,"ps-"+e):(r.add(t,"ps-x"),r.add(t,"ps-y"))},n.stopScrolling=function(t,e){r.remove(t,"ps-in-scrolling"),"undefined"!=typeof e?r.remove(t,"ps-"+e):(r.remove(t,"ps-x"),r.remove(t,"ps-y"))},n.env={isWebKit:"WebkitAppearance"in document.documentElement.style,supportsTouch:"ontouchstart"in window||window.DocumentTouch&&document instanceof window.DocumentTouch,supportsIePointer:null!==window.navigator.msMaxTouchPoints}},{"./class":2,"./dom":3}],7:[function(t,e,n){"use strict";var r=t("./plugin/destroy"),o=t("./plugin/initialize"),i=t("./plugin/update");e.exports={initialize:o,update:i,destroy:r}},{"./plugin/destroy":9,"./plugin/initialize":17,"./plugin/update":21}],8:[function(t,e,n){"use strict";e.exports={handlers:["click-rail","drag-scrollbar","keyboard","wheel","touch"],maxScrollbarLength:null,minScrollbarLength:null,scrollXMarginOffset:0,scrollYMarginOffset:0,stopPropagationOnClick:!0,suppressScrollX:!1,suppressScrollY:!1,swipePropagation:!0,useBothWheelAxes:!1,wheelPropagation:!1,wheelSpeed:1,theme:"default"}},{}],9:[function(t,e,n){"use strict";var r=t("../lib/helper"),o=t("../lib/dom"),i=t("./instances");e.exports=function(t){var e=i.get(t);e&&(e.event.unbindAll(),o.remove(e.scrollbarX),o.remove(e.scrollbarY),o.remove(e.scrollbarXRail),o.remove(e.scrollbarYRail),r.removePsClasses(t),i.remove(t))}},{"../lib/dom":3,"../lib/helper":6,"./instances":18}],10:[function(t,e,n){"use strict";function r(t,e){function n(t){return t.getBoundingClientRect()}var r=function(t){t.stopPropagation()};e.settings.stopPropagationOnClick&&e.event.bind(e.scrollbarY,"click",r),e.event.bind(e.scrollbarYRail,"click",function(r){var i=o.toInt(e.scrollbarYHeight/2),s=e.railYRatio*(r.pageY-window.pageYOffset-n(e.scrollbarYRail).top-i),c=e.railYRatio*(e.railYHeight-e.scrollbarYHeight),u=s/c;0>u?u=0:u>1&&(u=1),a(t,"top",(e.contentHeight-e.containerHeight)*u),l(t),r.stopPropagation()}),e.settings.stopPropagationOnClick&&e.event.bind(e.scrollbarX,"click",r),e.event.bind(e.scrollbarXRail,"click",function(r){var i=o.toInt(e.scrollbarXWidth/2),s=e.railXRatio*(r.pageX-window.pageXOffset-n(e.scrollbarXRail).left-i),c=e.railXRatio*(e.railXWidth-e.scrollbarXWidth),u=s/c;0>u?u=0:u>1&&(u=1),a(t,"left",(e.contentWidth-e.containerWidth)*u-e.negativeScrollAdjustment),l(t),r.stopPropagation()})}var o=t("../../lib/helper"),i=t("../instances"),l=t("../update-geometry"),a=t("../update-scroll");e.exports=function(t){var e=i.get(t);r(t,e)}},{"../../lib/helper":6,"../instances":18,"../update-geometry":19,"../update-scroll":20}],11:[function(t,e,n){"use strict";function r(t,e){function n(n){var o=r+n*e.railXRatio,l=Math.max(0,e.scrollbarXRail.getBoundingClientRect().left)+e.railXRatio*(e.railXWidth-e.scrollbarXWidth);0>o?e.scrollbarXLeft=0:o>l?e.scrollbarXLeft=l:e.scrollbarXLeft=o;var a=i.toInt(e.scrollbarXLeft*(e.contentWidth-e.containerWidth)/(e.containerWidth-e.railXRatio*e.scrollbarXWidth))-e.negativeScrollAdjustment;c(t,"left",a)}var r=null,o=null,a=function(e){n(e.pageX-o),s(t),e.stopPropagation(),e.preventDefault()},u=function(){i.stopScrolling(t,"x"),e.event.unbind(e.ownerDocument,"mousemove",a)};e.event.bind(e.scrollbarX,"mousedown",function(n){o=n.pageX,r=i.toInt(l.css(e.scrollbarX,"left"))*e.railXRatio,i.startScrolling(t,"x"),e.event.bind(e.ownerDocument,"mousemove",a),e.event.once(e.ownerDocument,"mouseup",u),n.stopPropagation(),n.preventDefault()})}function o(t,e){function n(n){var o=r+n*e.railYRatio,l=Math.max(0,e.scrollbarYRail.getBoundingClientRect().top)+e.railYRatio*(e.railYHeight-e.scrollbarYHeight);0>o?e.scrollbarYTop=0:o>l?e.scrollbarYTop=l:e.scrollbarYTop=o;var a=i.toInt(e.scrollbarYTop*(e.contentHeight-e.containerHeight)/(e.containerHeight-e.railYRatio*e.scrollbarYHeight));c(t,"top",a)}var r=null,o=null,a=function(e){n(e.pageY-o),s(t),e.stopPropagation(),e.preventDefault()},u=function(){i.stopScrolling(t,"y"),e.event.unbind(e.ownerDocument,"mousemove",a)};e.event.bind(e.scrollbarY,"mousedown",function(n){o=n.pageY,r=i.toInt(l.css(e.scrollbarY,"top"))*e.railYRatio,i.startScrolling(t,"y"),e.event.bind(e.ownerDocument,"mousemove",a),e.event.once(e.ownerDocument,"mouseup",u),n.stopPropagation(),n.preventDefault()})}var i=t("../../lib/helper"),l=t("../../lib/dom"),a=t("../instances"),s=t("../update-geometry"),c=t("../update-scroll");e.exports=function(t){var e=a.get(t);r(t,e),o(t,e)}},{"../../lib/dom":3,"../../lib/helper":6,"../instances":18,"../update-geometry":19,"../update-scroll":20}],12:[function(t,e,n){"use strict";function r(t,e){function n(n,r){var o=t.scrollTop;if(0===n){if(!e.scrollbarYActive)return!1;if(0===o&&r>0||o>=e.contentHeight-e.containerHeight&&0>r)return!e.settings.wheelPropagation}var i=t.scrollLeft;if(0===r){if(!e.scrollbarXActive)return!1;if(0===i&&0>n||i>=e.contentWidth-e.containerWidth&&n>0)return!e.settings.wheelPropagation}return!0}var r=!1;e.event.bind(t,"mouseenter",function(){r=!0}),e.event.bind(t,"mouseleave",function(){r=!1});var l=!1;e.event.bind(e.ownerDocument,"keydown",function(c){if(!c.isDefaultPrevented||!c.isDefaultPrevented()){var u=i.matches(e.scrollbarX,":focus")||i.matches(e.scrollbarY,":focus");if(r||u){var d=document.activeElement?document.activeElement:e.ownerDocument.activeElement;if(d){if("IFRAME"===d.tagName)d=d.contentDocument.activeElement;else for(;d.shadowRoot;)d=d.shadowRoot.activeElement;if(o.isEditable(d))return}var p=0,f=0;switch(c.which){case 37:p=-30;break;case 38:f=30;break;case 39:p=30;break;case 40:f=-30;break;case 33:f=90;break;case 32:f=c.shiftKey?90:-90;break;case 34:f=-90;break;case 35:f=c.ctrlKey?-e.contentHeight:-e.containerHeight;break;case 36:f=c.ctrlKey?t.scrollTop:e.containerHeight;break;default:return}s(t,"top",t.scrollTop-f),s(t,"left",t.scrollLeft+p),a(t),l=n(p,f),l&&c.preventDefault()}}})}var o=t("../../lib/helper"),i=t("../../lib/dom"),l=t("../instances"),a=t("../update-geometry"),s=t("../update-scroll");e.exports=function(t){var e=l.get(t);r(t,e)}},{"../../lib/dom":3,"../../lib/helper":6,"../instances":18,"../update-geometry":19,"../update-scroll":20}],13:[function(t,e,n){"use strict";function r(t,e){function n(n,r){var o=t.scrollTop;if(0===n){if(!e.scrollbarYActive)return!1;if(0===o&&r>0||o>=e.contentHeight-e.containerHeight&&0>r)return!e.settings.wheelPropagation}var i=t.scrollLeft;if(0===r){if(!e.scrollbarXActive)return!1;if(0===i&&0>n||i>=e.contentWidth-e.containerWidth&&n>0)return!e.settings.wheelPropagation}return!0}function r(t){var e=t.deltaX,n=-1*t.deltaY;return"undefined"!=typeof e&&"undefined"!=typeof n||(e=-1*t.wheelDeltaX/6,n=t.wheelDeltaY/6),t.deltaMode&&1===t.deltaMode&&(e*=10,n*=10),e!==e&&n!==n&&(e=0,n=t.wheelDelta),[e,n]}function o(e,n){var r=t.querySelector("textarea:hover, .ps-child:hover");if(r){if("TEXTAREA"!==r.tagName&&!window.getComputedStyle(r).overflow.match(/(scroll|auto)/))return!1;var o=r.scrollHeight-r.clientHeight;if(o>0&&!(0===r.scrollTop&&n>0||r.scrollTop===o&&0>n))return!0;var i=r.scrollLeft-r.clientWidth;if(i>0&&!(0===r.scrollLeft&&0>e||r.scrollLeft===i&&e>0))return!0}return!1}function a(a){var c=r(a),u=c[0],d=c[1];o(u,d)||(s=!1,e.settings.useBothWheelAxes?e.scrollbarYActive&&!e.scrollbarXActive?(d?l(t,"top",t.scrollTop-d*e.settings.wheelSpeed):l(t,"top",t.scrollTop+u*e.settings.wheelSpeed),s=!0):e.scrollbarXActive&&!e.scrollbarYActive&&(u?l(t,"left",t.scrollLeft+u*e.settings.wheelSpeed):l(t,"left",t.scrollLeft-d*e.settings.wheelSpeed),s=!0):(l(t,"top",t.scrollTop-d*e.settings.wheelSpeed),l(t,"left",t.scrollLeft+u*e.settings.wheelSpeed)),i(t),s=s||n(u,d),s&&(a.stopPropagation(),a.preventDefault()))}var s=!1;"undefined"!=typeof window.onwheel?e.event.bind(t,"wheel",a):"undefined"!=typeof window.onmousewheel&&e.event.bind(t,"mousewheel",a)}var o=t("../instances"),i=t("../update-geometry"),l=t("../update-scroll");e.exports=function(t){var e=o.get(t);r(t,e)}},{"../instances":18,"../update-geometry":19,"../update-scroll":20}],14:[function(t,e,n){"use strict";function r(t,e){e.event.bind(t,"scroll",function(){i(t)})}var o=t("../instances"),i=t("../update-geometry");e.exports=function(t){var e=o.get(t);r(t,e)}},{"../instances":18,"../update-geometry":19}],15:[function(t,e,n){"use strict";function r(t,e){function n(){var t=window.getSelection?window.getSelection():document.getSelection?document.getSelection():"";return 0===t.toString().length?null:t.getRangeAt(0).commonAncestorContainer}function r(){c||(c=setInterval(function(){return i.get(t)?(a(t,"top",t.scrollTop+u.top),a(t,"left",t.scrollLeft+u.left),void l(t)):void clearInterval(c)},50))}function s(){c&&(clearInterval(c),c=null),o.stopScrolling(t)}var c=null,u={top:0,left:0},d=!1;e.event.bind(e.ownerDocument,"selectionchange",function(){t.contains(n())?d=!0:(d=!1,s())}),e.event.bind(window,"mouseup",function(){d&&(d=!1,s())}),e.event.bind(window,"mousemove",function(e){if(d){var n={x:e.pageX,y:e.pageY},i={left:t.offsetLeft,right:t.offsetLeft+t.offsetWidth,top:t.offsetTop,bottom:t.offsetTop+t.offsetHeight};n.x<i.left+3?(u.left=-5,o.startScrolling(t,"x")):n.x>i.right-3?(u.left=5,o.startScrolling(t,"x")):u.left=0,n.y<i.top+3?(i.top+3-n.y<5?u.top=-5:u.top=-20,o.startScrolling(t,"y")):n.y>i.bottom-3?(n.y-i.bottom+3<5?u.top=5:u.top=20,o.startScrolling(t,"y")):u.top=0,0===u.top&&0===u.left?s():r()}})}var o=t("../../lib/helper"),i=t("../instances"),l=t("../update-geometry"),a=t("../update-scroll");e.exports=function(t){var e=i.get(t);r(t,e)}},{"../../lib/helper":6,"../instances":18,"../update-geometry":19,"../update-scroll":20}],16:[function(t,e,n){"use strict";function r(t,e,n,r){function o(n,r){var o=t.scrollTop,i=t.scrollLeft,l=Math.abs(n),a=Math.abs(r);if(a>l){if(0>r&&o===e.contentHeight-e.containerHeight||r>0&&0===o)return!e.settings.swipePropagation}else if(l>a&&(0>n&&i===e.contentWidth-e.containerWidth||n>0&&0===i))return!e.settings.swipePropagation;return!0}function s(e,n){a(t,"top",t.scrollTop-n),a(t,"left",t.scrollLeft-e),l(t)}function c(){Y=!0}function u(){Y=!1}function d(t){return t.targetTouches?t.targetTouches[0]:t}function p(t){return t.targetTouches&&1===t.targetTouches.length?!0:!(!t.pointerType||"mouse"===t.pointerType||t.pointerType===t.MSPOINTER_TYPE_MOUSE)}function f(t){if(p(t)){w=!0;var e=d(t);v.pageX=e.pageX,v.pageY=e.pageY,g=(new Date).getTime(),null!==y&&clearInterval(y),t.stopPropagation()}}function h(t){if(!w&&e.settings.swipePropagation&&f(t),!Y&&w&&p(t)){var n=d(t),r={pageX:n.pageX,pageY:n.pageY},i=r.pageX-v.pageX,l=r.pageY-v.pageY;s(i,l),v=r;var a=(new Date).getTime(),c=a-g;c>0&&(m.x=i/c,m.y=l/c,g=a),o(i,l)&&(t.stopPropagation(),t.preventDefault())}}function b(){!Y&&w&&(w=!1,clearInterval(y),y=setInterval(function(){return i.get(t)?Math.abs(m.x)<.01&&Math.abs(m.y)<.01?void clearInterval(y):(s(30*m.x,30*m.y),m.x*=.8,void(m.y*=.8)):void clearInterval(y)},10))}var v={},g=0,m={},y=null,Y=!1,w=!1;n&&(e.event.bind(window,"touchstart",c),e.event.bind(window,"touchend",u),e.event.bind(t,"touchstart",f),e.event.bind(t,"touchmove",h),e.event.bind(t,"touchend",b)),r&&(window.PointerEvent?(e.event.bind(window,"pointerdown",c),e.event.bind(window,"pointerup",u),e.event.bind(t,"pointerdown",f),e.event.bind(t,"pointermove",h),e.event.bind(t,"pointerup",b)):window.MSPointerEvent&&(e.event.bind(window,"MSPointerDown",c),e.event.bind(window,"MSPointerUp",u),e.event.bind(t,"MSPointerDown",f),e.event.bind(t,"MSPointerMove",h),e.event.bind(t,"MSPointerUp",b)))}var o=t("../../lib/helper"),i=t("../instances"),l=t("../update-geometry"),a=t("../update-scroll");e.exports=function(t){if(o.env.supportsTouch||o.env.supportsIePointer){var e=i.get(t);r(t,e,o.env.supportsTouch,o.env.supportsIePointer)}}},{"../../lib/helper":6,"../instances":18,"../update-geometry":19,"../update-scroll":20}],17:[function(t,e,n){"use strict";var r=t("../lib/helper"),o=t("../lib/class"),i=t("./instances"),l=t("./update-geometry"),a={"click-rail":t("./handler/click-rail"),"drag-scrollbar":t("./handler/drag-scrollbar"),keyboard:t("./handler/keyboard"),wheel:t("./handler/mouse-wheel"),touch:t("./handler/touch"),selection:t("./handler/selection")},s=t("./handler/native-scroll");e.exports=function(t,e){e="object"==typeof e?e:{},o.add(t,"ps-container");var n=i.add(t);n.settings=r.extend(n.settings,e),o.add(t,"ps-theme-"+n.settings.theme),n.settings.handlers.forEach(function(e){a[e](t)}),s(t),l(t)}},{"../lib/class":2,"../lib/helper":6,"./handler/click-rail":10,"./handler/drag-scrollbar":11,"./handler/keyboard":12,"./handler/mouse-wheel":13,"./handler/native-scroll":14,"./handler/selection":15,"./handler/touch":16,"./instances":18,"./update-geometry":19}],18:[function(t,e,n){"use strict";function r(t){function e(){s.add(t,"ps-focus")}function n(){s.remove(t,"ps-focus")}var r=this;r.settings=a.clone(c),r.containerWidth=null,r.containerHeight=null,r.contentWidth=null,r.contentHeight=null,r.isRtl="rtl"===u.css(t,"direction"),r.isNegativeScroll=function(){var e=t.scrollLeft,n=null;return t.scrollLeft=-1,n=t.scrollLeft<0,t.scrollLeft=e,n}(),r.negativeScrollAdjustment=r.isNegativeScroll?t.scrollWidth-t.clientWidth:0,r.event=new d,r.ownerDocument=t.ownerDocument||document,r.scrollbarXRail=u.appendTo(u.e("div","ps-scrollbar-x-rail"),t),r.scrollbarX=u.appendTo(u.e("div","ps-scrollbar-x"),r.scrollbarXRail),r.scrollbarX.setAttribute("tabindex",0),r.event.bind(r.scrollbarX,"focus",e),r.event.bind(r.scrollbarX,"blur",n),r.scrollbarXActive=null,r.scrollbarXWidth=null,r.scrollbarXLeft=null,r.scrollbarXBottom=a.toInt(u.css(r.scrollbarXRail,"bottom")),r.isScrollbarXUsingBottom=r.scrollbarXBottom===r.scrollbarXBottom,r.scrollbarXTop=r.isScrollbarXUsingBottom?null:a.toInt(u.css(r.scrollbarXRail,"top")),r.railBorderXWidth=a.toInt(u.css(r.scrollbarXRail,"borderLeftWidth"))+a.toInt(u.css(r.scrollbarXRail,"borderRightWidth")),u.css(r.scrollbarXRail,"display","block"),r.railXMarginWidth=a.toInt(u.css(r.scrollbarXRail,"marginLeft"))+a.toInt(u.css(r.scrollbarXRail,"marginRight")),u.css(r.scrollbarXRail,"display",""),r.railXWidth=null,r.railXRatio=null,r.scrollbarYRail=u.appendTo(u.e("div","ps-scrollbar-y-rail"),t),r.scrollbarY=u.appendTo(u.e("div","ps-scrollbar-y"),r.scrollbarYRail),r.scrollbarY.setAttribute("tabindex",0),r.event.bind(r.scrollbarY,"focus",e),r.event.bind(r.scrollbarY,"blur",n),r.scrollbarYActive=null,r.scrollbarYHeight=null,r.scrollbarYTop=null,r.scrollbarYRight=a.toInt(u.css(r.scrollbarYRail,"right")),r.isScrollbarYUsingRight=r.scrollbarYRight===r.scrollbarYRight,r.scrollbarYLeft=r.isScrollbarYUsingRight?null:a.toInt(u.css(r.scrollbarYRail,"left")),r.scrollbarYOuterWidth=r.isRtl?a.outerWidth(r.scrollbarY):null,r.railBorderYWidth=a.toInt(u.css(r.scrollbarYRail,"borderTopWidth"))+a.toInt(u.css(r.scrollbarYRail,"borderBottomWidth")),u.css(r.scrollbarYRail,"display","block"),r.railYMarginHeight=a.toInt(u.css(r.scrollbarYRail,"marginTop"))+a.toInt(u.css(r.scrollbarYRail,"marginBottom")),u.css(r.scrollbarYRail,"display",""),r.railYHeight=null,r.railYRatio=null}function o(t){return t.getAttribute("data-ps-id")}function i(t,e){t.setAttribute("data-ps-id",e)}function l(t){t.removeAttribute("data-ps-id")}var a=t("../lib/helper"),s=t("../lib/class"),c=t("./default-setting"),u=t("../lib/dom"),d=t("../lib/event-manager"),p=t("../lib/guid"),f={};n.add=function(t){var e=p();return i(t,e),f[e]=new r(t),f[e]},n.remove=function(t){delete f[o(t)],l(t)},n.get=function(t){return f[o(t)]}},{"../lib/class":2,"../lib/dom":3,"../lib/event-manager":4,"../lib/guid":5,"../lib/helper":6,"./default-setting":8}],19:[function(t,e,n){"use strict";function r(t,e){return t.settings.minScrollbarLength&&(e=Math.max(e,t.settings.minScrollbarLength)),t.settings.maxScrollbarLength&&(e=Math.min(e,t.settings.maxScrollbarLength)),e}function o(t,e){var n={width:e.railXWidth};e.isRtl?n.left=e.negativeScrollAdjustment+t.scrollLeft+e.containerWidth-e.contentWidth:n.left=t.scrollLeft,e.isScrollbarXUsingBottom?n.bottom=e.scrollbarXBottom-t.scrollTop:n.top=e.scrollbarXTop+t.scrollTop,a.css(e.scrollbarXRail,n);var r={top:t.scrollTop,height:e.railYHeight};e.isScrollbarYUsingRight?e.isRtl?r.right=e.contentWidth-(e.negativeScrollAdjustment+t.scrollLeft)-e.scrollbarYRight-e.scrollbarYOuterWidth:r.right=e.scrollbarYRight-t.scrollLeft:e.isRtl?r.left=e.negativeScrollAdjustment+t.scrollLeft+2*e.containerWidth-e.contentWidth-e.scrollbarYLeft-e.scrollbarYOuterWidth:r.left=e.scrollbarYLeft+t.scrollLeft,a.css(e.scrollbarYRail,r),a.css(e.scrollbarX,{left:e.scrollbarXLeft,width:e.scrollbarXWidth-e.railBorderXWidth}),a.css(e.scrollbarY,{top:e.scrollbarYTop,height:e.scrollbarYHeight-e.railBorderYWidth})}var i=t("../lib/helper"),l=t("../lib/class"),a=t("../lib/dom"),s=t("./instances"),c=t("./update-scroll");e.exports=function(t){var e=s.get(t);e.containerWidth=t.clientWidth,e.containerHeight=t.clientHeight,e.contentWidth=t.scrollWidth,e.contentHeight=t.scrollHeight;var n;t.contains(e.scrollbarXRail)||(n=a.queryChildren(t,".ps-scrollbar-x-rail"),n.length>0&&n.forEach(function(t){a.remove(t)}),a.appendTo(e.scrollbarXRail,t)),t.contains(e.scrollbarYRail)||(n=a.queryChildren(t,".ps-scrollbar-y-rail"),n.length>0&&n.forEach(function(t){a.remove(t)}),a.appendTo(e.scrollbarYRail,t)),!e.settings.suppressScrollX&&e.containerWidth+e.settings.scrollXMarginOffset<e.contentWidth?(e.scrollbarXActive=!0,e.railXWidth=e.containerWidth-e.railXMarginWidth,e.railXRatio=e.containerWidth/e.railXWidth,e.scrollbarXWidth=r(e,i.toInt(e.railXWidth*e.containerWidth/e.contentWidth)),e.scrollbarXLeft=i.toInt((e.negativeScrollAdjustment+t.scrollLeft)*(e.railXWidth-e.scrollbarXWidth)/(e.contentWidth-e.containerWidth))):e.scrollbarXActive=!1,!e.settings.suppressScrollY&&e.containerHeight+e.settings.scrollYMarginOffset<e.contentHeight?(e.scrollbarYActive=!0,e.railYHeight=e.containerHeight-e.railYMarginHeight,e.railYRatio=e.containerHeight/e.railYHeight,e.scrollbarYHeight=r(e,i.toInt(e.railYHeight*e.containerHeight/e.contentHeight)),e.scrollbarYTop=i.toInt(t.scrollTop*(e.railYHeight-e.scrollbarYHeight)/(e.contentHeight-e.containerHeight))):e.scrollbarYActive=!1,e.scrollbarXLeft>=e.railXWidth-e.scrollbarXWidth&&(e.scrollbarXLeft=e.railXWidth-e.scrollbarXWidth),e.scrollbarYTop>=e.railYHeight-e.scrollbarYHeight&&(e.scrollbarYTop=e.railYHeight-e.scrollbarYHeight),o(t,e),e.scrollbarXActive?l.add(t,"ps-active-x"):(l.remove(t,"ps-active-x"),e.scrollbarXWidth=0,e.scrollbarXLeft=0,c(t,"left",0)),e.scrollbarYActive?l.add(t,"ps-active-y"):(l.remove(t,"ps-active-y"),e.scrollbarYHeight=0,e.scrollbarYTop=0,c(t,"top",0))}},{"../lib/class":2,"../lib/dom":3,"../lib/helper":6,"./instances":18,"./update-scroll":20}],20:[function(t,e,n){"use strict";var r,o,i=t("./instances"),l=document.createEvent("Event"),a=document.createEvent("Event"),s=document.createEvent("Event"),c=document.createEvent("Event"),u=document.createEvent("Event"),d=document.createEvent("Event"),p=document.createEvent("Event"),f=document.createEvent("Event"),h=document.createEvent("Event"),b=document.createEvent("Event");l.initEvent("ps-scroll-up",!0,!0),a.initEvent("ps-scroll-down",!0,!0),s.initEvent("ps-scroll-left",!0,!0),c.initEvent("ps-scroll-right",!0,!0),u.initEvent("ps-scroll-y",!0,!0),d.initEvent("ps-scroll-x",!0,!0),p.initEvent("ps-x-reach-start",!0,!0),f.initEvent("ps-x-reach-end",!0,!0),h.initEvent("ps-y-reach-start",!0,!0),b.initEvent("ps-y-reach-end",!0,!0),e.exports=function(t,e,n){if("undefined"==typeof t)throw"You must provide an element to the update-scroll function";if("undefined"==typeof e)throw"You must provide an axis to the update-scroll function";if("undefined"==typeof n)throw"You must provide a value to the update-scroll function";"top"===e&&0>=n&&(t.scrollTop=n=0,t.dispatchEvent(h)),"left"===e&&0>=n&&(t.scrollLeft=n=0,t.dispatchEvent(p));var v=i.get(t);"top"===e&&n>=v.contentHeight-v.containerHeight&&(n=v.contentHeight-v.containerHeight,n-t.scrollTop<=1?n=t.scrollTop:t.scrollTop=n,t.dispatchEvent(b)),"left"===e&&n>=v.contentWidth-v.containerWidth&&(n=v.contentWidth-v.containerWidth,n-t.scrollLeft<=1?n=t.scrollLeft:t.scrollLeft=n,t.dispatchEvent(f)),r||(r=t.scrollTop),o||(o=t.scrollLeft),"top"===e&&r>n&&t.dispatchEvent(l),"top"===e&&n>r&&t.dispatchEvent(a),"left"===e&&o>n&&t.dispatchEvent(s),"left"===e&&n>o&&t.dispatchEvent(c),"top"===e&&(t.scrollTop=r=n,t.dispatchEvent(u)),"left"===e&&(t.scrollLeft=o=n,t.dispatchEvent(d))}},{"./instances":18}],21:[function(t,e,n){"use strict";var r=t("../lib/helper"),o=t("../lib/dom"),i=t("./instances"),l=t("./update-geometry"),a=t("./update-scroll");e.exports=function(t){var e=i.get(t);e&&(e.negativeScrollAdjustment=e.isNegativeScroll?t.scrollWidth-t.clientWidth:0,o.css(e.scrollbarXRail,"display","block"),o.css(e.scrollbarYRail,"display","block"),e.railXMarginWidth=r.toInt(o.css(e.scrollbarXRail,"marginLeft"))+r.toInt(o.css(e.scrollbarXRail,"marginRight")),e.railYMarginHeight=r.toInt(o.css(e.scrollbarYRail,"marginTop"))+r.toInt(o.css(e.scrollbarYRail,"marginBottom")),o.css(e.scrollbarXRail,"display","none"),o.css(e.scrollbarYRail,"display","none"),l(t),a(t,"top",t.scrollTop),a(t,"left",t.scrollLeft),o.css(e.scrollbarXRail,"display",""),o.css(e.scrollbarYRail,"display",""))}},{"../lib/dom":3,"../lib/helper":6,"./instances":18,"./update-geometry":19,"./update-scroll":20}]},{},[1]);
@@ -225,7 +230,7 @@ var tpLayerTimelinesRev = new function(){
 			jQuery(this).addClass('selected');
 			
 			jQuery('input[name="slot_amount"]').val(jQuery(this).data('slot'));
-			jQuery('input[name="transition_rotation"]').val(jQuery(this).data('rotation'));
+			jQuery('input[name="transition_rotation"]').val(jQuery(this).data('rotation'));			
 			jQuery('input[name="transition_duration"]').val(jQuery(this).data('duration'));
 			jQuery('select[name="transition_ease_in"] option[value="'+jQuery(this).data('ease_in')+'"]').attr('selected', true);
 			jQuery('select[name="transition_ease_out"] option[value="'+jQuery(this).data('ease_out')+'"]').attr('selected', true);
@@ -239,9 +244,13 @@ var tpLayerTimelinesRev = new function(){
 		jQuery('input[name="transition_rotation"]').change(function(){
 			jQuery('.slide-trans-cur-ul li.selected').data('rotation', jQuery(this).val());
 		});
-		jQuery('input[name="transition_duration"]').change(function(){
+		jQuery('#transition_duration').change(function(){			
 			jQuery('.slide-trans-cur-ul li.selected').data('duration', jQuery(this).val());
-			setSlideTransitionTimerBar();
+			t.setSlideTransitionTimerBar();
+		});
+		jQuery('#delay').change(function(){
+			t.mainMaxTimeLeft = this.value / 10;
+			t.setSlideTransitionTimerBar();
 		});
 		jQuery('select[name="transition_ease_in"]').change(function(){
 			jQuery('.slide-trans-cur-ul li.selected').data('ease_in', jQuery(this).val());
@@ -462,6 +471,34 @@ var tpLayerTimelinesRev = new function(){
 			 	jQuery('.mask-end-settings').hide();
 		});
 
+		jQuery('#use_text_color_start').on("change",function() {
+			if (jQuery(this).attr('checked') === "checked")
+				jQuery('.use_text_color_wrap_start').show();
+			else
+				jQuery('.use_text_color_wrap_start').hide();
+		});
+
+		jQuery('#use_bg_color_start').on("change",function() {
+			if (jQuery(this).attr('checked') === "checked")
+				jQuery('.use_bg_color_wrap_start').show();
+			else
+				jQuery('.use_bg_color_wrap_start').hide();
+		});
+
+
+		jQuery('#use_text_color_end').on("change",function() {
+			if (jQuery(this).attr('checked') === "checked")
+				jQuery('.use_text_color_wrap_end').show();
+			else
+				jQuery('.use_text_color_wrap_end').hide();
+		});
+
+		jQuery('#use_bg_color_end').on("change",function() {
+			if (jQuery(this).attr('checked') === "checked")
+				jQuery('.use_bg_color_wrap_end').show();
+			else
+				jQuery('.use_bg_color_wrap_end').hide();
+		});
 
 		
 
@@ -979,6 +1016,8 @@ var tpLayerTimelinesRev = new function(){
 		document.getElementById('mastertimer-playpause-wrapper').innerHTML = '<i class="eg-icon-play"></i><span>PLAY</span>';
 		
 		punchgs.TweenLite.set(document.getElementsByClassName('tp-mask-wrap'),{clearProps:"transform",overwrite:"all"});
+		jQuery('#divbgholder').find('.tp-blockmask_in, .tp-blockmask_out').remove();
+		
 		jQuery('.tp-showmask').removeClass('tp-showmask');
 		
 		var ils = document.getElementsByClassName("innerslide_layer");
@@ -1125,8 +1164,7 @@ var tpLayerTimelinesRev = new function(){
 		-	REBUILD IDLE STATES OF ITEMS 	-
 	******************************************/
 	
-	t.rebuildLayerIdle = function(caption,timer,isDemo) {
-		
+	t.rebuildLayerIdle = function(caption,timer,isDemo) {				
 		timer = timer == undefined ? 50 : timer;
 		isDemo = isDemo == undefined ? false : isDemo;
 				
@@ -1212,15 +1250,13 @@ var tpLayerTimelinesRev = new function(){
 			deformidle = params.deformation,
 			deformhover = params["deformation-hover"],
 			ss = params["static_styles"],
-			fontcolor = u.getVal(ss,"color"),
+			fontcolor = window.RevColor.get(u.getVal(ss,"color")),
 			fonttrans = deform["color-transparency"],
-			bgcolor = deform["background-color"],
-			bgtrans = deform["background-transparency"],
+			bgcolor = window.RevColor.get(deform["background-color"]),			
 			bordercolor = deform["border-color"],
 			bordertrans = deform["border-transparency"];
 
-		
-
+	
 		if (params.type=="audio") {
 			if (params.video_data.video_show_visibility) {
 				caption.addClass("invisible-audio");
@@ -1247,24 +1283,13 @@ var tpLayerTimelinesRev = new function(){
 			inlayer.removeData('mySplitText')
 		}
 
-		// BACKGROUND OPACITY
-		if (Number(bgtrans)<1) {
-			var rgb = UniteAdminRev.convertHexToRGB(bgcolor);
-			bgcolor="rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+","+bgtrans+")";
-		}
-
+		
 		// BORDER OPACITY
 		if (Number(bordertrans)<1) {
 			var rgb = UniteAdminRev.convertHexToRGB(bordercolor);
 			bordercolor="rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+","+bordertrans+")";
 		}
-
-		// FONT OPACITY
-		if (Number(fonttrans)<1) {
-			var rgb = UniteAdminRev.convertHexToRGB(fontcolor);
-			fontcolor="rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+","+fonttrans+")";
-		}
-
+		
 
 		// SET ELEMENT IDLE		
 		var mwidth = u.getVal(params,"max_width"),
@@ -1300,15 +1325,15 @@ var tpLayerTimelinesRev = new function(){
 					caption.removeClass("rev_breakcolumns");
 				}
 
-
 			break;
 			case 'column':
+			
 				mwidth = (100*eval(params.column_size))+"%";								
 				mheight = "auto";
 				caption[0].style.position = "relative";
 				caption[0].style.display = "table_cell";
-				caption[0].style.minHeight = parseInt(u.getVal(params,"min_height"),0)+"px";
-				
+				caption[0].style.minHeight = parseInt(u.getVal(params,"min_height"),0)+"px";				
+				caption[0].style.verticalAlign = deform["vertical-align"];
 				caption[0].cb = caption[0].cb === undefined ? caption.find('.column_background') : caption[0].cb;
 				/*caption[0].style.marginTop = parseInt(u.getVal(params,'margin')[0],0)+"px";
 				caption[0].style.marginRight= parseInt(u.getVal(params,'margin')[1],0)+"px";
@@ -1319,13 +1344,12 @@ var tpLayerTimelinesRev = new function(){
 						backgroundImage:"url('"+params.bgimage_url+"')", 
 						backgroundSize:params.layer_bg_size, 
 						backgroundPosition:params.layer_bg_position, 
-						backgroundRepeat:params.layer_bg_repeat,
-						backgroundColor:bgcolor
+						backgroundRepeat:params.layer_bg_repeat,						
 					});									
 				} else {
 					caption[0].cb.css({
 						backgroundImage:"",
-						backgroundColor:bgcolor				
+						background:bgcolor				
 					})	
 				}
 				
@@ -1400,7 +1424,9 @@ var tpLayerTimelinesRev = new function(){
 		
 		caption[0].style.width = mwidth;
 		caption[0].style.height = mheight;
-		if (params.type==="column") {			
+		if (params.type==="row") {			
+			caption[0].style.minHeight = mheight;
+
 			//caption[0].style.minWidth = mwidth;
 			//caption[0].style.maxWidth = mwidth;			
 		}
@@ -1411,6 +1437,8 @@ var tpLayerTimelinesRev = new function(){
 
 		var bgimage = "";
 		punchgs.TweenLite.set(inlayer, {	 clearProps:"all", visibility:"visible",opacity:1});
+
+		
 		if (params.bgimage_url!==undefined && params.bgimage_url.length>0 && params.type!=="column") 			
 			inlayer.css({backgroundImage:"url('"+params.bgimage_url+"')", backgroundSize:params.layer_bg_size, backgroundPosition:params.layer_bg_position, backgroundRepeat:params.layer_bg_repeat});			
 		else
@@ -1441,8 +1469,8 @@ var tpLayerTimelinesRev = new function(){
 									fontSize:parseInt(u.getVal(ss,"font-size"),0)+"px",
 									lineHeight:parseInt(u.getVal(ss,"line-height"),0)+"px",		
 									fontWeight:fw,		
-									color:fontcolor,
-									backgroundColor:bgcolor,											
+									color:fontcolor,							
+									letterSpacing:parseInt(u.getVal(ss,"letter-spacing"),0)+"px",
 														
 									fontStyle:deformidle["font-style"],
 									textDecoration:deform["text-decoration"],
@@ -1457,7 +1485,12 @@ var tpLayerTimelinesRev = new function(){
 									maxHeight:"100%"		
 								}
 
-		
+		// CHECK GRADIENT BG COLOR
+		if (bgcolor.indexOf("gradient")>=0) {
+				inlay_object_anim.background = bgcolor;
+			} else {
+				inlay_object_anim.backgroundColor = bgcolor;
+			}
 		
 		
 		if ((deform.blurfilter!==undefined && parseInt(deform.blurfilter,0)>0) || (deformhover.blurfilter!==undefined && parseInt(deformhover.blurfilter,0)>0)) {
@@ -1472,7 +1505,14 @@ var tpLayerTimelinesRev = new function(){
 			inlay_object_anim['-webkit-filter'] = inlay_object_anim['-webkit-filter']===undefined ? gf : inlay_object_anim['-webkit-filter']+' '+gf;
 			inlay_object_anim['filter'] = inlay_object_anim['filter']===undefined ? gf: inlay_object_anim['filter']+' '+gf;
 		}
+		
+		if ((deform.brightnessfilter!==undefined && parseInt(deform.brightnessfilter,0)!==100) || (deformhover.brightnessfilter!==undefined && parseInt(deformhover.brightnessfilter,0)!=100)) {
+			var brf = 'brightness('+parseInt(deform.brightnessfilter,0)+'%)';
+			inlay_object_anim['-webkit-filter'] = inlay_object_anim['-webkit-filter']===undefined ? brf : inlay_object_anim['-webkit-filter']+' '+brf;
+			inlay_object_anim['filter'] = inlay_object_anim['filter']===undefined ? brf: inlay_object_anim['filter']+' '+brf;
+		}
 
+		
 		
 		/*if (deform.shadow_idle===true) {
 			var shcolor = UniteAdminRev.convertHexToRGB(deform.ds_color);
@@ -1486,6 +1526,7 @@ var tpLayerTimelinesRev = new function(){
 
 		
 		if (params.type==="group") punchgs.TweenLite.set(inlayer.find('.tp_layer_group_inner_wrapper').first(),{overflow:deform.overflow});
+		if (params.type==="row") punchgs.TweenLite.set(inlayer.find('.tp_layer_group_inner_wrapper').first(),{minHeight:mheight});
 		
 		if (params.layer_blend_mode!==undefined && jQuery.inArray(params.type,["image","shape","text","svg"]>=0))		
 			punchgs.TweenLite.set(inlayer.closest('.slide_layer'),{mixBlendMode:params.layer_blend_mode});
@@ -1545,18 +1586,11 @@ var tpLayerTimelinesRev = new function(){
 		}
 		
 		if (params.type==="svg" && params.svg!=undefined) {			
-			var svgstrokecolor = params.svg["svgstroke-color"] || "transparent",
-				svgstroketrans = params.svg["svgstroke-transparency"] || 0,
+			var svgstrokecolor = window.RevColor.get(params.svg["svgstroke-color"]) || "transparent",				
 				svgstrokewidth = params.svg["svgstroke-width"] || 0,
 				svgstrokedasharray = params.svg["svgstroke-dasharray"] || 0,
 				svgstrokedashoffset = params.svg["svgstroke-dashoffset"] || 0;
-
-			// STROKE OPACITY
-			if (Number(svgstroketrans)<1) {
-				var rgb = UniteAdminRev.convertHexToRGB(svgstrokecolor);
-				svgstrokecolor="rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+","+svgstroketrans+")";
-			}
-			
+						
 			punchgs.TweenLite.set(inlayer.find('svg'),{
 															fill:fontcolor,
 															stroke:svgstrokecolor,
@@ -1571,6 +1605,7 @@ var tpLayerTimelinesRev = new function(){
 
 
 		// SET INLAYER STYLE
+		
 		punchgs.TweenLite.set(inlayer, inlay_object_anim);
 
 
@@ -1583,32 +1618,21 @@ var tpLayerTimelinesRev = new function(){
 		
 		if (params.hover===true) {
 			deform = params["deformation-hover"];
-			var fontcolor = deform.color,
+			var fontcolor = window.RevColor.get(deform.color),
 				fonttrans = deform["color-transparency"],		
-				bgcolor = deform["background-color"],
+				bgcolor = window.RevColor.get(deform["background-color"]),
 				bgtrans = deform["background-transparency"],
 				bordercolor = deform["border-color"],
 				bordertrans = deform["border-transparency"];
 
-			
-			// BACKGROUND OPACITY
-			if (Number(bgtrans)<1) {
-				var rgb = UniteAdminRev.convertHexToRGB(bgcolor);
-				bgcolor="rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+","+bgtrans+")";
-			}
+						
 
 			// BORDER OPACITY
 			if (Number(bordertrans)<1) {
 				var rgb = UniteAdminRev.convertHexToRGB(bordercolor);
 				bordercolor="rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+","+bordertrans+")";
 			}
-
-			// FONT OPACITY
-			if (Number(fonttrans)<1) {
-				var rgb = UniteAdminRev.convertHexToRGB(fontcolor);
-				fontcolor="rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+","+fonttrans+")";
-			}
-		
+				
 			var tl=new punchgs.TimelineLite();				
 			tl.pause();
 			
@@ -1625,10 +1649,8 @@ var tpLayerTimelinesRev = new function(){
 
 									 skewX:parseFloat(deform.skewx),
 									 skewY:parseFloat(deform.skewy),
-
 									 autoAlpha:deform.opacity,
-									 color:fontcolor,
-									 backgroundColor:bgcolor,						
+									 color:fontcolor,									 					
 									 textDecoration:deform["text-decoration"],
 									 borderColor:bordercolor,
 									 borderRadius:parseInt(deform["border-radius"][0],0)+"px "+parseInt(deform["border-radius"][1],0)+"px "+parseInt(deform["border-radius"][2],0)+"px "+parseInt(deform["border-radius"][3],0)+"px",
@@ -1644,6 +1666,12 @@ var tpLayerTimelinesRev = new function(){
 									 ease:deform.easing
 							}
 
+			if (bgcolor.indexOf("gradient")>=0) {
+				hover_object_anim.background = bgcolor;
+			} else {
+				hover_object_anim.backgroundColor = bgcolor;
+			}
+
 			if ((deform.blurfilter!==undefined && parseInt(deform.blurfilter,0)>0) || (deformidle.blurfilter!==undefined && parseInt(deformidle.blurfilter,0)>0)) {
 				var bf = 'blur('+parseInt(deform.blurfilter,0)+'px)';
 				hover_object_anim['-webkit-filter'] = bf;
@@ -1654,6 +1682,12 @@ var tpLayerTimelinesRev = new function(){
 				var gf = 'grayscale('+parseInt(deform.grayscalefilter,0)+'%)';
 				hover_object_anim['-webkit-filter'] = hover_object_anim['-webkit-filter']===undefined ? gf : hover_object_anim['-webkit-filter']+' '+gf;
 				hover_object_anim['filter'] = hover_object_anim['filter']===undefined ? gf: hover_object_anim['filter']+' '+gf;
+			}
+
+			if ((deform.brightnessfilter!==undefined && parseInt(deform.brightnessfilter,0)!=100) || (deformidle.brightnessfilter!==undefined && parseInt(deformidle.brightnessfilter,0)!=100)) {
+				var brf = 'brightness('+parseInt(deform.brightnessfilter,0)+'%)';
+				hover_object_anim['-webkit-filter'] = hover_object_anim['-webkit-filter']===undefined ? brf : hover_object_anim['-webkit-filter']+' '+brf;
+				hover_object_anim['filter'] = hover_object_anim['filter']===undefined ? brf: hover_object_anim['filter']+' '+brf;
 			}
 
 			/*if (deformidle.shadow_idle===true) {
@@ -1670,19 +1704,12 @@ var tpLayerTimelinesRev = new function(){
 
 
 			if (params.type==="svg" && params.svg!=undefined) {					
-					var svgstrokecolor = params.svg["svgstroke-hover-color"] || "transparent",
-						svgstroketrans = params.svg["svgstroke-hover-transparency"] || 0,
+					var svgstrokecolor = window.RevColor.get(params.svg["svgstroke-hover-color"]) || "transparent",						
 						svgstrokewidth = params.svg["svgstroke-hover-width"] || 0,
 						svgstrokedasharray = params.svg["svgstroke-hover-dasharray"] || 0,
 						svgstrokedashoffset = params.svg["svgstroke-hover-dashoffset"] || 0;
-
-					// STROKE OPACITY
-					if (Number(svgstroketrans)<1) {
-						var rgb = UniteAdminRev.convertHexToRGB(svgstrokecolor);
-						svgstrokecolor="rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+","+svgstroketrans+")";
-					}
 					
-
+			
 					tl.add(punchgs.TweenLite.to(inlayer.find('svg'),hoverspeed,{
 																	fill:fontcolor,
 																	stroke:svgstrokecolor,
@@ -1690,7 +1717,10 @@ var tpLayerTimelinesRev = new function(){
 																	strokeDasharray:svgstrokedasharray,
 																	strokeDashoffset:svgstrokedashoffset,
 																	ease:deform.easing
-																}),0);				
+																}),0);		
+					tl.add(punchgs.TweenLite.to(inlayer.find('svg path'),hoverspeed,{
+															fill:fontcolor
+														}),0);	
 			}
 
 			inlayer.data('hoveranim',tl);
@@ -1804,7 +1834,7 @@ var tpLayerTimelinesRev = new function(){
 		-	BUILD IN ANIMATION TIMELINE	-
 	****************************************/
 
-	var checkAnimValue = function(val,defval,nextcaption,direction) {
+	var checkAnimValue = function(val,defval,nextcaption,direction,$splitamount) {
 		var v = val,
 			d = defval;
 
@@ -1819,7 +1849,17 @@ var tpLayerTimelinesRev = new function(){
 			var min = v.split(",");
 				max = min[1].split("}")[0];
 			min = min[0].split("{")[1];
-			v = Math.random()*(max-min) + min;				
+			
+			if ($splitamount!==undefined && $splitamount>1) {
+				v="["+(parseInt(Math.random()*(max-min),0) + parseInt(min,0));
+				for (var i=0;i<$splitamount;i++) {
+					v = v+"|"+(parseInt(Math.random()*(max-min),0) + parseInt(min,0));
+				}
+			v = v+"]";
+			} else {
+				v = Math.random()*(max-min) + min;				
+			}
+			
 			return v;
 		} else {
 			var cw = jQuery('#divLayers').width(),
@@ -1892,6 +1932,129 @@ var tpLayerTimelinesRev = new function(){
 		return v;	
 	}	
 
+	// SFX ANIMATIONS
+	function checkSFXAnimations(params,effect,mask,mdelay,easedata,speed) {
+		 
+		// BLOCK SFX ANIMATIONS
+		if (effect!==undefined && effect.indexOf("block")>=0) {
+			var $sfx = new Object();
+			
+			if (mask.find('.tp-blockmask_in').length===0) {
+				mask.append('<div class="tp-blockmask_in"></div>');
+				mask.append('<div class="tp-blockmask_out"></div>');
+			}
+			
+			$sfx.ft = [{scaleY:1,scaleX:0,transformOrigin:"0% 50%"},{scaleY:1,scaleX:1,ease:easedata,immediateRender:false}];				
+			$sfx.t =  {scaleY:1,scaleX:0,transformOrigin:"100% 50%",ease:easedata,immediateRender:false};						
+			$sfx.bmask_in = mask.find('.tp-blockmask_in');
+			$sfx.bmask_out = mask.find('.tp-blockmask_out');
+			$sfx.type = "block";
+														
+			switch (effect) {			
+				case "blocktoleft":
+				case "blockfromright":				
+					$sfx.ft[0].transformOrigin = "100% 50%";
+					$sfx.t.transformOrigin = "0% 50%";
+				break;
+
+				case "blockfromtop":
+				case "blocktobottom":
+					$sfx.ft = [{scaleX:1,scaleY:0,transformOrigin:"50% 0%"},{scaleX:1,scaleY:1,ease:easedata,immediateRender:false}];
+					$sfx.t =  {scaleX:1,scaleY:0,transformOrigin:"50% 100%",ease:easedata,immediateRender:false};
+				break;
+
+				case "blocktotop":
+				case "blockfrombottom":
+					$sfx.ft = [{scaleX:1,scaleY:0,transformOrigin:"50% 100%"},{scaleX:1,scaleY:1,ease:easedata,immediateRender:false}];
+					$sfx.t =  {scaleX:1,scaleY:0,transformOrigin:"50% 0%",ease:easedata,immediateRender:false};
+				break;
+			}
+			$sfx.ft[1].overwrite = "auto";
+			$sfx.t.overwrite = "auto";
+
+			return $sfx;
+		} else {
+			mask.find('.tp-blockmask').remove();
+			return false;
+		}
+	}
+
+	//////////////////////////////////////////////
+	//	-	GET SPLITTEXT DIRECTION ARRAY	-  //
+	/////////////////////////////////////////////
+
+	function shuffleArray(array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;
+
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
+
+	    // Pick a remaining element...
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+
+	    // And swap it with the current element.
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+	  return array;
+	}
+
+	function getSplitTextDirs(alen,d) {
+		var ri = new Array();
+
+		switch (d) {
+			case "forward":
+			case "random":
+				for (var si=0;si<=alen;si++) { ri.push(si);}
+				if (d==="random") ri = shuffleArray(ri);
+			break;
+			case "backward":
+				for (var si=0;si<=alen;si++)	{ ri.push(alen-si); }							
+			break;
+			case "middletoedge":
+				var cc = Math.ceil(alen/2),
+					mm = cc-1,
+					pp = cc+1;							
+				ri.push(cc);														
+				for (var si=0;si<cc;si++) {
+					if (mm>=0) ri.push(mm);
+					if (pp<=alen) ri.push(pp);
+					mm--;
+					pp++;
+				}																	
+			break;
+			case "edgetomiddle":
+				var mm = alen,
+					pp = 0;														
+				for (var si=0;si<=Math.floor(alen/2);si++) {
+					ri.push(mm);
+					if (pp<mm) ri.push(pp);
+					mm--;
+					pp++;
+				}																						
+			break;		
+		}
+		
+		return ri;
+	}
+
+
+	//////////////////////////////////////////////
+	//	-	GET SPLITTEXT CYCLES ANIMATION	-  //
+	/////////////////////////////////////////////
+	function getCycles(anim) {
+	 	var _ = {};					  	
+		for (var a in anim) {
+			if (typeof anim[a] === "string" && anim[a].indexOf("|")>=0) {
+				if (_[a]===undefined) _[a] = {index:0};
+				_[a].values = ((anim[a].replace("[","")).replace("]","")).split("|");
+				_[a].len = _[a].values.length-1; 			
+			}								
+		}	
+		return _;	
+	}
 
 	function theLayerInAnimation(nextcaption) {
 
@@ -1916,7 +2079,8 @@ var tpLayerTimelinesRev = new function(){
 			$endsplit = params.frames["frame_999"].split, 
 			animobject = nextcaption,
 			thesource = new Object(),
-			theresult = new Object();
+			theresult = new Object(),
+			$splitdir = params.frames["frame_0"].split_direction;
 
 		
 
@@ -1948,7 +2112,7 @@ var tpLayerTimelinesRev = new function(){
 		theresult.skewy = parseFloat(params.deformation.skewy);
 		theresult.opac = parseFloat(params.deformation.opacity);
 		theresult.tper = parseFloat(params.deformation.pers);
-
+		
 		thesource['-webkit-filter'] = "";
 		thesource['filter'] = "";			
 		theresult['-webkit-filter'] = "";
@@ -1972,6 +2136,16 @@ var tpLayerTimelinesRev = new function(){
 			thesource['filter'] = thesource['filter']==="" ? gf: thesource['filter']+' '+gf;
 			theresult['-webkit-filter'] = theresult['-webkit-filter']==="" ? gfidle : theresult['-webkit-filter']+' '+gfidle;
 			theresult['filter'] = theresult['filter']==="" ? gfidle: theresult['filter']+' '+gfidle;
+		}
+
+		if ((params.deformation.brightnessfilter!==undefined && parseInt(params.deformation.brightnessfilter,0)!=100) || (params.brightnessfilter_start!==undefined && parseInt(params.brightnessfilter_start,0)!=100)) {
+			var brfidle = 'brightness('+parseInt(params.deformation.brightnessfilter,0)+'%)',
+				brr = params.brightnessfilter_start==="inherit" ? brfidle : 'brightness('+parseInt(params.brightnessfilter_start,0)+'%)';
+				
+			thesource['-webkit-filter'] = thesource['-webkit-filter']==="" ? brr : thesource['-webkit-filter']+' '+brr;
+			thesource['filter'] = thesource['filter']==="" ? brr: thesource['filter']+' '+brr;
+			theresult['-webkit-filter'] = theresult['-webkit-filter']==="" ? brfidle : theresult['-webkit-filter']+' '+brfidle;
+			theresult['filter'] = theresult['filter']==="" ? brfidle: theresult['filter']+' '+brfidle;
 		}
 
 		
@@ -2021,10 +2195,10 @@ var tpLayerTimelinesRev = new function(){
 
 		var tl = new punchgs.TimelineLite(),
 			tt = new punchgs.TimelineLite();
-
+		
 		if (animobject != nextcaption) {
 			tl.add(punchgs.TweenLite.set(nextcaption, { scaleX:theresult.scalex, scaleY:theresult.scaley,
-						  rotationX:theresult.rotatex, rotationY:theresult.rotatey, rotationZ:theresult.rotatez,
+						  rotationX:theresult.rotatex, rotationY:theresult.rotatey, rotationZ:theresult.rotatez,						 
 						  x:theresult.transx, y:theresult.transy, z:theresult.transz+1,
 						  skewX:theresult.skewx, skewY:theresult.skewy, 
 						  transformPerspective:theresult.tper, transformOrigin:origin,
@@ -2035,50 +2209,86 @@ var tpLayerTimelinesRev = new function(){
 		if (nextcaption.data("timer")) clearTimeout(nextcaption.data('timer'));
 		if (nextcaption.data("timera")) clearTimeout(nextcaption.data('timera'));
 
-		
+		var $sfx = checkSFXAnimations(params,params.frames["frame_0"].sfx_effect,mask,mdelay,easedata,speed);
+
+		if ($sfx!==false) {
+			if ($sfx.type==="block") {			
+				$sfx.ft[0].background = window.RevColor.get(params.frames["frame_0"].sfxcolor);	
+				tl.add(punchgs.TweenLite.fromTo($sfx.bmask_in,speed/2, $sfx.ft[0], $sfx.ft[1] ,mdelay));
+				tl.add(punchgs.TweenLite.fromTo($sfx.bmask_in,speed/2, $sfx.ft[1], $sfx.t, (mdelay+speed/2)));
+				tl.add(tt.set(animobject,{clearProps:"transform"}),0);			
+				tl.add(tt.staggerFromTo(animobject,0.05,{ x:0,y:0,scale:1,autoAlpha:0},{x:0,y:0,autoAlpha:1,delay:speed/2},mdelay),0);
+			}
+		} else {
+				
+			thesource.transx = checkAnimValue(params.x_start,theresult.transx,nextcaption,"horizontal",animobject.length);
+			thesource.transy = checkAnimValue(params.y_start,theresult.transy,nextcaption,"vertical",animobject.length);
+			thesource.transz = checkAnimValue(params.z_start,theresult.transz,nextcaption,undefined,animobject.length);
+			thesource.rotatex = checkAnimValue(params.x_rotate_start,theresult.rotatex,nextcaption,undefined,animobject.length);
+			thesource.rotatey = checkAnimValue(params.y_rotate_start,theresult.rotatey,nextcaption,undefined,animobject.length);
+			thesource.rotatez = checkAnimValue(params.z_rotate_start,theresult.rotatez,nextcaption,undefined,animobject.length);
+			thesource.scalex = checkAnimValue(params.scale_x_start,theresult.scalex,nextcaption,undefined,animobject.length);
+			thesource.scaley = checkAnimValue(params.scale_y_start,theresult.scaley,nextcaption,undefined,animobject.length);
+			thesource.skewx = checkAnimValue(params.skew_x_start,theresult.skewx,nextcaption,undefined,animobject.length);
+			thesource.skewy =checkAnimValue( params.skew_y_start,theresult.skewy,nextcaption,undefined,animobject.length);
+			thesource.opac = checkAnimValue(params.opacity_start,theresult.opac,nextcaption,undefined,animobject.length);
+			thesource.tper = params.deformation.pers;
+
+
+			tl.add(tt.set(animobject,{clearProps:"transform"}),0);
+
+			var animfrom = { scaleX:thesource.scalex,
+								  scaleY:thesource.scaley,
+								  rotationX:thesource.rotatex, rotationY:thesource.rotatey, rotationZ:thesource.rotatez,
+								  x:thesource.transx, y:thesource.transy, z:thesource.transz,
+								  skewX:thesource.skewx, skewY:thesource.skewy,
+								  transformPerspective:thesource.tper, transformOrigin:origin,
+								  autoAlpha:thesource.opac,
+								  "-webkit-filter":thesource['-webkit-filter'],
+								  filter:thesource['filter'],
+
+								},
+				animto = 	{ scaleX:theresult.scalex, scaleY:theresult.scaley,
+								  rotationX:theresult.rotatex, rotationY:theresult.rotatey, rotationZ:theresult.rotatez,
+								  x:theresult.transx, y:theresult.transy, z:theresult.transz,
+								  skewX:theresult.skewx, skewY:Number(theresult.skewy),
+								  transformPerspective:theresult.tper, transformOrigin:origin,
+								  ease:easedata,
+								  autoAlpha:theresult.opac,overwrite:"all",
+								  force3D:"auto",
+								  "-webkit-filter":theresult['-webkit-filter'],
+								  filter:theresult['filter'],
+								};
 			
-		
 
-		thesource.transx = checkAnimValue(params.x_start,theresult.transx,nextcaption,"horizontal");
-		thesource.transy = checkAnimValue(params.y_start,theresult.transy,nextcaption,"vertical");
-		thesource.transz = checkAnimValue(params.z_start,theresult.transz,nextcaption);
-		thesource.rotatex = checkAnimValue(params.x_rotate_start,theresult.rotatex,nextcaption);
-		thesource.rotatey = checkAnimValue(params.y_rotate_start,theresult.rotatey,nextcaption);
-		thesource.rotatez = checkAnimValue(params.z_rotate_start,theresult.rotatez,nextcaption);
-		thesource.scalex = checkAnimValue(params.scale_x_start,theresult.scalex,nextcaption);
-		thesource.scaley = checkAnimValue(params.scale_y_start,theresult.scaley,nextcaption);
-		thesource.skewx = checkAnimValue(params.skew_x_start,theresult.skewx,nextcaption);
-		thesource.skewy =checkAnimValue( params.skew_y_start,theresult.skewy,nextcaption);
-		thesource.opac = checkAnimValue(params.opacity_start,theresult.opac,nextcaption);
-		thesource.tper = params.deformation.pers;
+			if (params.frames["frame_0"].use_text_c) {
+				animfrom.color = params.frames["frame_0"].text_c;
+				animto.color = window.RevColor.get(u.getVal(params["static_styles"],"color"));
+			}
+			
+			if (params.frames["frame_0"].use_bg_c) {
+				animfrom.backgroundColor = params.frames["frame_0"].bg_c;
+				animto.backgroundColor = window.RevColor.get(params.deformation["background-color"]);
+			}
 
+			if (animobject.length>1) {
+				var ri = getSplitTextDirs(animobject.length-1, $splitdir),
+					cycles = {from:getCycles(jQuery.extend({},animfrom,true)), to:getCycles(jQuery.extend({},animto,true))};
 
-		tl.add(tt.set(animobject,{clearProps:"transform"}),0);
-		
-		tl.add(tt.staggerFromTo(animobject,speed,
-						{ scaleX:thesource.scalex,
-						  scaleY:thesource.scaley,
-						  rotationX:thesource.rotatex, rotationY:thesource.rotatey, rotationZ:thesource.rotatez,
-						  x:thesource.transx, y:thesource.transy, z:thesource.transz,
-						  skewX:thesource.skewx, skewY:thesource.skewy,
-						  transformPerspective:thesource.tper, transformOrigin:origin,
-						  autoAlpha:thesource.opac,
-						  "-webkit-filter":thesource['-webkit-filter'],
-						  filter:thesource['filter'],
-
-						},
-						{ scaleX:theresult.scalex, scaleY:theresult.scaley,
-						  rotationX:theresult.rotatex, rotationY:theresult.rotatey, rotationZ:theresult.rotatez,
-						  x:theresult.transx, y:theresult.transy, z:theresult.transz,
-						  skewX:theresult.skewx, skewY:Number(theresult.skewy),
-						  transformPerspective:theresult.tper, transformOrigin:origin,
-						  ease:easedata,
-						  autoAlpha:theresult.opac,overwrite:"all",
-						  force3D:"auto",
-						  "-webkit-filter":theresult['-webkit-filter'],
-						  filter:theresult['filter'],
-						},mdelay
-						));
+					for (var si in animobject) {	
+						var $fanim = jQuery.extend({},animfrom,true),
+							$tanim = jQuery.extend({},animto,true);						
+						for (var k in cycles.from) {
+							$fanim[k] = parseInt(cycles.from[k].values[cycles.from[k].index],0);														
+							cycles.from[k].index = cycles.from[k].index < cycles.from[k].len ?  cycles.from[k].index+1 : 0;
+						}
+						
+						tl.add(tt.fromTo(animobject[ri[si]],speed,$fanim,$tanim,mdelay*si),0);								
+					}
+			} else {
+				tl.add(tt.staggerFromTo(animobject,speed, jQuery.extend({},animfrom,true),jQuery.extend({},animto,true),mdelay));
+			}
+		}
 
 		// COLUMN BG ANIMATION
 		
@@ -2122,6 +2332,9 @@ var tpLayerTimelinesRev = new function(){
 		else
 			mask.removeClass('tp-showmask');
 
+
+
+
 		nextcaption.data('startanimobj',thesource);
 
 		tl.add(punchgs.TweenLite.fromTo(jQuery('#startanim_wrapper'),tt.totalDuration(),{autoAlpha:1,width:0},{width:67,ease:easedata}),0);
@@ -2155,7 +2368,8 @@ var tpLayerTimelinesRev = new function(){
 			theresult = new Object(),
 			originx = params["layer_2d_origin_x"]+"%",
 			originy = params["layer_2d_origin_y"]+"%",
-			origin = originx+" "+originy;
+			origin = originx+" "+originy,
+			$splitdir = params.frames["frame_999"].split_direction;
 
 		easedata = easedata=="nothing" ? params.frames["frame_999"].easing :  easedata;
 
@@ -2212,6 +2426,16 @@ var tpLayerTimelinesRev = new function(){
 			theresult['filter'] = theresult['filter']==="" ? gfidle: theresult['filter']+' '+gfidle;
 		}
 
+		if ((params.deformation.brightnessfilter!==undefined && parseInt(params.deformation.brightnessfilter,0)!=100) || (params.brightnessfilter_end!==undefined && parseInt(params.brightnessfilter_end,0)!=100)) {
+			var brfidle = 'brightness('+parseInt(params.deformation.brightnessfilter,0)+'%)',
+				brf = params.brightnessfilter_end==="inherit" ? brfidle : 'brightness('+parseInt(params.brightnessfilter_end,0)+'%)';
+				
+			theanim['-webkit-filter'] = theanim['-webkit-filter']==="" ? brf : theanim['-webkit-filter']+' '+brf;
+			theanim['filter'] = theanim['filter']==="" ? brf: theanim['filter']+' '+brf;
+			theresult['-webkit-filter'] = theresult['-webkit-filter']==="" ? brfidle : theresult['-webkit-filter']+' '+brfidle;
+			theresult['filter'] = theresult['filter']==="" ? brfidle: theresult['filter']+' '+brfidle;
+		}
+
 
 		switch($split) {
 			case "chars":
@@ -2232,58 +2456,101 @@ var tpLayerTimelinesRev = new function(){
 
 		
 		if (anim == null) anim = "auto";
-				
-		
+
 		// MASK ANIMATION
 		if (!params.mask_end || (anim==="auto" && !params.mask_start)) 			
 			tl.add(punchgs.TweenLite.set(mask,{overflow:"visible"}));
 
 
-		if (anim==="auto") {
-			theanim = nextcaption.data('startanimobj');
-		} else {		
-			var mask_is_on = params.mask_end || (anim==="auto" && params.mask_start) ? true : false;
+		var $sfx = checkSFXAnimations(params,params.frames["frame_999"].sfx_effect,mask,mdelay,easedata,speed);			
+		if ($sfx!==false) {
+			if ($sfx.type==="block") {		
+				$sfx.ft[0].background = window.RevColor.get(params.frames["frame_999"].sfxcolor);		
+				tl.add(punchgs.TweenLite.fromTo($sfx.bmask_out,speed/2, $sfx.ft[0], $sfx.ft[1] ,mdelay));
+				tl.add(punchgs.TweenLite.fromTo($sfx.bmask_out,speed/2, $sfx.ft[1], $sfx.t, (mdelay+speed/2)));
+				tl.add(tt.set(animobject,{clearProps:"transform"}),0);			
+				tl.add(tt.staggerTo(animobject,0.05,{x:0,y:0,autoAlpha:0,delay:speed/2},mdelay),0);
+			}
+		}	else {
 
-			theanim.transx = checkAnimValue(params.x_end,theresult.transx,nextcaption,"horizontal");
-			theanim.transy = checkAnimValue(params.y_end,theresult.transy,nextcaption,"vertical");
-			theanim.transz = checkAnimValue(params.z_end,theresult.transz,nextcaption);
-			theanim.rotatex = checkAnimValue(params.x_rotate_end,theresult.rotatex,nextcaption);
-			theanim.rotatey = checkAnimValue(params.y_rotate_end,theresult.rotatey,nextcaption);
-			theanim.rotatez = checkAnimValue(params.z_rotate_end,theresult.rotatez,nextcaption);
-			theanim.scalex = checkAnimValue(params.scale_x_end,theresult.scalex,nextcaption);
-			theanim.scaley = checkAnimValue(params.scale_y_end,theresult.scaley,nextcaption);
-			theanim.skewx = checkAnimValue(params.skew_x_end,theresult.skewx,nextcaption);
-			theanim.skewy =checkAnimValue( params.skew_y_end,theresult.skewy,nextcaption);
-			theanim.opac = checkAnimValue(params.opacity_end,theresult.opac,nextcaption);
-			theanim.tper = params.deformation.pers;
+			if (anim==="auto") {
+				theanim = nextcaption.data('startanimobj');
+			} else {		
+				var mask_is_on = params.mask_end || (anim==="auto" && params.mask_start) ? true : false;
+
+				theanim.transx = checkAnimValue(params.x_end,theresult.transx,nextcaption,"horizontal",animobject.length);
+				theanim.transy = checkAnimValue(params.y_end,theresult.transy,nextcaption,"vertical",animobject.length);
+				theanim.transz = checkAnimValue(params.z_end,theresult.transz,nextcaption,undefined,animobject.length);
+				theanim.rotatex = checkAnimValue(params.x_rotate_end,theresult.rotatex,nextcaption,undefined,animobject.length);
+				theanim.rotatey = checkAnimValue(params.y_rotate_end,theresult.rotatey,nextcaption,undefined,animobject.length);
+				theanim.rotatez = checkAnimValue(params.z_rotate_end,theresult.rotatez,nextcaption,undefined,animobject.length);
+				theanim.scalex = checkAnimValue(params.scale_x_end,theresult.scalex,nextcaption,undefined,animobject.length);
+				theanim.scaley = checkAnimValue(params.scale_y_end,theresult.scaley,nextcaption,undefined,animobject.length);
+				theanim.skewx = checkAnimValue(params.skew_x_end,theresult.skewx,nextcaption,undefined,animobject.length);
+				theanim.skewy =checkAnimValue( params.skew_y_end,theresult.skewy,nextcaption,undefined,animobject.length);
+				theanim.opac = checkAnimValue(params.opacity_end,theresult.opac,nextcaption,undefined,animobject.length);
+				theanim.tper = params.deformation.pers;
+			}
+			
+			
+
+			tl.add(tt.staggerTo(animobject,0.001,
+									{ "-webkit-filter":theresult['-webkit-filter'],
+							  			filter:theresult['filter']
+									 },(mdelay-0.001)));
+			
+
+			var animto = {
+										  scaleX:theanim.scalex,
+										  scaleY:theanim.scaley,
+										  rotationX:theanim.rotatex,
+										  rotationY:theanim.rotatey,
+										  rotationZ:theanim.rotatez,
+										  x:theanim.transx,
+										  y:theanim.transy,
+										  z:theanim.transz+1,
+										  skewX:theanim.skewx,
+										  skewY:theanim.skewy,
+										  opacity:theanim.opac,
+										  transformPerspective:theanim.tper,
+										  transformOrigin:origin,
+										  ease:easedata,
+										   "-webkit-filter":theanim['-webkit-filter'],
+								  			filter:theanim['filter'],
+										 };
+
+			if (params.frames["frame_999"].use_text_c) 
+				animto.color = params.frames["frame_999"].text_c;
+			
+			if (params.frames["frame_999"].use_bg_c)
+				animto.backgroundColor = params.frames["frame_999"].bg_c;				
+			
+
+			if (animobject.length>1) {
+				var ri = getSplitTextDirs(animobject.length-1, $splitdir),
+					cycles = {to:getCycles(jQuery.extend({},animto,true))};
+
+					for (var si in animobject) {							
+						var $fanim = jQuery.extend({},animto,true);						
+						for (var k in cycles.to) {
+							$fanim[k] = parseInt(cycles.to[k].values[cycles.to[k].index],0);														
+							cycles.to[k].index = cycles.to[k].index < cycles.to[k].len ?  cycles.to[k].index+1 : 0;
+						}
+											
+						tl.add(tt.to(animobject[ri[si]],speed,$fanim,mdelay*si),0);								
+					}
+			} else {
+
+				tl.add(tt.staggerTo(animobject,speed,jQuery.extend({},animto,true),mdelay));
+			}
+
 		}
+				
 		
 		
 
-		tl.add(tt.staggerTo(animobject,0.001,
-								{ "-webkit-filter":theresult['-webkit-filter'],
-						  			filter:theresult['filter']
-								 },(mdelay-0.001)));
+
 		
-		tl.add(tt.staggerTo(animobject,speed,
-								{
-								  scaleX:theanim.scalex,
-								  scaleY:theanim.scaley,
-								  rotationX:theanim.rotatex,
-								  rotationY:theanim.rotatey,
-								  rotationZ:theanim.rotatez,
-								  x:theanim.transx,
-								  y:theanim.transy,
-								  z:theanim.transz+1,
-								  skewX:theanim.skewx,
-								  skewY:theanim.skewy,
-								  opacity:theanim.opac,
-								  transformPerspective:theanim.tper,
-								  transformOrigin:origin,
-								  ease:easedata,
-								   "-webkit-filter":theanim['-webkit-filter'],
-						  			filter:theanim['filter'],
-								 },mdelay));
 
 		// COLUMN BG ANIMATION
 		if (colbg!=undefined) 		
@@ -2579,12 +2846,13 @@ var tpLayerTimelinesRev = new function(){
 				t.setIdleZones();
 				t.deactivatePerfectScrollBars();
 			},
-			drag:function(event,ui) {				
+			drag:function(event,ui) {			
 				t.mainMaxTimeLeft = ui.position.left;
 				document.getElementById('mastertimer-maxcurtime').innerHTML = t.convToTime(t.mainMaxTimeLeft);				
 				document.getElementById('delay').value = t.mainMaxTimeLeft*10;			
 				t.setIdleZones();								
 				t.compareLayerEndsVSSlideEnd();
+				t.setSlideTransitionTimerBar();
 			},
 			stop:function(event,ui) {
 				punchgs.TweenLite.set(document.getElementById('mastertimer-curtime'),{autoAlpha:1,x:-1,y:0,ease:punchgs.Power2.easeInOut});
@@ -2597,6 +2865,7 @@ var tpLayerTimelinesRev = new function(){
 				u.setMaintime(g_slideTime);
 				t.compareLayerEndsVSSlideEnd();
 				t.rerenderAllAudioMap();
+				t.setSlideTransitionTimerBar();
 			}
 
 		});
@@ -2745,6 +3014,7 @@ var tpLayerTimelinesRev = new function(){
 		durcont.innerHTML = dur;
 		if (!jQuery.isNumeric(dur)) dur = 500;
 		punchgs.TweenLite.set(speed,{width:dur/10});
+		
 		punchgs.TweenLite.set(cont,{left:15,width:t.mainMaxTimeLeft});
 		
 	}
@@ -3566,23 +3836,35 @@ var tpLayerTimelinesRev = new function(){
 			}		
 		}
 
+		
 		// UPDATE DELAYS ON EACH FRAMES COMING AFTER THE CURRENT FRAME 
 		if (fi!==999) {
 			var nfi = fi+1>=frameslength-1 ? 999 : fi+1,
 				nextframe = objLayer.frames["frame_"+nfi];			
 			if (nextframe!=undefined) {
-				nextframe.time_relative = nextframe.time - (currentframe.time+currentframe.speed+(currentframe.split_extratime*10));			
+				nextframe.time_relative = nextframe.time - (currentframe.time+currentframe.speed+(currentframe.split_extratime*10));				
 				objUpdate.frames["frame_"+nfi] = {time_relative : nextframe.time_relative};
+				objLayer.frames["frame_"+nfi].time_relative =nextframe.time_relative;
 			}
-
+		} else {
+			var nfi="frame_0";			
+			for (var fri in objLayer.frames) {
+				if (fri!=="frame_999")
+					nfi = fri;
+			}			
+			var prevframe = objLayer.frames[nfi];				
+			if (prevframe!=undefined) {					
+				var time_relative = objLayer.frames["frame_"+fi].time - (prevframe.time+prevframe.speed+(prevframe.split_extratime*10));									
+				objUpdate.frames.frame_999.time_relative = time_relative;	
+				objLayer.frames.frame_999.time_relative =time_relative;				
+			}
 		}
-				
-		if (source=="trigger")
+		
+		if (source=="trigger") {			
 			u.updateLayer(objLayer.serial,objUpdate);
-		else 
+		} else 
 			currentframe.split_extratime = objUpdate.frames["frame_"+fi].split_extratime;
 		
-
 		t.frameLimitations(frame,false,ignorerecursive,{update:updateTimerText,triggered:triggered,timecont:timecont});
 		t.updateFullTime(objLayer);
 		checkTillSlideEnd(objLayer);
@@ -3922,30 +4204,31 @@ var tpLayerTimelinesRev = new function(){
 				if (grouplayer && htmllayer && !grouplayer[0].contains(htmllayer[0])) {
 					
 					var g = grouplayer[0].getElementsByClassName('tp_layer_group_inner_wrapper')[0];					
-					
-					if (objLayer.type!=="column") {
-						var noelement = true,
-							so = 99999,
-							ib;						
-						for (var j in _A_) {
-							var objComp = _A_[j];							
-							if (objLayer.p_uid === objComp.p_uid && objComp.references.htmlLayer!==undefined && objComp.groupOrder!==undefined && objComp.groupOrder > objLayer.groupOrder && objComp.groupOrder<so) {
-								so = objComp.groupOrder;
-								noelement = false;
-								ib = objComp.references.htmlLayer;					
+					if (g!==undefined && htmllayer[0]!==undefined) {
+						if (objLayer.type!=="column") {
+							var noelement = true,
+								so = 99999,
+								ib;						
+							for (var j in _A_) {
+								var objComp = _A_[j];							
+								if (objLayer.p_uid === objComp.p_uid && objComp.references.htmlLayer!==undefined && objComp.groupOrder!==undefined && objComp.groupOrder > objLayer.groupOrder && objComp.groupOrder<so) {
+									so = objComp.groupOrder;
+									noelement = false;
+									ib = objComp.references.htmlLayer;					
+								}
 							}
-						}
-						if (ib!==undefined && so<99999) {							
-							if (ib[0].parentNode == g)
-								g.insertBefore(htmllayer[0],ib[0]); 
+							if (ib!==undefined && so<99999) {							
+								if (ib[0].parentNode == g)
+									g.insertBefore(htmllayer[0],ib[0]); 
+								else
+									g.appendChild(htmllayer[0])
+							}
 							else
-								g.appendChild(htmllayer[0])
+								g.appendChild(htmllayer[0]);
+						} else {				
+							//console.log("Add Column with ID:"+objLayer.unique_id+"  into Group:"+objLayer.p_uid);
+							g.appendChild(htmllayer[0])
 						}
-						else
-							g.appendChild(htmllayer[0]);
-					} else {				
-						//console.log("Add Column with ID:"+objLayer.unique_id+"  into Group:"+objLayer.p_uid);
-						g.appendChild(htmllayer[0])
 					}
 					
 				} 
@@ -5013,7 +5296,15 @@ var tpLayerTimelinesRev = new function(){
 							 ['slidingoverlaydown', 28, 0,1,0,'horizontal',true,true,48,p1io,p1o,2000,1],
 							 ['slidingoverlayright', 30, 0,1,0,'horizontal',true,true,49,p1io,p1o,2000,1],
 							 ['slidingoverlayleft', 29, 0,1,0,'horizontal',true,true,50,p1io,p1o,2000,1],
-							 ['notransition',26,0,1,0,'horizontal',true,null,46,p2io,p2i,1000,1],							 
+							 ['notransition',26,0,1,0,'horizontal',true,null,46,p2io,p2i,1000,1],
+							 ['grayscale', 11, 5, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['grayscalecross', 11, 6, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['brightness', 11, 7, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['brightnesscross', 11, 8, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['blurlight', 11, 9, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['blurlightcross', 11, 10, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['blurstrong', 11, 9, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['blurstrongcross', 11, 10, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1]
 						   ];
 
 
@@ -5438,11 +5729,42 @@ var tpLayerTimelinesRev = new function(){
 							mtl.add(punchgs.TweenLite.set(actsh,{autoAlpha:0,force3D:"auto"}),0);
 							mtl.add(punchgs.TweenLite.fromTo(actsh,masterspeed/2000,{autoAlpha:0},{autoAlpha:1,force3D:"auto",ease:ei}),masterspeed/2000);							
 						break;
+						case 5: // GRAYSCALE
+						case 6: // GRAYSCALECROSS
+						case 7: // BRIGHTNESS					
+						case 8: // BRIGHTNESSCROSS
+						case 9: // BLUR LIGHT
+						case 10: // BLUR LIGHT CROSS
+						case 11: // BLUR STRONG
+						case 12: // BLUR STRONG CROSS
+
+							
+							var _blur = jQuery.inArray(specials,[9,10])>=0 ? 5 : jQuery.inArray(specials,[11,12])>=0 ? 10 : 0,
+								_gray = jQuery.inArray(specials,[5,6,7,8])>=0 ? 100 : 0,
+								_bright = jQuery.inArray(specials,[7,8])>=0 ? 300 : 0,
+								__ff = "blur("+_blur+"px) grayscale("+_gray+"%) brightness("+_bright+"%)",
+								__ft = "blur(0px) grayscale(0%) brightness(100%)";
+
+							mtl.add(punchgs.TweenLite.fromTo(nextsh,masterspeed/1000,{autoAlpha:0,filter:__ff, "-webkit-filter":__ff},{autoAlpha:1,filter:__ft, "-webkit-filter":__ft,force3D:"auto",ease:ei}),0);
+							if (jQuery.inArray(specials,[6,8,10])>=0)
+								mtl.add(punchgs.TweenLite.fromTo(actsh,masterspeed/1000,{autoAlpha:1,filter:__ft, "-webkit-filter":__ft},{autoAlpha:0,force3D:"auto",ease:ei,filter:__ff, "-webkit-filter":__ff}),0);
+							
+						break;
 					}
 				} else {				
 					nextsh.find('.slotslide').each(function(i) {
 						var ss=jQuery(this);
-						mtl.add(punchgs.TweenLite.fromTo(ss,masterspeed/1000,{autoAlpha:0},{autoAlpha:1,force3D:"auto",ease:ei}),0);
+						if (specials<5)
+						 	mtl.add(punchgs.TweenLite.fromTo(ss,masterspeed/1000,{autoAlpha:0},{autoAlpha:1,force3D:"auto",ease:ei}),0);
+						else {
+							var _blur = jQuery.inArray(specials,[9,10])>=0 ? 5 : jQuery.inArray(specials,[11,12])>=0 ? 10 : 0,
+								_gray = jQuery.inArray(specials,[5,6,7,8])>=0 ? 100 : 0,
+								_bright = jQuery.inArray(specials,[7,8])>=0 ? 300 : 0,
+								__ff = "blur("+_blur+"px) grayscale("+_gray+"%) brightness("+_bright+"%)",
+								__ft = "blur(0px) grayscale(0%) brightness(100%)";
+
+							mtl.add(punchgs.TweenLite.fromTo(ss,masterspeed/1000,{autoAlpha:0,filter:__ff, "-webkit-filter":__ff},{autoAlpha:1,filter:__ft, "-webkit-filter":__ft,force3D:"auto",ease:ei}),0);
+						}
 					});
 				}
 	}

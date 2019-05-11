@@ -15,10 +15,14 @@ Mk_Static_Files::addCSS('
 #flipbox-'.$id.' .back-title  		{ font-weight:'.$font_weight.'; font-size:'.$back_title_size.'px; '.($back_title_color ? ('color:'.$back_title_color.';') : '').'}
 #flipbox-'.$id.' .back-desc 		{ font-size:'.$back_desc_size.'px; '.($back_desc_color ? ('color:'.$back_desc_color.';') : '').'}
 ', $id);
+
+$class = 'flip-' . $flip_direction;
+$class .= ' ' . $el_class;
+$class .= ' ' . $visibility;
 ?>
 
 
-<div id="flipbox-<?php echo $id; ?>" onclick="" class="mk-flipbox flip-<?php echo $flip_direction; ?> <?php echo $el_class; ?> height-full">
+<div id="flipbox-<?php echo $id; ?>" onclick="" class="mk-flipbox <?php echo $class; ?> height-full">
 	<div class="mk-flipbox-holder height-full text-center no-pointer perspective bezier-1" style="min-height: <?php echo $min_height ?>px">
 
 		<div class="mk-flipbox-front a_col-1of2 no-backface origin-center bezier-1">

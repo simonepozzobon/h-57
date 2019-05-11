@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Twitter Feeds", "mk_framework"),
     "base" => "vc_twitter",
+	'html_template' => dirname( __FILE__ ) . '/vc_twitter.php',
     'icon' => 'icon-mk-twitter-feeds vc_mk_element-icon',
     'description' => __( 'Adds Twitter Feeds.', 'mk_framework' ),
     "category" => __('Social', 'mk_framework'),
@@ -32,19 +33,20 @@ vc_map(array(
             "description" => __("How many recent tweets to load.", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Text & Icon color", "mk_framework"),
             "param_name" => "text_color",
             "value" => "",
             "description" => __("You can set a color for text and icon color.", "mk_framework")
         ),
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Link Color", "mk_framework"),
             "param_name" => "link_color",
             "value" => "",
             "description" => __("You can change link color.", "mk_framework")
         ),
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework"),

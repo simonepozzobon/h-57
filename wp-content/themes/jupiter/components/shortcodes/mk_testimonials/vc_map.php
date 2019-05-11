@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Testimonials", "mk_framework") ,
     "base" => "mk_testimonials",
+	'html_template' => dirname( __FILE__ ) . '/mk_testimonials.php',
     'icon' => 'icon-mk-testimonial-slideshow vc_mk_element-icon',
     "category" => __('Slideshows', 'mk_framework') ,
     'description' => __('Shows Testimonials in multiple styles.', 'mk_framework') ,
@@ -154,21 +155,21 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Content Color", "mk_framework") ,
             "param_name" => "text_color",
             "value" => "#777777",
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Author Color", "mk_framework") ,
             "param_name" => "author_color",
             "value" => "#444444",
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Skill Color", "mk_framework") ,
             "param_name" => "skill_color",
             "value" => "#777777",
@@ -228,6 +229,7 @@ vc_map(array(
             "description" => __("Space between each character.", "mk_framework")
         ) ,
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

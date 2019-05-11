@@ -43,6 +43,7 @@ $image_box = pq('.mk-image-switch');
 $image_container = $image_box->find('.image__container');
 $image_box->attr( 'id', 'mk-image-switch-'.$id );
 $image_box->addClass($el_class);
+$image_box->addClass( $visibility );
 
 $image_box->addClass('align-'.$align);
 $image_box->addClass($hover_animation.'-animation');

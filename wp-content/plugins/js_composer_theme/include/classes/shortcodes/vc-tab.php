@@ -12,7 +12,6 @@ class WPBakeryShortCode_VC_Tab extends WPBakeryShortCode_VC_Column {
 	protected $predefined_atts = array(
 		'tab_id' => '',
 		'title' => '',
-		'icon' => ''
 	);
 	protected $controls_template_file = 'editors/partials/backend_controls_tab.tpl.php';
 

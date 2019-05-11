@@ -322,7 +322,7 @@ class mk_db_management {
 		$latest_backup = end( $list_of_backups );
 
 		if ( ! isset( $latest_backup['full_path'] ) || ! $this->mkfs->exists( $latest_backup['full_path'] ) || ! $this->mkfs->is_readable( $latest_backup['full_path'] ) ) {
-			$this->errors->add( 'media_records_backup_not_exists_or_readable', __( 'Media records backup file is not exists or not readable' ) );
+			$this->errors->add( 'media_records_backup_not_exists_or_readable', __( 'Media records backup file is not exists or not readable', 'mk_framework' ) );
 
 			return false;
 		}

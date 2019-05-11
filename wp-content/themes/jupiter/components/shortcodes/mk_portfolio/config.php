@@ -29,9 +29,11 @@ extract(shortcode_atts(array(
      'sortable_txt_color'     => '#cccccc',
      'sortable_all_text'      => 'All',
      'excerpt_length'         => 200,
-     'permalink_icon_name'     => 'mk-jupiter-icon-arrow-circle',
-     'zoom_icon_name'          => 'mk-jupiter-icon-plus-circle',
-
+     'permalink_icon_name'    => 'mk-jupiter-icon-arrow-circle',
+     'zoom_icon_name'         => 'mk-jupiter-icon-plus-circle',
+     'lazyload'               => 'false',
+     'disable_lazyload'       => 'false',
+     'visibility'		      => ''
 ), $atts));
 Mk_Static_Files::addAssets('mk_portfolio');
 

@@ -1,6 +1,4 @@
 <?php
-// error_reporting( E_ALL );
-// ini_set( 'display_errors', 1 );
 /**
  * This class is responsible to manage all jupiters plugin.
  * it will communicate with artbees API and get list of plugins , install them or remove them
@@ -136,7 +134,7 @@ class mk_plugin_management {
 			// Lock is free ...
 			$this->lock = $lock;
 			$this->lock_id = $lock_id;
-		} else if ( $lock === false && $this->lock === true && $lock_id == $this->lock_id ) {
+		} elseif ( $lock === false && $this->lock === true && $lock_id == $this->lock_id ) {
 			// Lock will be free by owner
 			$this->lock = $lock;
 			$this->lock_id = '';
@@ -169,7 +167,9 @@ class mk_plugin_management {
 		$this->setApiURL( V2ARTBEESAPI );
 
 		// Create validator instance
-		$this->validator = new Mk_Validator;
+		require_once( 'validator-class.php' );
+
+		$this->validator = new Mk_Validator();
 
 		// Init logger to system
 		$this->logger = new Devbees\BeesLog\logger();
@@ -179,10 +179,12 @@ class mk_plugin_management {
 			->method( \Httpful\Http::GET )
 			->withoutStrictSsl()
 			->expectsJson()
-			->addHeaders(array(
-				'api-key' => get_option( 'artbees_api_key' ),
-				'domain'  => $_SERVER['SERVER_NAME'],
-			));
+			->addHeaders(
+				array(
+					'api-key' => get_option( 'artbees_api_key' ),
+					'domain'  => $_SERVER['SERVER_NAME'],
+				)
+			);
 		\Httpful\Request::ini( $template );
 
 		if ( $this->get_system_under_test() === false ) {
@@ -201,7 +203,7 @@ class mk_plugin_management {
 	/*====================== ACTION HANDLER ============================*/
 
 	/**
-	 * method that is resposible to get data from wordpress ajax and pass it to install() method for installing plugin.
+	 * method that is resposible to get data from WordPress ajax and pass it to install() method for installing plugin.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 * @param str $abb_controlpanel_plugin_name should be posted to this method
@@ -215,7 +217,7 @@ class mk_plugin_management {
 	}
 
 	/**
-	 * method that is resposible to get data from wordpress ajax and remove specific plugin.
+	 * method that is resposible to get data from WordPress ajax and remove specific plugin.
 	 * it will deactive plugin first and check if the plugin is one file stand or a directory and then will remove it
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
@@ -230,7 +232,7 @@ class mk_plugin_management {
 		$this->remove_plugin( $this->get_plugin_slug() );
 	}
 	/**
-	 * method that is resposible to get data from wordpress ajax and update specific plugin.
+	 * method that is resposible to get data from WordPress ajax and update specific plugin.
 	 * it will deactive plugin first and check if the plugin is one file stand or a directory and then will remove it
 	 * after removing plugin it will send the plugin name to install() method to install renew plugin
 	 *
@@ -267,7 +269,7 @@ class mk_plugin_management {
 			$installed_plugin = $this->get_response_data();
 			$exclude_plugins = array_column( $installed_plugin, 'slug' );
 			$this->plugins_list_from_api( $exclude_plugins );
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
@@ -276,7 +278,7 @@ class mk_plugin_management {
 	/*====================== MAIN FUNCTIONS ============================*/
 
 	/**
-	 * method that is resposible to download plugin from api and install it on wordpress then activate it on last step.
+	 * method that is resposible to download plugin from api and install it on WordPress then activate it on last step.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
@@ -328,7 +330,7 @@ class mk_plugin_management {
 			$this->set_plugin_remote_url( $api_response[0]['source'] );
 			$this->set_plugin_remote_file_name( basename( $this->get_plugin_remote_url() ) );
 
-			// Upload plugin from address to wordpress upload folder
+			// Upload plugin from address to WordPress upload folder
 			Abb_Logic_Helpers::uploadFromURL( $this->get_plugin_remote_url(), $this->get_plugin_remote_file_name(), $this->get_plugins_dir() );
 
 			// Unzip IT
@@ -353,7 +355,7 @@ class mk_plugin_management {
 			$this->message( 'Plugin successfully added and activated.', true );
 			return true;
 
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}// End try().
@@ -402,29 +404,31 @@ class mk_plugin_management {
 			$response = $this->install();
 			$get_plugins = get_plugins();
 
-			$installed_plugin_version = $get_plugins[$plugin_path]['Version'];
+			$installed_plugin_version = $get_plugins[ $plugin_path ]['Version'];
 
 			$this->set_lock( 'update_plugin' , false )->message( $installed_plugin_version, true );
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}// End try().
 	}
-	public function plugins_list_from_api($exclude_plugins = array() ) {
+	public function plugins_list_from_api( $exclude_plugins = array() ) {
 		$exclude_plugins = json_encode( $exclude_plugins );
 		$exclude_plugins = (empty( $exclude_plugins ) == true ? array() : $exclude_plugins);
 		$url            = $this->getApiURL() . 'tools/plugin';
 		$response       = \Httpful\Request::get( $url )
-			->addHeaders(array(
-				'from'       => 0,
-				'count'      => 20,
-				'exclude-plugins-slug' => $exclude_plugins,
-				'plugin-name' => $this->get_plugin_name(),
-				'plugin-slug' => $this->get_plugin_slug(),
-			))
+			->addHeaders(
+				array(
+					'from'       => 0,
+					'count'      => 20,
+					'exclude-plugins-slug' => $exclude_plugins,
+					'plugin-name' => $this->get_plugin_name(),
+					'plugin-slug' => $this->get_plugin_slug(),
+				)
+			)
 			->send();
-		if ( isset( $response->body->bool ) == false || $response->body->bool == false ) {
+		if ( ! isset( $response->body->bool ) || ! $response->body->bool ) {
 			$this->message( $response->body->message, false );
 			return false;
 		}
@@ -435,19 +439,23 @@ class mk_plugin_management {
 		$result = json_decode( json_encode( $response->body->data ), true );
 		foreach ( $result as $key => $value ) {
 				$fetch_data = [];
-			if ( $value['source'] == 'wp-repo' ) {
+			if ( 'wp-repo' === $value['source'] ) {
 				$fetch_data['download_link'] = 'source';
 			}
-			if ( $value['version'] == 'wp-repo' ) {
+			if ( 'wp-repo' === $value['version'] ) {
 				$fetch_data['version'] = 'version';
 			}
-			if ( $value['desc'] == 'wp-repo' ) {
+			if ( 'wp-repo' === $value['desc'] ) {
 				$fetch_data['short_description'] = 'desc';
 			}
 			if ( is_array( $fetch_data ) && count( $fetch_data ) > 0 ) {
 				$response = $this->get_plugin_info_from_wp_repo( $value['slug'], $fetch_data );
-				if ( $response != false ) {
+				if ( false !== $response ) {
 					$result[ $key ] = array_replace( $result[ $key ], $response );
+				}
+				if ( $this->find_plugin_path( $value['slug'] ) ) {
+					$result[ $key ]['version'] = $this->get_plugin_data( $value['slug'], 'Version' );
+					$result[ $key ]['desc'] = $this->get_plugin_data( $value['slug'], 'Description' );
 				}
 			}
 		}
@@ -464,9 +472,11 @@ class mk_plugin_management {
 		}
 		$url      = $this->getApiURL() . 'tools/plugin-version';
 		$response = \Httpful\Request::get( $url )
-			->addHeaders(array(
-				'plugins-slug' => json_encode( $plugins ),
-			))
+			->addHeaders(
+				array(
+					'plugins-slug' => json_encode( $plugins ),
+				)
+			)
 			->send();
 		if ( isset( $response->body->bool ) == false || $response->body->bool == false ) {
 			throw new Exception( $response->body->message );
@@ -476,10 +486,11 @@ class mk_plugin_management {
 	}
 	public function list_of_installed_plugin() {
 		try {
-			$list_of_plugins = $this->plugins_custom_api( 0 , 0 , array( 'slug', 'version', 'name', 'desc', 'img_url' ) );
+			$list_of_plugins = $this->plugins_custom_api( 0 , 0 , array( 'slug', 'basename', 'version', 'name', 'desc', 'img_url' ) );
+
 			if ( is_array( $list_of_plugins ) && count( $list_of_plugins ) > 0 ) {
 				foreach ( $list_of_plugins as $key => $plugin_info ) {
-					if ( $this->check_active_plugin( $plugin_info['slug'] ) ) {
+					if ( is_plugin_active( $plugin_info['basename'] ) ) {
 						if ( ($current_plugin_version = $this->get_plugin_version( $plugin_info['slug'] )) != false ) {
 							if ( version_compare( $current_plugin_version, $plugin_info['version'], '<' ) ) {
 								$list_of_plugins[ $key ]['installed']   = true;
@@ -500,7 +511,7 @@ class mk_plugin_management {
 				$this->message( 'Plugin list is empty', false );
 				return false;
 			}
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}// End try().
@@ -510,11 +521,13 @@ class mk_plugin_management {
 	public function plugins_custom_api( $from = 0, $count = 1, $list_of_attr = array() ) {
 		$url            = $this->getApiURL() . 'tools/plugin-custom-list';
 		$response       = \Httpful\Request::get( $url )
-			->addHeaders(array(
-				'from'       => $from,
-				'count'      => $count,
-				'list-of-attr' => json_encode( $list_of_attr ),
-			))
+			->addHeaders(
+				array(
+					'from'       => $from,
+					'count'      => $count,
+					'list-of-attr' => json_encode( $list_of_attr ),
+				)
+			)
 			->send();
 		if ( isset( $response->body->bool ) == false || $response->body->bool == false ) {
 			throw new Exception( $response->body->message );
@@ -545,7 +558,7 @@ class mk_plugin_management {
 		return $result;
 	}
 	/**
-	 * method that is resposible to download plugin from api and install it on wordpress then activate it on last step.
+	 * method that is resposible to download plugin from api and install it on WordPress then activate it on last step.
 	 * it will get an array of plugins name.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
@@ -571,14 +584,14 @@ class mk_plugin_management {
 			$this->set_lock( 'install_batch' , false )->message( array( $message_need_to_replace, count( $plugins_slug_list ) ) );
 			return true;
 
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}
 	}
 	/**
 	 * this method is resposible to activate upladed plugin .
-	 * it used native wordpress functions.
+	 * it used native WordPress functions.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
@@ -600,14 +613,19 @@ class mk_plugin_management {
 
 		$url = add_query_arg( $_POST, admin_url( 'admin-ajax.php' ) );
 
-		$mkfs = new Mk_Fs( [ 'form_post' => $url, 'context' => $this->get_plugins_dir() ] );
+		$mkfs = new Mk_Fs(
+			[
+				'form_post' => $url,
+				'context' => $this->get_plugins_dir(),
+			]
+		);
 
-		if( $mkfs->get_error_code() ){
+		if ( $mkfs->get_error_code() ) {
 			throw new Exception( $mkfs->get_error_message() );
 			return false;
 		}
 
-		if ( !$mkfs->is_writable( $this->get_plugins_dir() ) ) {
+		if ( ! $mkfs->is_writable( $this->get_plugins_dir() ) ) {
 			throw new Exception( 'Plugin directory is not writable.' );
 			return false;
 		}
@@ -616,7 +634,7 @@ class mk_plugin_management {
 	}
 	/**
 	 * this method is resposible to activate upladed plugin .
-	 * it used native wordpress functions.
+	 * it used native WordPress functions.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
@@ -647,7 +665,7 @@ class mk_plugin_management {
 	}
 	/**
 	 * this method is resposible to deactivate active plugin .
-	 * it used native wordpress functions.
+	 * it used native WordPress functions.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
@@ -655,7 +673,7 @@ class mk_plugin_management {
 	 *
 	 * @return bool will return boolean status of action , all message is setted to $this->message()
 	 */
-	public function deactivate_plugin( $plugin_slug, $silent = false, $network_wide = null  ) {
+	public function deactivate_plugin( $plugin_slug, $silent = false, $network_wide = null ) {
 		$plugin_path = $this->find_plugin_path( $plugin_slug );
 		if ( $plugin_path === false ) {
 			return true;
@@ -674,7 +692,7 @@ class mk_plugin_management {
 
 	/**
 	 * this method is resposible to remove deactive plugin .
-	 * it used native wordpress functions.
+	 * it used native WordPress functions.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
@@ -686,12 +704,16 @@ class mk_plugin_management {
 		// Check wether parent directory is writable or not
 		try {
 
-			$mkfs = new Mk_Fs( [ 'context' => $this->get_plugins_dir() ] );
+			$mkfs = new Mk_Fs(
+				[
+					'context' => $this->get_plugins_dir(),
+				]
+			);
 
-			if( $mkfs->get_error_code() ){
+			if ( $mkfs->get_error_code() ) {
 				throw new Exception( $mkfs->get_error_message() );
 			}
-			if ( !$mkfs->is_writable( $this->get_plugins_dir() ) ) {
+			if ( ! $mkfs->is_writable( $this->get_plugins_dir() ) ) {
 				throw new Exception( 'Plugin parent directory is not writable - RPPM01x01.' );
 			}
 			if ( ($plugin_path = $this->find_plugin_path( $plugin_slug )) == false ) {
@@ -709,7 +731,7 @@ class mk_plugin_management {
 			$plugin_base_directory = str_replace( basename( $plugin_path ), '', $plugin_full_path );
 
 			if ( strlen( str_replace( $this->get_plugins_dir(), '', $plugin_full_path ) ) > 2 ) {
-				if ( !$mkfs->is_writable( $plugin_base_directory ) ) {
+				if ( ! $mkfs->is_writable( $plugin_base_directory ) ) {
 					throw new Exception( 'Plugin directory is not writable  - RPPM01x01.' );
 				}
 				if ( Abb_Logic_Helpers::deleteFileNDir( $plugin_base_directory ) ) {
@@ -729,7 +751,7 @@ class mk_plugin_management {
 
 			$this->message( 'Plugin successfully Removed.', true );
 			return true;
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$this->message( $e->getMessage(), false );
 			return false;
 		}// End try().
@@ -737,7 +759,7 @@ class mk_plugin_management {
 
 	/**
 	 * this method is resposible to get plugin version .
-	 * it used native wordpress functions.
+	 * it used native WordPress functions.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
@@ -765,7 +787,7 @@ class mk_plugin_management {
 
 	/**
 	 * this method is resposible to get plugin version .
-	 * it used native wordpress functions.
+	 * it used native WordPress functions.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
@@ -794,7 +816,7 @@ class mk_plugin_management {
 
 	/**
 	 * this method is resposible to get plugin data name field
-	 * it used native wordpress functions.
+	 * it used native WordPress functions.
 	 *
 	 * @author Sofyan Sitorus <sofyan@artbees.net>
 	 *
@@ -802,18 +824,20 @@ class mk_plugin_management {
 	 *
 	 * @return string Will return plugin name or slug if it was not found
 	 */
-	public function get_plugin_data_name( $plugin_slug ){
+	public function get_plugin_data_name( $plugin_slug ) {
 
 		$plugin_data_name = $this->get_plugin_data( $plugin_slug, 'Name' );
 
-		if( !$plugin_data_name ){
+		if ( ! $plugin_data_name ) {
 			$url = $this->getApiURL() . 'tools/plugin';
 			$response       = \Httpful\Request::get( $url )
-				->addHeaders(array(
-					'plugin-slug' => $plugin_slug,
-				))
+				->addHeaders(
+					array(
+						'plugin-slug' => $plugin_slug,
+					)
+				)
 				->send();
-			if( isset( $response->body->data[0]->name ) ){
+			if ( isset( $response->body->data[0]->name ) ) {
 				$plugin_data_name = $response->body->data[0]->name;
 			}
 		}
@@ -823,7 +847,7 @@ class mk_plugin_management {
 
 	/**
 	 * this method is resposible to check if input plugin name is active or not.
-	 * it used native wordpress functions.
+	 * it used native WordPress functions.
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
 	 *
@@ -876,9 +900,9 @@ class mk_plugin_management {
 	 * Try to grab information from WordPress API.
 	 *
 	 * @param string $plugin_slug Plugin slug.
-	 * @param array  $info_array it should be valued if you want to extract specific data from wordpress info
+	 * @param array  $info_array it should be valued if you want to extract specific data from WordPress info
 	 *                           for example : array('download_link' => 'source' , 'version' => 'version')
-	 *                           array key : the info name from wordpress repo
+	 *                           array key : the info name from WordPress repo
 	 *                           array value : the name of info that you need to return
 	 *
 	 * @return object Plugins_api response object on success, WP_Error on failure.
@@ -890,7 +914,15 @@ class mk_plugin_management {
 				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 			}
 
-			$response   = plugins_api( 'plugin_information', array( 'slug' => $plugin_slug, 'fields' => array( 'sections' => false, 'short_description' => true ) ) );
+			$response   = plugins_api(
+				'plugin_information', array(
+					'slug' => $plugin_slug,
+					'fields' => array(
+						'sections' => false,
+						'short_description' => true,
+					),
+				)
+			);
 			$api[ $plugin_slug ] = false;
 
 			if ( is_wp_error( $response ) ) {
@@ -928,7 +960,7 @@ class mk_plugin_management {
 			'status'  => $status,
 			'data'    => $data,
 		);
-		if ( $this->get_lock() == true  && $this->get_system_under_test() == false ) {
+		if ( $this->get_lock() == true && $this->get_system_under_test() == false ) {
 			$this->set_response( $response );
 			return true;
 		} elseif ( $this->get_ajax_mode() == true && $this->get_system_under_test() == false ) {

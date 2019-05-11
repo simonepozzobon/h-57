@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Widgetized Sidebar", "mk_framework") ,
     "base" => "mk_custom_sidebar",
+	'html_template' => dirname( __FILE__ ) . '/mk_custom_sidebar.php',
     'icon' => 'icon-mk-custom-sidebar vc_mk_element-icon',
     'description' => __('Place Widgetized sidebar', 'mk_framework') ,
     "category" => __('Structure', 'mk_framework') ,
@@ -12,6 +13,7 @@ vc_map(array(
             'param_name' => 'sidebar',
             'description' => __('Select the widget area to be shown in this sidebar.', 'mk_framework')
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

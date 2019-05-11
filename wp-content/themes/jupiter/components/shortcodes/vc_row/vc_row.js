@@ -13,15 +13,20 @@
 		$this.height( $this.height() );
 	}
 
-
 	var $window = $( window );
 	var container = document.getElementById( 'mk-theme-container' );
 
-	$( '.equal-columns' ).each( function() { 
-		dynamicHeight.bind( this );
-	    $window.on( 'load', dynamicHeight.bind( this ) );
-	    $window.on( 'resize', dynamicHeight.bind( this ) );
-	    window.addResizeListener( container, dynamicHeight.bind( this ) );
+	function equalColumns() {
+		$( '.equal-columns' ).each( function() { 
+			dynamicHeight.bind( this );
+		    $window.on( 'load', dynamicHeight.bind( this ) );
+		    $window.on( 'resize', dynamicHeight.bind( this ) );
+		    window.addResizeListener( container, dynamicHeight.bind( this ) );
+		});
+	}
+	equalColumns();
+	$window.on( 'vc_reload' , function() {
+		equalColumns();
 	});
 
 }( jQuery ));

@@ -5,9 +5,12 @@ include( $path . '/config.php' );
 
 $id = Mk_Static_Files::shortcode_id();
 
+$class = $el_class;
+$class .= ' ' . $visibility;
+
 ?>
 
-<span id="drop-caps-<?php echo $id; ?>" class="mk-dropcaps <?php echo $style; ?> <?php echo $el_class; ?>">
+<span id="drop-caps-<?php echo $id; ?>" class="mk-dropcaps <?php echo $style; ?> <?php echo $class; ?>">
 	<?php echo do_shortcode( strip_tags( $content ) ); ?>
 </span>
 

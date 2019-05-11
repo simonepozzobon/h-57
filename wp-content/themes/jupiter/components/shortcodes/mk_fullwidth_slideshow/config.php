@@ -16,6 +16,7 @@ extract( shortcode_atts( array(
             'enable_3d'         => 'false',
             'stretch_images'        => "false",
             'speed_factor'      => '0.3',
+			'visibility' 		=> '',
             "el_class"          => '',
         ), $atts ) );
 Mk_Static_Files::addAssets('mk_fullwidth_slideshow');

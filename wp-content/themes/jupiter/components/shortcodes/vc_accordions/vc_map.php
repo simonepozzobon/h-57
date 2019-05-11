@@ -2,8 +2,10 @@
 vc_map(array(
     "name" => __("Accordion", "mk_framework") ,
     "base" => "vc_accordions",
+	'html_template' => dirname( __FILE__ ) . '/vc_accordions.php',
     "show_settings_on_create" => false,
     "is_container" => true,
+	'front_enqueue_js' => THEME_COMPONENTS . '/shortcodes/vc_accordions/vc_front.js',
     'icon' => 'icon-mk-accordion vc_mk_element-icon',
     'description' => __('Collapsible content panels', 'mk_framework') ,
     "category" => __('Content', 'mk_framework') ,
@@ -55,7 +57,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Container Background Color", "mk_framework") ,
             "param_name" => "container_bg_color",
             "value" => "#fff",
@@ -71,6 +73,7 @@ vc_map(array(
                 "No!" => "false"
             ) ,
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

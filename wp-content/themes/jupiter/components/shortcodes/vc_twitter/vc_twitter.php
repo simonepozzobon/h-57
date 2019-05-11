@@ -10,6 +10,7 @@ $shortcode_id = Mk_Static_Files::shortcode_id();
 
 $container = pq('.mk-twitter-shortcode');
 $container->addClass($el_class);
+$container->addClass( $visibility );
 $container->attr('id', 'mk-twitter-feed-'.$shortcode_id);
 $tweet_item = $container->find('.mk-tweet-list li')->remove();
 $heading = pq('.mk-fancy-title');
@@ -43,8 +44,8 @@ if (!$twitter_name || !$consumer_key || !$consumer_secret || !$access_token || !
 
 $transName = 'mk_jupiter_tweets_' . $item_id;
 
-if (false === get_transient($transName)) {
-    
+if ( false === get_transient( $transName ) || vc_is_page_editable() ) {
+
     $token = get_option('mk_twitter_token_' . $item_id);
     
     delete_option('mk_twitter_token_' . $item_id);

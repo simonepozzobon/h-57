@@ -2,6 +2,7 @@
 	vc_map(array(
 	    "name" => __("Chart", "mk_framework") ,
 	    "base" => "mk_chart",
+		'html_template' => dirname( __FILE__ ) . '/mk_chart.php',
 	    "category" => __('General', 'mk_framework') ,
 	    'icon' => 'icon-mk-chart vc_mk_element-icon',
 	    'description' => __('Powerful & versatile Chart element.', 'mk_framework') ,
@@ -18,14 +19,14 @@
 	            "description" => __("", "mk_framework")
 	        ) ,
 	        array(
-	            "type" => "colorpicker",
+	            "type" => "alpha_colorpicker",
 	            "heading" => __("Bar Color", "mk_framework") ,
 	            "param_name" => "bar_color",
 	            "value" => $skin_color,
 	            "description" => __("The color of the circular bar.", "mk_framework")
 	        ) ,
 	        array(
-	            "type" => "colorpicker",
+	            "type" => "alpha_colorpicker",
 	            "heading" => __("Track Color", "mk_framework") ,
 	            "param_name" => "track_color",
 	            "value" => "#ececec",
@@ -66,11 +67,10 @@
 	            "description" => __("The content inside the circular bar.", "mk_framework")
 	        ) ,
 	        array(
-	            "type" => "textfield",
+	            "type" => "icon_selector",
 	            "heading" => __("Add Icon", "mk_framework") ,
 	            "param_name" => "icon",
 	            "value" => "",
-	            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework") ,
 	            "dependency" => array(
 	                'element' => "content_type",
 	                'value' => 'icon'
@@ -92,7 +92,7 @@
 	            )
 	        ) ,
 	        array(
-	            "type" => "colorpicker",
+	            "type" => "alpha_colorpicker",
 	            "heading" => __("Icon Color", "mk_framework") ,
 	            "param_name" => "icon_color",
 	            "value" => "#444",
@@ -145,7 +145,7 @@
 	            )
 	        ) ,
 	        array(
-	            "type" => "colorpicker",
+	            "type" => "alpha_colorpicker",
 	            "heading" => __("Percentage Text Color", "mk_framework") ,
 	            "param_name" => "percentage_color",
 	            "value" => "#444",
@@ -174,13 +174,14 @@
 	            "description" => __("", "mk_framework")
 	        ) ,
 	        array(
-	            "type" => "colorpicker",
+	            "type" => "alpha_colorpicker",
 	            "heading" => __("Description Text Color", "mk_framework") ,
 	            "param_name" => "desc_color",
 	            "value" => "#444",
 	            "description" => __("", "mk_framework")
 	        ) ,
 	        $add_css_animations,
+	        $add_device_visibility,
 	        array(
 	            "type" => "textfield",
 	            "heading" => __("Extra class name", "mk_framework") ,

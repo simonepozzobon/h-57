@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Divider", "mk_framework") ,
     "base" => "mk_divider",
+	'html_template' => dirname( __FILE__ ) . '/mk_divider.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-divider vc_mk_element-icon',
     'description' => __('Dividers with many styles & options.', 'mk_framework') ,
@@ -72,7 +73,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Divider Color", "mk_framework") ,
             "param_name" => "border_color",
             "value" => "",
@@ -112,7 +113,7 @@ vc_map(array(
          * ==================================================================================
          */
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Background Color", "mk_framework") ,
             "param_name" => "thin_single_color",
             "value" => "",
@@ -132,7 +133,7 @@ vc_map(array(
          */
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("From", "mk_framework") ,
             "param_name" => "thin_grandient_color_from",
             "edit_field_class" => "vc_col-sm-3 vc_column",
@@ -147,7 +148,7 @@ vc_map(array(
             ) ,
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("To", "mk_framework") ,
             "param_name" => "thin_grandient_color_to",
             "edit_field_class" => "vc_col-sm-3 vc_column",
@@ -200,7 +201,7 @@ vc_map(array(
             ) ,
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Gradient Fallback Color", "mk_framework") ,
             "param_name" => "thin_grandient_color_fallback",
             "group" => __('Styles & Colors', 'mk_framework') ,

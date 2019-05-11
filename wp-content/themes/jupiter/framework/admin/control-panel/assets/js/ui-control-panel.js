@@ -13,9 +13,31 @@
 	    }
 	}
 
+	/**
+	 * Check if current browser is IE or Edge.
+	 *
+	 * Unfortunately, window.MK is not available in Control Panel page.
+	 * We need to create a simple function to check current browser is
+	 * IE or Edge since EventSource doesn't support them.
+	 *
+	 * @since 6.0.3
+	 *
+	 * @return {Boolean} True if it's IE or Edge.
+	 */
+	var isEdgeIE = function() {
+		var userAgent = navigator.userAgent;
+		var result = userAgent.match( /Edge|MSIE|Trident/ );
+
+		// Return the status.
+		if ( result ) {
+			return true;
+		}
+
+		return false;
+	}
 
     // Load scripts on load
-    mk_register_api_key();	
+    mk_register_api_key();
     mk_get_system_report();
 
     // Trigger on pane ajax load
@@ -58,7 +80,7 @@
      		var hash = window.location.hash;
      		if (hash.length > 0) {
      			var pane_slug = hash.substring(7, hash.length);
-     			control_panel_panes.get_pane(hash, pane_slug);	
+     			control_panel_panes.get_pane(hash, pane_slug);
      		}
      		return;
      	},
@@ -81,11 +103,11 @@
      	}
 
      };
-   
+
     $('.mka-cp-sidebar-link').on('click', control_panel_panes.trigger_pane);
     $(window).on('control_panel_pane_loaded', control_panel_panes.call_to_register);
     $(document).ready(control_panel_panes.get_pane_on_load);
-    
+
     /***************/
 
 
@@ -100,7 +122,7 @@
     		if($('#mk-cp-icon-library').length == 0) return;
     		icon_library.get_icon_list();
     		$(document).on('change', '#js__icon-lib-category-filter', icon_library.get_icon_by_category);
-    		$('#js__icon-lib-search').on('keyup', _.debounce(icon_library.get_icon_by_keyword, 500));
+    		$('#js__icon-lib-search').on('keyup', _.debounce(icon_library.get_icon_by_keyword, 800));
     		$(window).scroll(icon_library.throttle(icon_library.load_more_icons, 200));
     		//console.log('loaded');
     	},
@@ -119,7 +141,7 @@
     	},
 
     	get_icon_list : function() {
-    		
+
     		if(icon_library.server_response_status === false) return false;
 
     		var from_number = Number($('.mka-icon-lib-page-load-more').data('from'));
@@ -163,13 +185,13 @@
     		icon_library.reset_icon_list();
 	        var category_name = $(this).val();
 	        	icon_library.category_name = category_name;
-	        icon_library.server_response_status = true;	
+	        icon_library.server_response_status = true;
 	        icon_library.get_icon_list();
     	},
 
-	    reset_icon_list : function() { 
-	    	$("#js__icon-lib-list").fadeOut(300, function() {
-		        $(this).empty().fadeIn(300);
+	    reset_icon_list : function() {
+	    	$("#js__icon-lib-list").fadeOut(200, function() {
+		        $(this).empty().fadeIn(200);
 		    });
 		    $('.mka-icon-lib-page-load-more').data('from', 0);
 	    },
@@ -194,15 +216,14 @@
 		      throttling = true;
 		      return result;
 		    };
-		},
-
+		}
 
     };
     $(document).ready(icon_library.init);
     $(window).on('control_panel_pane_loaded', icon_library.init);
-    
 
-    /* Control Panel > Register API key 
+
+    /* Control Panel > Register API key
      *******************************************************/
 
      function mk_register_api_key() {
@@ -366,7 +387,7 @@
 						showLearnmoreButton: false,
 		            });
 		        }
-		        
+
 		    });
      	},
 
@@ -429,15 +450,15 @@
                 showLearnmoreButton: false,
                 showProgress: false,
                 onConfirm : function() {
-                	plugins.activate_start($this.data('slug'));	
+                	plugins.activate_start($this.data('slug'));
                 }
             });
      	},
 
      	activate_start : function(plugin_slug) {
-			    
+
 			    var $btn = $('.abb_plugin_activate[data-slug="' + plugin_slug + '"]');
-			    
+
 			    var plugin_name = $btn.data('name');
 
 			    var req_data = {
@@ -465,7 +486,7 @@
 			        dataType: "json",
 			        timeout: 60000,
 			        success: function(response) {
-			            
+
 			            console.log('Install Plugin :', req_data, ' Response :', response);
 
 			            if (response.hasOwnProperty('status')) {
@@ -547,7 +568,7 @@
 	                showLearnmoreButton: false,
 	                showProgress: false,
 	                onConfirm : function() {
-	                	plugins.deactivate_start($this.data('slug'));	
+	                	plugins.deactivate_start($this.data('slug'));
 	                }
 	            });
 
@@ -555,10 +576,10 @@
 
 
      	deactivate_start : function(plugin_slug) {
-			    
+
 			    var $btn = $('.abb_plugin_deactivate[data-slug="' + plugin_slug + '"]');
 			    var plugin_name = $btn.data('name');
-			    
+
 			    var req_data = {
 			        action: 'abb_remove_plugin',
 			        abb_controlpanel_plugin_name: plugin_name,
@@ -655,18 +676,18 @@
                 showLearnmoreButton: false,
                 showProgress: false,
                 onConfirm : function() {
-                	plugins.update_start($this);	
+                	plugins.update_start($this);
                 }
             });
      	},
 
      	update_start : function($this) {
-     		
+
 	        var plugin_slug = $this.data('slug');
 
      		var $this = $('.abb_plugin_update[data-slug="' + plugin_slug + '"]');
 		    var plugin_name = $this.data('name');
-			
+
 			mk_modal({
 	            title: mk_cp_textdomain.updating_plugin,
 	            text: mk_cp_textdomain.wait_for_plugin_update,
@@ -741,9 +762,9 @@
 		        error: function(XMLHttpRequest, textStatus, errorThrown) {
 		            plugins.request_error_handling(XMLHttpRequest, textStatus, errorThrown);
 		        }
-		    });    
+		    });
      	},
-     
+
 
      	request_error_handling : function(XMLHttpRequest, textStatus, errorThrown) {
 
@@ -807,35 +828,37 @@
      $(window).on('control_panel_pane_loaded', plugins.init);
      /***************/
 
-     
-     
+
+
 
 
 
 
      /* Control Panel > Install Plugins
      *******************************************************/
-     
+
 
      var templates = {
 
      	template_pre_request : 9,
      	server_response_status : false,
-	    install_types : ['preparation', 
-	    				'backup_db', 
-	    				'backup_media_records', 
-	    				'reset_db', 
-	    				'upload', 
-	    				'unzip', 
-	    				'validate', 
-	    				'plugin', 
-	    				'theme_content', 
-	    				'menu_locations', 
-	    				'setup_pages', 
-	    				'theme_options', 
-	    				'theme_widget', 
-	    				'restore_media_records', 
-	    				'finilize'],
+	    install_types : ['preparation',
+	    				'backup_db',
+	    				'backup_media_records',
+	    				'reset_db',
+	    				'upload',
+	    				'unzip',
+	    				'validate',
+	    				'plugin',
+	    				'theme_content',
+	    				'menu_locations',
+	    				'setup_pages',
+	    				'theme_options',
+	    				'customizer',
+	    				'header_builder',
+	    				'theme_widget',
+	    				'restore_media_records',
+	    				'finalize'],
 	    template_id : null,
 	    template_name : null,
 	    import_media : false,
@@ -851,10 +874,27 @@
 		    $(document).on('click', '#js__restore-template-btn', templates.get_template_restore_init);
 			$(document).on('click', '#js__cp_template_uninstall', templates.uninstall_template_trigger);
 		    $(document).on('change', '#js__templates-category-filter', templates.template_category_filter);
-		    $('#js__template-search').on('keyup', _.debounce(templates.template_search, 500));
+		    $('#js__template-search').on('keyup', _.debounce(templates.template_search, 800));
 		    $(document).on('click', '.js__cp_template_install', templates.template_install_init);
+            $(document).on('click', '.mka-download-psd', templates.download_template_psd);
 	    },
 
+		 download_template_psd : function() {
+			 var template_name = $(this).attr("data-slug");
+			 var req_data = {
+				 action: 'abb_get_template_psd_link',
+				 template_name: template_name,
+			 }
+
+			 jQuery.post(ajaxurl, req_data, function(response) {
+				 if (response.status == true) {
+					top.location.href = response.data.psd_link;
+				 } else {
+					 console.log(response);
+					 swal("Oops...", response.message, "error");
+				 }
+			 });
+		 },
 
 	    get_template_list_html : function(data) {
 
@@ -873,21 +913,26 @@
 
 		    if (installed == false) {
 		        var btn =
-		            '<a class="mka-button mka-button--green mka-button--small mka-cp-template-item-btn js__cp_template_install" data-name="' + data.name + '" data-slug="' + data.slug + '">' +
+		            '<a class="mka-button mka-button--green mka-button--small mka-cp-template-item-btn js__cp_template_install" data-name="' + data.name + '" data-slug="' + data.slug + '" data-id="' + data.id + '">' +
 		            mk_cp_textdomain.install +
 		            '</a>' +
-		            '<a class="mka-button mka-button--gray mka-button--small mka-cp-template-item-btn" href="http://demos.artbees.net/jupiter5/' + slug + '" target="_blank">' +
+		            '<a class="mka-button mka-button--gray mka-button--small mka-cp-template-item-btn" href="http://demos.artbees.net/jupiter/' + slug + '" target="_blank">' +
 		            mk_cp_textdomain.preview +
 		            '</a>';
 		    } else {
 		        var btn =
-		            '<a id="js__cp_template_uninstall" class="mka-button mka-button--red mka-button--small mka-cp-template-item-btn" data-name="' + data.name + '" data-slug="' + data.slug + '">' +
+		            '<a id="js__cp_template_uninstall" class="mka-button mka-button--red mka-button--small mka-cp-template-item-btn" data-name="' + data.name + '" data-slug="' + data.slug + '" data-id="' + data.id + '">' +
 		            mk_cp_textdomain.uninstall +
 		            '</a>' +
-		            '<a class="mka-button mka-button--gray mka-button--small mka-cp-template-item-btn" href="http://demos.artbees.net/jupiter5/' + slug +'" target="_blank">' +
+		            '<a class="mka-button mka-button--gray mka-button--small mka-cp-template-item-btn" href="http://demos.artbees.net/jupiter/' + slug +'" target="_blank">' +
 		            mk_cp_textdomain.preview +
 		            '</a>';
 		    }
+
+		    // if psd file uploaded
+			if(data.psd_file) {
+				btn += '<a class="mka-button mka-download-psd" data-name="' + data.name + '" data-slug="' + data.slug + '" data-id="' + data.id + '" title="' + mk_cp_textdomain.download_psd_files + '"></a>';
+			}
 
 		    return  '<div class="mka-cp-template-item ">' +
 			            '<div class="mka-cp-template-item-inner">' +
@@ -896,7 +941,7 @@
 				            '</figure>' +
 				            '<div class="mka-cp-template-item-meta">' +
 				            	'<h4 class="mka-cp-template-item-name">' + data.name + '</h4>' +
-				            	'<div class="mka-cp-template-item-buttons">' + btn + '</div>' +
+				            	'<div class="mka-cp-template-item-buttons' + (data.psd_file ? ' has-psd' : '') + '">' + btn + '</div>' +
 				            '</div>' +
 			            '</div>' +
 		            '</div>';
@@ -919,7 +964,7 @@
 		    if (typeof templates.template_name !== 'undefined' && templates.template_name !== null) {
 		        req_data['template_name'] = templates.template_name;
 		    }
-		    
+
 		    $('.abb-template-page-load-more').addClass('is-active');
 
 
@@ -997,7 +1042,7 @@
 		                if (response.status === true) {
 		                    var category_list = '<span class="mka-select-list-item" data-value="all-categories">All Categories</span>';
 		                    $.each(response.data, function(key, val) {
-		                        category_list += '<span class="mka-select-list-item" data-value="' + val.id + '">' + val.name + ' - ' + val.count + '</span>';
+		                        category_list += '<span class="mka-select-list-item" data-value="' + val.id + '">' + val.name + '</span>';
 		                    });
 		                    category_option_wrap.html(category_list);
 		                } else {
@@ -1015,8 +1060,8 @@
 		},
 
 		reset_template_list : function() {
-		    $("#js__new-templates-list").fadeOut(300, function() {
-		        $(this).empty().fadeIn(300);
+		    $("#js__new-templates-list").fadeOut(200, function() {
+		        $(this).empty().fadeIn(200);
 		    });
 		    $('.abb-template-page-load-more').data('from', 0);
 		},
@@ -1037,33 +1082,40 @@
 	    get_installed_template : function() {
 
 	    	// ES6 Patching - Setting default value for "slug" argument
+	    	var id = arguments.length > 0 && arguments[1] !== undefined ? arguments[1] : false;
 	    	var slug = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
+	    	var installed_template_id = $('#js__installed-template').data('installed-template-id');
+
+	    		if(id) {
+	    			installed_template_id = id;
+	    		}
+
 	    	var installed_template = $('#js__installed-template').data('installed-template');
-	    		
+
 	    		if(slug) {
 	    			installed_template = slug;
 	    		}
 
-	    	if(installed_template === undefined || installed_template === null || installed_template.length <= 0) return;
+	    	if( installed_template_id.length <= 0 && installed_template.length <= 0  ) return;
 
 	    	var req_data = {
 		        action: 'abb_template_lazy_load',
 		        from: 0,
 		        count: 1,
+		        template_id: installed_template_id,
+		        template_name: installed_template,
 		    }
-		    
-		    req_data['template_name'] = installed_template;
-		    
+
 		    $.post(ajaxurl, req_data, function(response) {
 
 		        if (response.status == true) {
-		          
+
 		            if (response.data.templates.length > 0) {
 
 		                $.each(response.data.templates, function(key, val) {
 		                	$('#js__installed-template-wrap').show();
-		                    $('#js__installed-template').empty().append(templates.get_template_list_html(val, true));
+		                    $('#js__installed-template').attr('data-installed-template-id', val.id).attr('data-installed-template', val.slug).empty().append(templates.get_template_list_html(val, true));
 		                });
 		            }
 		        }
@@ -1110,11 +1162,29 @@
 		                showCloseButton: true,
 		                showLearnmoreButton: false,
 		                onConfirm : function() {
-		                	templates.start_importing_template($btn);	
+		                	templates.import_media = false;
+		                	templates.start_importing_template($btn);
 		                },
-		                onCancel : function() {
-		                	templates.get_system_resource( $btn );
-		                }
+						onCancel : function() {
+							if ( isEdgeIE() ) {
+								mk_modal({
+									title: mk_cp_textdomain.using_ie_edge_not_support,
+									text: templates.language( mk_cp_textdomain.recommend_to_use_other_browsers, ['<a href="https://themes.artbees.net/docs/installing-template/" target="_blank">Learn More</a>']),
+									type: 'warning',
+									showCancelButton: true,
+									showConfirmButton: true,
+									confirmButtonText: mk_cp_textdomain.continue,
+									cancelButtonText: mk_cp_textdomain.cancel,
+									showCloseButton: true,
+									showLearnmoreButton: false,
+									onConfirm : function() {
+										templates.get_system_resource( $btn );
+									}
+								});
+							} else {
+								templates.get_system_resource( $btn );
+							}
+						}
 		            });
                 }
             });
@@ -1145,12 +1215,12 @@
 	        		closeOnOutsideClick: false,
 				});
 
-		    templates.install_template(0, $btn.data('name'));
+		    templates.install_template(0, $btn.data('name'), $btn.data('id'));
 		},
 
-		finalise_template_install : function(index, template_name) {
+		finalise_template_install : function(index, template_name, template_id) {
 
-				templates.get_installed_template(template_name);
+				templates.get_installed_template(template_name, template_id);
 
 		       	var $installed_template = $('a[data-slug="' + template_name + '"]');
 		       	$installed_template.parents('.mka-cp-template-item').hide();
@@ -1171,83 +1241,184 @@
 
 		},
 
-		install_template : function(index, template_name) {
+		install_template : function(index, template_name, template_id) {
 
 			// If no more steps, exit
 			if (templates.install_types[index] == undefined) {
-				templates.finalise_template_install(index, template_name);
+				templates.finalise_template_install(index, template_name, template_id);
 				return false;
-			}	
+			}
 
 		    var $storedCredentialsData = templates.get_fs_credential_data();
 
 		    var formDataTemplateProcedure = {
-		        action: 'abb_install_template_procedure', 
-		        type: templates.install_types[index], 
-		        template_name: template_name, 
-		        import_media: templates.import_media 
+		        action: 'abb_install_template_procedure',
+		        type: templates.install_types[index],
+		        template_name: template_name,
+		        template_id: template_id,
+		        import_media: templates.import_media
 		    };
 
 		    // Inject stored FTP Credentials Data for each request.
 		    if($storedCredentialsData){
 		        formDataTemplateProcedure = $.extend(
 		            {},
-		            $storedCredentialsData, 
+		            $storedCredentialsData,
 		            formDataTemplateProcedure
 		        );
 		    }
-		    requestsPending = 1;
-		    $.ajax({
-		        type: "POST",
-		        url: ajaxurl,
-		        data: formDataTemplateProcedure,
-		        dataType: "json",
-		        success: function(response) {
-		            
-		            console.log('Install Template - ', templates.install_types[index], ' - Fetch media : ', templates.import_media, ' : Req data - ', template_name, ' , Response - ', response);
 
-		            if (response.hasOwnProperty('status')) {
-		                if (response.status == true) {
+			requestsPending = 1;
 
-		                	mk_modal.update({
+			/**
+			 * Handle theme_content import with Server-Sent Event.
+			 *
+			 * If the type is theme_content import and EventSource is exist, use it.
+			 * ATTENTION: EventSource is not supported in IE and Edge, except we use
+			 * some extension library. If users are using unsupported browser, they
+			 * will use Ajax request instead.
+			 *
+			 * @since 6.0.3
+			 */
+			if ( formDataTemplateProcedure.type == 'theme_content' && !! window.EventSource && ! isEdgeIE() ) {
+
+				console.log( 'EventSource is triggered. The event log will be streamed below in separated interval.' )
+
+				// Set URL param manually.
+				var url = ajaxurl + '?action=abb_install_template_sse&template_name=' + template_name + '&fetch_attachments=' + templates.import_media + '&template_id=' + template_id;
+
+				// Set error modal function.
+				var errorModal = function( text ) {
+					// Set default error text.
+					var errorText = mk_cp_textdomain.something_wierd_happened_please_try_again;
+					if ( text ) {
+						errorText = text;
+					}
+
+					// Something goes wrong in server response.
+					mk_modal({
+						title: mk_cp_textdomain.oops,
+						text: text,
+						type: 'error',
+						showCancelButton: false,
+						showConfirmButton: true,
+						showLearnmoreButton: false,
+					});
+
+					// Pending the installation process.
+					requestsPending = false;
+				}
+
+				// Create EventSource instance.
+				var evtSource = new EventSource( url );
+
+				// Handle messages.
+				evtSource.onmessage = function ( message ) {
+					// Parse the response.
+					var response = JSON.parse( message.data );
+
+					var response_text = '';
+					if ( response.hasOwnProperty( 'message' ) ) {
+						response_text = response.message;
+					}
+
+					if ( response.hasOwnProperty( 'error' ) && response.hasOwnProperty( 'status' ) ) {
+
+						// Success means the status is true and no error found.
+						if ( ! response.error && response.status ) {
+
+							console.log( 'Install Template - ', templates.install_types[index], ' - Fetch media : ', templates.import_media, ' : Req data - ', template_name, ' , Response - ', response);
+
+							// Update the progress bar in modal.
+							mk_modal.update({
 								progress: Math.round((index * 100) / (templates.install_types.length - 1)) + '%',
 							});
 
-							templates.show_install_template_messages(templates.install_types[index], response.message)
+							// Show install template message.
+							templates.show_install_template_messages( templates.install_types[index], response_text );
 
-		                    templates.install_template(++index, template_name);
+							// Go to the next step, from theme_content to menu_locations.
+							templates.install_template( ++index, template_name, template_id );
 
-		                } else {
-		                	console.log(formDataTemplateProcedure.type);
-		                    mk_modal({
+							// Close to avoid resent request after success.
+							evtSource.close();
+							return true;
+						}
+
+					}
+
+					errorModal( response_text );
+
+					// Close to avoid resent request after success.
+					evtSource.close();
+					return true;
+				};
+
+				// Handle error event.
+				evtSource.onerror = function( e ) {
+					console.log( 'EventSource take a long time, try to separate the log.' );
+				};
+
+				// Tracking and print the server log.
+				evtSource.addEventListener( 'log', function ( message ) {
+					console.log( message.data )
+				});
+
+			} else {
+
+				// For other types use default Ajax request.
+			    $.ajax({
+			        type: "POST",
+			        url: ajaxurl,
+			        data: formDataTemplateProcedure,
+			        dataType: "json",
+			        success: function(response) {
+
+			            console.log('Install Template - ', templates.install_types[index], ' - Fetch media : ', templates.import_media, ' : Req data - ', template_name, ' , Response - ', response);
+
+			            if (response.hasOwnProperty('status')) {
+			                if (response.status == true) {
+
+			                	mk_modal.update({
+									progress: Math.round((index * 100) / (templates.install_types.length - 1)) + '%',
+								});
+
+								templates.show_install_template_messages(templates.install_types[index], response.message)
+
+			                    templates.install_template(++index, template_name, template_id);
+
+			                } else {
+			                	console.log(formDataTemplateProcedure.type);
+			                    mk_modal({
+					                title: mk_cp_textdomain.oops,
+					                text: response.message,
+					                type: 'error',
+					                showCancelButton: false,
+					                showConfirmButton: true,
+									showLearnmoreButton: false,
+					            });
+					            requestsPending = false;
+			                }
+			            } else {
+			                // Something goes wrong in server response
+			                mk_modal({
 				                title: mk_cp_textdomain.oops,
-				                text: response.message,
+				                text: mk_cp_textdomain.something_wierd_happened_please_try_again,
 				                type: 'error',
 				                showCancelButton: false,
 				                showConfirmButton: true,
 								showLearnmoreButton: false,
 				            });
 				            requestsPending = false;
-		                }
-		            } else {
-		                // Something goes wrong in server response
-		                mk_modal({
-			                title: mk_cp_textdomain.oops,
-			                text: mk_cp_textdomain.something_wierd_happened_please_try_again,
-			                type: 'error',
-			                showCancelButton: false,
-			                showConfirmButton: true,
-							showLearnmoreButton: false,
-			            });
+			            }
+			        },
+			        error: function(XMLHttpRequest, textStatus, errorThrown) {
+			            templates.request_error_handling(XMLHttpRequest, textStatus, errorThrown);
 			            requestsPending = false;
-		            }
-		        },
-		        error: function(XMLHttpRequest, textStatus, errorThrown) {
-		            templates.request_error_handling(XMLHttpRequest, textStatus, errorThrown);
-		            requestsPending = false;
-		        }
-		    });
+			        }
+			    });
 
+			}
 		},
 
 
@@ -1322,7 +1493,7 @@
 
 		get_template_restore_init : function() {
 			var $btn = $(this);
-	        
+
 	        var $CredentialsModal = $('#request-filesystem-credentials-dialog');
 
 	        if($CredentialsModal.length){
@@ -1346,7 +1517,7 @@
 	            dataType: "json",
 
 	            success: function(response) {
-	                
+
 	                var created_date = response.data.latest_backup_file.created_date;
 	                mk_modal({
 		                title: mk_cp_textdomain.restore_settings,
@@ -1378,7 +1549,7 @@
 		                    if($storedCredentialsData){
 		                        restoreTemplateParams = $.extend(
 		                            {},
-		                            $storedCredentialsData, 
+		                            $storedCredentialsData,
 		                            restoreTemplateParams
 		                        );
 		                    }
@@ -1439,7 +1610,7 @@
 		    if($storedCredentialsData){
 		        formDataIsRestoreDb = $.extend(
 		            {},
-		            $storedCredentialsData, 
+		            $storedCredentialsData,
 		            formDataIsRestoreDb
 		        );
 		    }
@@ -1533,7 +1704,7 @@
 		        case 'restore_media_records':
 		            install.text(message);
 		            break;
-		        case 'finilize':
+		        case 'finalize':
 		            install.text(message);
 		            $('#js__cp-template-install-steps-install').addClass('mka-modal-step--done');
 		            break;
@@ -1575,7 +1746,7 @@
 		},
 
 		get_system_resource : function( $btn ) {
-		   
+
 		    $.ajax({
 		        type: "POST",
 		        url: ajaxurl,
@@ -1604,7 +1775,7 @@
 				                showCloseButton: false,
 				                showLearnmoreButton: false,
 				                onConfirm : function() {
-			                            templates.import_media = true;
+			                            templates.import_media = false;
 			                            templates.start_importing_template( $btn );
 				                }
 				            });
@@ -1704,7 +1875,7 @@
 	    	custom_html += '</div>';
 
 	        var fs_credential_modal = mk_modal({
-	            html:$(custom_html),       
+	            html:$(custom_html),
 	            showCloseButton: true,
         		showConfirmButton: true,
         		closeOnOutsideClick: false,
@@ -1740,7 +1911,7 @@
 		            });
         		}
 	        });
-	   
+
 	    },
 
 		request_error_handling : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1765,7 +1936,7 @@
 					custom_html += '<span class="mka-modal-icon"></span>';
 				    custom_html += '<h3 class="mka-modal-title">'+ mk_cp_textdomain.whoops +'</h3>';
 				    custom_html += '<div class="mka-modal-desc">'+templates.language(mk_cp_textdomain.dont_panic, [XMLHttpRequest.status, '<a href="https://themes.artbees.net/docs/installing-template/" target="_blank">Learn More</a>'])+'</div>';
-				    custom_html += '<textarea readonly="readonly" onclick="this.focus();this.select()" class="mka-modal-textarea">'+XMLHttpRequest.responseText+'</textarea>';   
+				    custom_html += '<textarea readonly="readonly" onclick="this.focus();this.select()" class="mka-modal-textarea">'+XMLHttpRequest.responseText+'</textarea>';
 			    	custom_html += '</div>';
 
 			    	mk_modal({
@@ -1835,8 +2006,102 @@
 
 
 
+	/* Control Panel > Updates ( Theme )
+	*******************************************************/
 
+	var update_releases = {
+		init : function () {
+			if($('#mk-cp-updates-downgrades').length == 0) return;
+			console.log('updates.theme');
+			$(document).on('click', '.js__cp_change_theme_version', update_releases.change_theme_version_init);
+			$(document).on('click', '.release-download', update_releases.release_download);
+		},
 
+		release_download : function( e ) {
+				e.preventDefault();
+				e.stopPropagation();
+				var btn = $(this);
+				var status = btn.attr('status');
+				if(typeof status === 'undefined')
+				status = 'active';
+				if( status === 'active' ) {
+					var release_id = $(this).data("release-id");
+					var get_release_download_link_nonce = $(this).data("nonce");
+					btn.attr("status", 'deactive');
+					setTimeout(function () {
+						btn.attr("status", 'active');
+					}, 9000);
+					jQuery.ajax({
+						url: ajaxurl,
+						type: "POST",
+						data: {
+							security: get_release_download_link_nonce,
+							release_id: release_id,
+							action: "mk_get_theme_release_package_url",
+						},
+						success: function (res) {
+							var data = jQuery.parseJSON(res);
+							console.log(data);
+							if (data.success) {
+								top.location.href = data.download_link;
+							}
+						},
+						error: function (res) {
+							console.log(res);
+							alert("An error occurred.");
+						}
+					});
+				}
+		},
+		change_theme_version_init : function( e ){
+			e.preventDefault();
+
+			var release_id = $(this).data("release-id");
+			var release_version = $(this).data("release-version");
+			var get_release_download_link_nonce = $(this).data("nonce");
+			console.log(release_id);
+			console.log(get_release_download_link_nonce);
+			mk_modal({
+				title: mk_cp_textdomain.please_note,
+				text: mk_cp_textdomain.any_customisation_you_have_made_to_theme_files_will_be_lost,
+				type: 'warning',
+				showCancelButton: true,
+				showConfirmButton: true,
+				confirmButtonText: mk_cp_textdomain.agree,
+				cancelButtonText: mk_cp_textdomain.discard.toUpperCase(),
+				learnmoreTarget: '_blank',
+				learnmoreLabel: 'Read More',
+				learnmoreButton: 'https://themes.artbees.net/docs/updating-theme-child-theme/',
+				showCloseButton: true,
+				showLearnmoreButton: true,
+				onConfirm : function() {
+					console.log('agreed clicked');
+					jQuery.ajax({
+						url: ajaxurl,
+						type: "POST",
+						data: {
+							security: get_release_download_link_nonce,
+							release_id: release_id,
+							release_version: release_version,
+							action: "mk_modify_auto_update",
+						},
+						success: function (res) {
+							var data = jQuery.parseJSON(res);
+							console.log(data);
+							if(data.success) {
+							top.location.href = data.download_link;
+							}
+						},
+						error: function (res) {
+							console.log(res);
+							alert("An error occurred.");
+						}
+					});
+				}
+			});
+		}
+	};
+	$(window).on('control_panel_pane_loaded', update_releases.init);
 
      /* Control Panel > Image sizes
      *******************************************************/
@@ -1884,7 +2149,7 @@
 					}
 
 					$(window).trigger('control_panel_save_image_sizes');
-					
+
                 }
             });
 		},
@@ -1944,7 +2209,7 @@
 			var $size_height = $list_item.find('[name=size_h]').val();
 			var $size_crop = $list_item.find('[name=size_c]').val();
 				$size_crop = ($size_crop == 'on') ? true : false;
-			
+
 			$add_box.find('[name=size_n]').val($size_name);
 			$add_box.find('[name=size_w]').val($size_width);
 			$add_box.find('[name=size_h]').val($size_height);
@@ -1980,7 +2245,7 @@
 			var $size_height = $add_box.find('[name=size_h]').val();
 			var $size_crop = $add_box.find('[name=size_c]:checked').val();
 				$size_crop = ($size_crop == 'on') ? 'on' : 'off';
-				
+
 
 			$list_item.find('.js__size-name').text($size_name);
 			$list_item.find('.js__size-dimension').text($size_width + 'px ' + $size_height + 'px');
@@ -2034,7 +2299,7 @@
 
 			// If cancel is in Add New
 			if ( $this.closest('.mka-clist-item--add').length ) {
-				
+
 				TweenLite.to( $add_box, 0.1, { css: { opacity: 0, display: 'none' }, ease: Power1.easeOut, delay: 0 });
 				TweenLite.to( $list_item, 0.1, { css: { height: 0, opacity: 0 }, ease: Power1.easeOut, delay: 0 });
 				setTimeout( function() {
@@ -2087,22 +2352,22 @@
 		                showConfirmButton: true,
 		                showCloseButton: false,
 		                showLearnmoreButton: false,
-	            	});	
+	            	});
 	            }
 
 	            requestsPending = false;
-	        	
+
 	        });
 
 		}
 	};
 
-	
+
 	$(window).on('control_panel_save_image_sizes', image_sizes.save);
 	$(window).on('control_panel_pane_loaded', image_sizes.init);
 
 	/***************/
-    
+
 
 
 
@@ -2264,6 +2529,262 @@
 	        }
 	        return t
 	    }
+	};
+
+	/**
+	 * Export & Import API.
+	 *
+	 * @since 6.0.3
+	 * @type {Object}
+	 */
+	var exportImport = {
+		steps: [],
+		modal: '',
+
+		init: function() {
+			$('.mka-cp-export-form').on('submit', exportImport.export)
+			$('.mka-cp-import-btn').on('click', exportImport.import)
+			$('.mka-cp-import-upload-btn').on('click', exportImport.upload)
+		},
+
+		export: function(event) {
+			event.preventDefault()
+			exportImport.steps = []
+			exportImport.modal = ''
+			exportImport.cancel = ''
+			var options = $(this).serializeArray()
+
+			// Convert options to a flat array.
+			if (!exportImport._mapOptions(options)) {
+				return
+			}
+
+			// Open the modal.
+			exportImport.modal = mk_modal({
+				type: false,
+				title: mk_cp_textdomain.exporting + ' <span class="cp-export-step">' + exportImport.steps[1] + '</span>...',
+				text: mk_cp_textdomain.export_waiting,
+				showCancelButton: true,
+				showConfirmButton: false,
+				showCloseButton: false,
+				showLearnmoreButton: false,
+				showProgress: true,
+				indefiniteProgress: true,
+				cancelButtonText: mk_cp_textdomain.discard,
+				closeOnConfirm: false,
+				closeOnOutsideClick: false,
+				onCancel: function() {
+					exportImport.steps = []
+					exportImport.cancel = true
+					exportImport.send('Export', 'Discard')
+					exportImport.modal.close()
+				}
+			});
+
+			// Init the first step.
+			exportImport.send('Export', _.first(exportImport.steps))
+		},
+
+		import: function(event) {
+			event.preventDefault()
+			exportImport.steps = []
+			exportImport.modal = ''
+			exportImport.cancel = ''
+			var attachment_id = $('.mka-textfield', '.mka-upload').data('id')
+
+			// Return false if no package is selected.
+			if ('undefined' === typeof attachment_id) {
+				return false;
+			}
+
+			exportImport.attachment_id = attachment_id;
+
+			exportImport.modal = mk_modal({
+				type: false,
+				title: 'Import',
+				text: mk_cp_textdomain.import_select_options + '\
+				<form class="mka-cp-import-form">\
+					<label>\
+						<input type="checkbox" name="check" value="Content" checked>' +
+						mk_cp_textdomain.site_content + '\
+					</label>\
+					<label>\
+						<input type="checkbox" name="check" value="Widgets" checked>' +
+						mk_cp_textdomain.widgets + '\
+					</label>\
+					<label>\
+						<input type="checkbox" name="check" value="Theme Options" checked>' +
+						mk_cp_textdomain.theme_options + '\
+					</label>\
+					<label>\
+						<input type="checkbox" name="check" value="Customizer" checked>' +
+						mk_cp_textdomain.customizer + '\
+					</label>\
+				</form>',
+				showCancelButton: false,
+				showConfirmButton: true,
+				showCloseButton: true,
+				showLearnmoreButton: false,
+				showProgress: false,
+				closeOnConfirm: false,
+				confirmButtonText: mk_cp_textdomain.import,
+				onConfirm: function() {
+					var options = $('.mka-cp-import-form').serializeArray()
+
+					// Convert options to a flat array.
+					if (!exportImport._mapOptions(options)) {
+						return
+					}
+
+					mk_modal({
+						type: false,
+						title: mk_cp_textdomain.importing + ' <span class="cp-export-step">' + exportImport.steps[1] + '</span>...',
+						text: mk_cp_textdomain.import_waiting,
+						showCancelButton: true,
+						showConfirmButton: false,
+						showCloseButton: false,
+						showLearnmoreButton: false,
+						showProgress: true,
+						indefiniteProgress: true,
+						cancelButtonText: mk_cp_textdomain.discard,
+						closeOnOutsideClick: false,
+						closeOnConfirm: false,
+						onCancel: function() {
+							exportImport.steps = []
+							exportImport.cancel = true
+							exportImport.send('Import', 'Discard')
+							exportImport.modal.close()
+						}
+					})
+
+					// Init the first step.
+					exportImport.send('Import', _.first(exportImport.steps))
+				}
+			})
+		},
+
+		send: function(type, step) {
+			wp.ajax.send( 'mk_cp_export_import', {
+				data: {
+					nonce: mk_control_panel.nonce,
+					type: type,
+					step: step,
+					attachment_id: exportImport.attachment_id,
+				},
+				success: function(response) {
+					exportImport.steps = _.without(exportImport.steps, response.step)
+					var firstStep = _.first(exportImport.steps)
+
+					// Open the download modal.
+					if (!exportImport.steps.length) {
+						if (true === exportImport.cancel) {
+							return;
+						}
+						var confirmButtonText = ('Export' === type) ? mk_cp_textdomain.download : mk_cp_textdomain.close
+						mk_modal({
+							type: 'success',
+							title: type + ' ' + mk_cp_textdomain.done,
+							text: type + ' ' + mk_cp_textdomain.successfully_finished,
+							showCancelButton: false,
+							showConfirmButton: true,
+							showCloseButton: false,
+							showLearnmoreButton: false,
+							showProgress: false,
+							closeOnConfirm: false,
+							confirmButtonText: confirmButtonText,
+							onConfirm: function() {
+								if ('Export' === type ) {
+									window.location.href = response.download_url;
+								}
+								exportImport.modal.close();
+							}
+						});
+						return;
+					}
+
+					// Update title in modal except Start one.
+					if (response.step != 'Start') {
+						$('.cp-export-step').text(response.step)
+					}
+
+					// Init the next step.
+					exportImport.send(
+						type,
+						firstStep
+					)
+				},
+				error: function(response) {
+
+					console.log( response );
+
+					mk_modal({
+						type: 'error',
+						title: mk_cp_textdomain.error,
+						text: response + ' ' + mk_cp_textdomain.issue_persists,
+						showCancelButton: false,
+						showConfirmButton: true,
+						showCloseButton: false,
+						showLearnmoreButton: false,
+						showProgress: false,
+						closeOnConfirm: false,
+						confirmButtonText: mk_cp_textdomain.try_again,
+						onConfirm: function() {
+							window.location.reload();
+							exportImport.modal.close();
+						}
+					});
+				}
+			})
+		},
+
+		upload: function(event) {
+			event.preventDefault()
+			var frame
+			var $input = $(event.target).parents('.mka-upload').find('input')
+
+			if ( frame ) {
+				frame.open()
+				return
+			}
+
+			frame = wp.media({
+				title: mk_cp_textdomain.select_zip_file,
+				button: {
+					text: mk_cp_textdomain.select
+				},
+				multiple: false  // Set to true to allow multiple files to be selected
+			});
+
+			// When an image is selected in the media frame...
+			frame.on( 'select', function() {
+				var attachment = frame.state().get('selection').first().toJSON()
+
+				$input.attr('data-id', attachment.id)
+				$input.val(attachment.url)
+			});
+
+			frame.open()
+		},
+
+		_mapOptions: function(options) {
+			// Convert options to a flat array.
+			_.map(options, function(option){
+				return exportImport.steps.push(option.value)
+			})
+
+			// Return false if no option is selected.
+			if (!exportImport.steps.length) {
+				return false;
+			}
+
+			exportImport.steps.unshift('Start');
+			exportImport.steps.push('End')
+
+			return true
+		}
 	}
+
+	// Initialize Export & Import after pane load.
+	$(window).on('control_panel_pane_loaded', exportImport.init)
 
 })(jQuery);

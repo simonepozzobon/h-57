@@ -10,9 +10,4 @@
 
 global $mk_options;
 
-if (!empty($mk_options['header_toolbar_tagline'])) {
-
-	echo '<span class="mk-header-tagline">' . stripslashes($mk_options['header_toolbar_tagline']) . '</span>';
-
-}
-
+echo '<span class="mk-header-tagline">' . stripslashes($mk_options['header_toolbar_tagline']) . '</span>';

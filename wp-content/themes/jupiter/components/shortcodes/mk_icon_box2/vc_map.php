@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Icon Box 2", "mk_framework") ,
     "base" => "mk_icon_box2",
+	'html_template' => dirname( __FILE__ ) . '/mk_icon_box2.php',
     "category" => __('General', 'mk_framework') ,
     'icon' => 'icon-mk-icon-box vc_mk_element-icon',
     'description' => __('Powerful & versatile Icon Boxes.', 'mk_framework') ,
@@ -47,11 +48,10 @@ vc_map(array(
         ) ,
 
         array(
-            "type" => "textfield",
-            "heading" => __("Icon Class Name", "mk_framework") ,
+            "type" => "icon_selector",
+            "heading" => __("Icon", "mk_framework") ,
             "param_name" => "icon",
             "value" => "mk-li-smile",
-            "description" => __("<a target='_blank' href='" . admin_url('admin.php?page=Jupiter#mk-cp-icon-library') . "'>Click here</a> to get the icon class name (or any other font icons library that you have installed in the theme)", "mk_framework") ,
             "dependency" => array(
                 'element' => "icon_type",
                 'value' => array(
@@ -60,7 +60,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Color", "mk_framework") ,
             "param_name" => "icon_color",
             "value" => "",
@@ -73,7 +73,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Background Color", "mk_framework") ,
             "param_name" => "icon_background_color",
             "value" => "",
@@ -86,7 +86,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Border Color", "mk_framework") ,
             "param_name" => "icon_border_color",
             "value" => "",
@@ -100,7 +100,7 @@ vc_map(array(
         ) ,
 
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Hover Color", "mk_framework") ,
             "param_name" => "icon_hover_color",
             "value" => "",
@@ -113,7 +113,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Hover Background Color", "mk_framework") ,
             "param_name" => "icon_hover_background_color",
             "value" => "",
@@ -126,7 +126,7 @@ vc_map(array(
             )
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Icon Hover Border Color", "mk_framework") ,
             "param_name" => "icon_hover_border_color",
             "value" => "",
@@ -171,7 +171,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Title Font Color", "mk_framework") ,
             "param_name" => "title_color",
             "value" => "",
@@ -208,7 +208,7 @@ vc_map(array(
             "description" => __("Enter your content.", "mk_framework")
         ) ,
         array(
-            "type" => "colorpicker",
+            "type" => "alpha_colorpicker",
             "heading" => __("Description Font Color", "mk_framework") ,
             "param_name" => "description_color",
             "value" => "",
@@ -241,6 +241,7 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         $add_css_animations,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

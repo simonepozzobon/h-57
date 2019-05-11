@@ -10,7 +10,9 @@ if(!Mk_Theme_Captcha::is_plugin_active()) return false;
 	<?php endif; ?>	
 	<input placeholder="<?php _e( 'Enter Captcha', 'mk_framework' ); ?>" data-placeholder="<?php _e( 'Enter Captcha', 'mk_framework' ); ?>" class="captcha-form text-input s_txt-input full" type="text" data-type="captcha" name="captcha" required="required" autocomplete="off" tabindex="<?php echo $view_params['tab_index']; ?>" />
 	<div class="captcha-block">
-	<span class="captcha-image-holder"></span> 
+	<span class="captcha-image-holder">
+		<img src="<?php Mk_Theme_Captcha::create_captcha_image(); ?>" class="captcha-image" alt="captcha txt"/>
+	</span> 
 	</div>
 	<?php 
 		if(isset($view_params['add_br'])) {

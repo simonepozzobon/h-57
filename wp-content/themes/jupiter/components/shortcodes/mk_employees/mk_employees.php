@@ -60,6 +60,7 @@ $wrapper_class[] = $style;
 $wrapper_class[] = ($style == 'classic' || $style == 'simple') ? 'c_cs' : '';
 //c_cs : css class to show classic or simple is the style
 $wrapper_class[] = $el_class;
+$wrapper_class[] = $visibility;
 
 $app_styles = '';
 

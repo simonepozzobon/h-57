@@ -39,5 +39,6 @@ extract( shortcode_atts( array(
 	'lightness'				=> '1',
 	'content_bg_color'		=> '#4f4f4f',
 	'content_font_color'	=> '#fff',
+	'visibility'			=> ''
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_advanced_gmaps');

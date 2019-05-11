@@ -19,7 +19,7 @@ class Widget_Output_Filters {
 	 */
 	public static function get_instance() {
 		if ( null === self::$instance ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 		return self::$instance;
 	}
@@ -83,34 +83,34 @@ Widget_Output_Filters::get_instance();
 // Filter native widgets here. Decouple to separate file if grows a little
 function mk_filter_native_widgets( $widget_output, $widget_type, $widget_id, $sidebar_id ) {
 	// echo 'Widget type: ' . $widget_type;
-    $html = $widget_output;
+	$html = $widget_output;
 
-    if ( 'calendar' == $widget_type ) {
-    	$html = phpQuery::newDocument( $widget_output );
-    	pq('#prev')->prepend(Mk_SVG_Icons::get_svg_icon_by_class_name(false, 'mk-icon-chevron-left', 14));
-    	pq('#next')->prepend(Mk_SVG_Icons::get_svg_icon_by_class_name(false, 'mk-icon-chevron-right', 14));
-    }
+	if ( 'calendar' == $widget_type ) {
+		$html = phpQuery::newDocument( $widget_output );
+		pq( '#prev' )->prepend( Mk_SVG_Icons::get_svg_icon_by_class_name( false, 'mk-icon-chevron-left', 14 ) );
+		pq( '#next' )->prepend( Mk_SVG_Icons::get_svg_icon_by_class_name( false, 'mk-icon-chevron-right', 14 ) );
+	}
 
-    if ( 'nav_menu' == $widget_type ) {
-    	$html = phpQuery::newDocument( $widget_output );
-    	pq('li:not(.menu-item-has-children) a')->prepend(Mk_SVG_Icons::get_svg_icon_by_class_name(false, 'mk-icon-angle-right', 14));
-    }
+	if ( 'nav_menu' == $widget_type ) {
+		$html = phpQuery::newDocument( $widget_output );
+		pq( 'li:not(.menu-item-has-children) a' )->prepend( Mk_SVG_Icons::get_svg_icon_by_class_name( false, 'mk-icon-angle-right', 14 ) );
+	}
 
-    if ( 'meta' == $widget_type ) {
-    	$html = phpQuery::newDocument( $widget_output );
-    	pq('a')->prepend(Mk_SVG_Icons::get_svg_icon_by_class_name(false, 'mk-icon-angle-right', 14));
-    }
+	if ( 'meta' == $widget_type ) {
+		$html = phpQuery::newDocument( $widget_output );
+		pq( 'a' )->prepend( Mk_SVG_Icons::get_svg_icon_by_class_name( false, 'mk-icon-angle-right', 14 ) );
+	}
 
-    if ( 'rss' == $widget_type ) {
-    	$html = phpQuery::newDocument( $widget_output );
-    	pq('li a')->prepend(Mk_SVG_Icons::get_svg_icon_by_class_name(false, 'mk-icon-angle-right', 14));
-    }
+	if ( 'rss' == $widget_type ) {
+		$html = phpQuery::newDocument( $widget_output );
+		pq( 'li a' )->prepend( Mk_SVG_Icons::get_svg_icon_by_class_name( false, 'mk-icon-angle-right', 14 ) );
+	}
 
-    if ( 'recent-comments' == $widget_type ) {
-    	$html = phpQuery::newDocument( $widget_output );
-    	pq('.recentcomments')->prepend(Mk_SVG_Icons::get_svg_icon_by_class_name(false, 'mk-icon-comment-o', 14));
-    }
+	if ( 'recent-comments' == $widget_type ) {
+		$html = phpQuery::newDocument( $widget_output );
+		pq( '.recentcomments' )->prepend( Mk_SVG_Icons::get_svg_icon_by_class_name( false, 'mk-icon-comment-o', 14 ) );
+	}
 
-    return $html;
+	return $html;
 }
 add_filter( 'widget_output', 'mk_filter_native_widgets', 10, 4 );

@@ -54,8 +54,8 @@
   background-color: #fafafa;
   content: "";
   -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
 }
 .mk-testimonial.boxed-style .mk-testimonial-image {
   position: relative;
@@ -154,11 +154,15 @@
 }
 .mk-testimonial.simple-style .flex-direction-nav .flex-next {
   left: 50% !important;
-  transform: translateX(50%);
+  -webkit-transform: translateX(50%);
+          -ms-transform: translateX(50%);
+      transform: translateX(50%);
 }
 .mk-testimonial.simple-style .flex-direction-nav .flex-prev {
   left: 50% !important;
-  transform: translateX(-150%);
+  -webkit-transform: translateX(-150%);
+          -ms-transform: translateX(-150%);
+      transform: translateX(-150%);
 }
 .mk-testimonial.simple-style.light-version .mk-testimonial-content,
 .mk-testimonial.simple-style.light-version .mk-testimonial-content p,
@@ -234,16 +238,16 @@
 .mk-testimonial.avantgarde-style .flex-direction-nav .flex-next {
   top: 50%;
   -webkit-transform: translate(0, -50%);
-      -ms-transform: translate(0, -50%);
-          transform: translate(0, -50%);
+          -ms-transform: translate(0, -50%);
+      transform: translate(0, -50%);
   right: 0 !important;
   margin: 0;
 }
 .mk-testimonial.avantgarde-style .flex-direction-nav .flex-prev {
   top: 50%;
   -webkit-transform: translate(0, -50%);
-      -ms-transform: translate(0, -50%);
-          transform: translate(0, -50%);
+          -ms-transform: translate(0, -50%);
+      transform: translate(0, -50%);
   left: 0 !important;
   margin: 0 !important;
 }
@@ -279,16 +283,16 @@
   .mk-testimonial.avantgarde-style .flex-direction-nav .flex-next {
     top: 0;
     -webkit-transform: translate(110%, -50%);
-        -ms-transform: translate(110%, -50%);
-            transform: translate(110%, -50%);
+            -ms-transform: translate(110%, -50%);
+        transform: translate(110%, -50%);
     right: 50% !important;
     margin: 0;
   }
   .mk-testimonial.avantgarde-style .flex-direction-nav .flex-prev {
     top: 0;
     -webkit-transform: translate(-110%, -50%);
-        -ms-transform: translate(-110%, -50%);
-            transform: translate(-110%, -50%);
+            -ms-transform: translate(-110%, -50%);
+        transform: translate(-110%, -50%);
     left: 50% !important;
     margin: 0 !important;
   }
@@ -316,8 +320,8 @@
   background-color: #ffffff;
   content: "";
   -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
 }
 .mk-testimonial.modern-style .mk-testimonial-quote {
   padding: 20px 20px 0;

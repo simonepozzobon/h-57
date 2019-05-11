@@ -10,5 +10,6 @@ extract( shortcode_atts( array(
 	'slideshow_speed' 	=> 5000,
 	'animation_duration' 	=> 600,
 	"el_class" 		=> '',
+	"visibility" 	=> '',
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_banner_builder');

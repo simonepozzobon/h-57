@@ -10,10 +10,6 @@
 
 global $wp, $mk_options;
 
-		if ($mk_options['header_toolbar_login'] != 'true') {
-			return false;
-		}
-
 		$current_url = home_url( $wp->request . '/' );
 		if (is_user_logged_in()) {
 			$current_user = wp_get_current_user();

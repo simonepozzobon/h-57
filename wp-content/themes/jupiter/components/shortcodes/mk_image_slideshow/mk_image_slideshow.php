@@ -4,11 +4,15 @@ $phpinfo =  pathinfo( __FILE__ );
 $path = $phpinfo['dirname'];
 include( $path . '/config.php' );
 
-$id = uniqid();
+$id = Mk_Static_Files::shortcode_id();
 
 if ( $images == '' ) return null;
 
 $images = explode( ',', $images );
+
+if ( ! empty( $visibility ) ) {
+	echo '<div class="' . $visibility . '">';
+}
 
 mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
 
@@ -26,7 +30,7 @@ mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
 
 	<div class="mk-swiper-wrapper mk-slider-holder">
 
-		<?php 
+		<?php
 		foreach ( $images as $attach_id ) {
 			// $featured_image_src = Mk_Image_Resize::resize_by_id_adaptive( $attach_id, 'crop', $image_width, $image_height, $crop = true, $dummy = true);
 			$url = wp_get_attachment_url($attach_id);
@@ -51,3 +55,8 @@ mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
 	</ul>
 	<?php } ?>
 </div>
+
+<?php
+if ( ! empty( $visibility ) ) {
+	echo '</div>';
+}

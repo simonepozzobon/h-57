@@ -2,6 +2,7 @@
     vc_map(array(
         "name" => __("Blog Teaser", "mk_framework"),
         "base" => "mk_blog_teaser",
+		'html_template' => dirname( __FILE__ ) . '/mk_blog_teaser.php',
         'icon' => 'icon-mk-blog vc_mk_element-icon',
         "category" => __('Loops', 'mk_framework'),
         'description' => __( 'Blog teaser style loops are here.', 'mk_framework' ),
@@ -58,6 +59,7 @@
                 "value" => $mk_orderby,
                 "type" => "dropdown"
             ),
+            $add_device_visibility,
             array(
                 "type" => "textfield",
                 "heading" => __("Extra class name", "mk_framework"),

@@ -12,7 +12,7 @@ $container = pq('.mk-banner-builder');
 $items = $container->find('.mk-banner-slides');
 $item = $items->find('.mk-banner-slide')->remove();
 $container->attr('id', 'mk-banner-builder-'.$id);
-
+$container->addClass( $visibility );
 
 $query = mk_wp_query(array(
 	'post_type' 		=> 'banner_builder',

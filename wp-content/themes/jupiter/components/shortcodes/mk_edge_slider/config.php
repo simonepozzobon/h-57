@@ -18,6 +18,9 @@ extract( shortcode_atts( array(
 	'direction_nav' 	=> 'roundslide',
 	'pagination' 		=> 'stroke',
 	'skip_arrow' 		=> 'true',
+	'lazyload' 			=> 'false',
+	'disable_lazyload' 	=> 'false',
+	'visibility' 	    => '',
 	'el_class' 			=> '',
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_edge_slider');

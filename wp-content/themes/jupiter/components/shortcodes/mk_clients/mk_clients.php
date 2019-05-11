@@ -34,6 +34,7 @@ $atts = array(
 		'target' => $target,
 		'cover' => $cover,
 		'el_class' => $el_class,
+		'visibility' => $visibility,
 		'gutter_space' => $gutter_space,
 		'query' => $query['wp_query']
 	);

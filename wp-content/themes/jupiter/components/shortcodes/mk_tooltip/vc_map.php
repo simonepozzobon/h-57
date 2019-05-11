@@ -2,6 +2,7 @@
 vc_map(array(
     "name" => __("Tooltip", "mk_framework") ,
     "base" => "mk_tooltip",
+	'html_template' => dirname( __FILE__ ) . '/mk_tooltip.php',
     'icon' => 'icon-mk-tooltip vc_mk_element-icon',
     "category" => __('Typography', 'mk_framework') ,
     'description' => __('Adds Tooltips to inline texts.', 'mk_framework') ,
@@ -27,6 +28,7 @@ vc_map(array(
             "value" => "",
             "description" => __("You can optionally link the tooltip text to a webpage.", "mk_framework")
         ) ,
+        $add_device_visibility,
         array(
             "type" => "textfield",
             "heading" => __("Extra class name", "mk_framework") ,

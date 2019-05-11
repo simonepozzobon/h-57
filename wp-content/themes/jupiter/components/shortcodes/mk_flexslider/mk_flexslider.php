@@ -31,6 +31,10 @@ $slider_atts[] = 'data-directionNav="'.$direction_nav.'"';
 $slider_atts[] = 'data-isCarousel="false"';
 
 
+if ( ! empty( $visibility ) ) {
+	echo '<div class="' . $visibility . '">';
+}
+
 mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
 
 
@@ -69,3 +73,9 @@ mk_get_view('global', 'shortcode-heading', false, ['title' => $title]); ?>
 		?>
 	</ul>
 </div>
+
+<?php
+
+if ( ! empty( $visibility ) ) {
+	echo '</div>';
+}

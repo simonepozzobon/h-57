@@ -1,6 +1,8 @@
 <?php
 if($view_params['layout_structure'] == 'full') return false;
 
+$vertical_alignment = ($view_params['vertical_align'] == '') ? '' : ('fluid-width-equal-height-columns vertical-align-' . $view_params['vertical_align']);
+
 $video_atts = array(
     'video_source'          => $view_params['video_source'],
     'bg_video'              => $view_params['bg_video'],
@@ -24,7 +26,9 @@ $imageset =  Mk_Image_Resize::get_bg_res_set($view_params['bg_image'], $view_par
     <?php echo mk_get_shortcode_view('mk_page_section', 'components/video-background', true, $video_atts); ?>
  </div>
 
- <div class="mk-half-layout-container page-section-content <?php echo $view_params['layout_structure']; ?>_layout">
- 	<?php echo wpb_js_remove_wpautop( $view_params['content'] ); ?>
+ <div class="mk-half-layout-container page-section-content <?php echo $view_params['layout_structure']; ?>_layout  <?php echo $vertical_alignment; ?>">
+    <div class="mk-half-layout-inner">
+ 	  <?php echo wpb_js_remove_wpautop( $view_params['content'] ); ?>
+    </div>
  </div>
 

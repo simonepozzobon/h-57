@@ -36,7 +36,7 @@ if ( strlen( $content ) < 5 ) {
 	$pricing_offer_css = 'no-pricing-offer';
 }
 
-$output = '<div id="mk-pricing-table-'.$id.'" class="shortcode pricing-table '.$style.' '.$el_class.' '.$pricing_offer_css.' new-style">';
+$output = '<div id="mk-pricing-table-'.$id.'" class="shortcode pricing-table '.$style.' '.$el_class . ' ' . $visibility . ' '.$pricing_offer_css.' new-style">';
 if ( strlen( $content ) > 5 ) {
 	$output .= '<div class="pricing-offer-grid">';
 	$output .= '<div class="offers">'.wpb_js_remove_wpautop( $content ).'</div>';

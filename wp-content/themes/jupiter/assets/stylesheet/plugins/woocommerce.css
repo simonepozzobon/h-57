@@ -539,6 +539,12 @@ p.demo_store {
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  box-sizing: border-box;
+  display: inline-block;
+  border-width: 0;
+  border-style: solid;
+  border-color: #ffffff;
+  border-radius: 0;
 }
 .without-rating .product_loop_button {
   width: 100%;
@@ -620,6 +626,9 @@ p.demo_store {
   position: relative;
   top: 3px;
 }
+.mk-product-loop.compact-layout .mk-shop-item-detail {
+  padding: 15px;
+}
 .mk-product-loop.compact-layout .product-item-footer {
   position: absolute;
   height: 50px;
@@ -640,32 +649,18 @@ p.demo_store {
   background-color: #333333;
   color: #ffffff;
 }
-.mk-product-loop.compact-layout .mk-love-holder {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  text-align: center;
-}
-.mk-product-loop.compact-layout .mk-love-holder svg {
-  vertical-align: middle;
-  fill: #5b5b5b;
-}
-.mk-product-loop.compact-layout .mk-love-count {
-  font-size: 14px;
-}
 .mk-product-loop.compact-layout .product-title {
-  font-size: 13px !important;
+  font-size: 14px !important;
   line-height: 18px;
-  padding: 15px 50px 0 15px;
+  padding-right: 50px;
   margin-bottom: 5px;
   letter-spacing: 1px;
 }
-.mk-product-loop.compact-layout .product-title a,
-.mk-product-loop.compact-layout .mk-love-holder a span {
+.mk-product-loop.compact-layout .product-title a {
   color: #5b5b5b;
 }
 .mk-product-loop.compact-layout .price {
-  padding: 0 15px 15px;
+  padding-top: 5px;
   font-weight: bold;
   font-size: 18px;
   color: #252525;
@@ -803,36 +798,6 @@ p.demo_store {
 }
 .mk-product-loop.open-layout .mk-shop-item-detail {
   text-align: center;
-}
-.mk-product-loop.open-layout .mk-love-holder {
-  position: absolute;
-  left: 20px;
-  top: 20px;
-}
-.mk-product-loop.open-layout .mk-love-this {
-  border-radius: 50%;
-  text-align: center;
-  width: 30px;
-  height: 30px;
-  display: block;
-  transition: border-color 0.2s, background-color 0.2s;
-}
-.mk-product-loop.open-layout .mk-love-this:hover,
-.mk-product-loop.open-layout .mk-love-this.item-loved {
-  border-color: #ffffff !important;
-  background-color: #ffffff;
-}
-.mk-product-loop.open-layout .mk-love-this:hover .mk-icon-heart,
-.mk-product-loop.open-layout .mk-love-this.item-loved .mk-icon-heart {
-  color: #da4c26;
-}
-.mk-product-loop.open-layout .mk-icon-heart {
-  height: 30px;
-  line-height: 30px;
-  color: #c3c3c3;
-}
-.mk-product-loop.open-layout .mk-love-count {
-  display: none;
 }
 .mk-product-loop.open-layout .product-title {
   text-transform: capitalize !important;
@@ -1143,6 +1108,10 @@ p.demo_store {
   width: 90px;
   /* Hide buttons for opera */
 }
+.woocommerce .quantity label,
+.woocommerce #content .quantity label {
+  display: none;
+}
 .woocommerce .quantity input.qty,
 .woocommerce #content .quantity input.qty {
   float: left;
@@ -1422,42 +1391,42 @@ p.demo_store {
 .wc-credit-card-form-card-number.visa,
 .wc-credit-card-form-card-expiry.visa,
 .wc-credit-card-form-card-cvc.visa {
-  background-image: url('../../images/woocommerce/icons/credit-cards/visa.svg');
+  background-image: url('../../../images/woocommerce/icons/credit-cards/visa.svg');
 }
 .wc-credit-card-form-card-number.mastercard,
 .wc-credit-card-form-card-expiry.mastercard,
 .wc-credit-card-form-card-cvc.mastercard {
-  background-image: url('../../images/woocommerce/icons/credit-cards/mastercard.svg');
+  background-image: url('../../../images/woocommerce/icons/credit-cards/mastercard.svg');
 }
 .wc-credit-card-form-card-number.laser,
 .wc-credit-card-form-card-expiry.laser,
 .wc-credit-card-form-card-cvc.laser {
-  background-image: url('../../images/woocommerce/icons/credit-cards/laser.svg');
+  background-image: url('../../../images/woocommerce/icons/credit-cards/laser.svg');
 }
 .wc-credit-card-form-card-number.dinersclub,
 .wc-credit-card-form-card-expiry.dinersclub,
 .wc-credit-card-form-card-cvc.dinersclub {
-  background-image: url('../../images/woocommerce/icons/credit-cards/diners.svg');
+  background-image: url('../../../images/woocommerce/icons/credit-cards/diners.svg');
 }
 .wc-credit-card-form-card-number.maestro,
 .wc-credit-card-form-card-expiry.maestro,
 .wc-credit-card-form-card-cvc.maestro {
-  background-image: url('../../images/woocommerce/icons/credit-cards/maestro.svg');
+  background-image: url('../../../images/woocommerce/icons/credit-cards/maestro.svg');
 }
 .wc-credit-card-form-card-number.jcb,
 .wc-credit-card-form-card-expiry.jcb,
 .wc-credit-card-form-card-cvc.jcb {
-  background-image: url('../../images/woocommerce/icons/credit-cards/jcb.svg');
+  background-image: url('../../../images/woocommerce/icons/credit-cards/jcb.svg');
 }
 .wc-credit-card-form-card-number.amex,
 .wc-credit-card-form-card-expiry.amex,
 .wc-credit-card-form-card-cvc.amex {
-  background-image: url('../../images/woocommerce/icons/credit-cards/amex.svg');
+  background-image: url('../../../images/woocommerce/icons/credit-cards/amex.svg');
 }
 .wc-credit-card-form-card-number.discover,
 .wc-credit-card-form-card-expiry.discover,
 .wc-credit-card-form-card-cvc.discover {
-  background-image: url('../../images/woocommerce/icons/credit-cards/discover.svg');
+  background-image: url('../../../images/woocommerce/icons/credit-cards/discover.svg');
 }
 /* Star rating */
 .woocommerce-product-rating {
@@ -1744,7 +1713,8 @@ p.demo_store {
 .single_add_to_cart_button:hover,
 .button.checkout-button:hover,
 .woocommerce #payment #place_order:hover,
-.widget_shopping_cart .button.checkout:hover {
+.widget_shopping_cart .button.checkout:hover,
+.widget_price_filter .price_slider_amount .button:hover {
   background-color: #252525 !important;
 }
 .woocommerce {
@@ -1913,7 +1883,6 @@ p.demo_store {
 }
 .woocommerce div.product form.cart .variations select {
   width: 100%;
-  float: left;
 }
 .woocommerce div.product form.cart .variations td.label {
   padding-right: 1em;
@@ -2047,7 +2016,7 @@ p.demo_store {
   background-position: 10px center;
   background-size: 16px;
   background-repeat: no-repeat;
-  background-image: url('../../images/woocommerce/mk-moon-cart-plus.svg');
+  background-image: url('../../../images/woocommerce/mk-moon-cart-plus.svg');
   padding: 14px 20px 14px 35px !important;
 }
 .single-product .product > .onsale,
@@ -2454,6 +2423,9 @@ p.demo_store {
     margin: 0 0 20px 0 !important;
   }
 }
+.woocommerce .woocommerce-mini-cart__empty-message {
+  margin: 20px 10px;
+}
 .woocommerce ul.cart_list,
 .woocommerce ul.product_list_widget {
   list-style: none outside;
@@ -2582,6 +2554,46 @@ form.checkout_coupon #coupon_code.input-text {
   width: 100%;
   padding: 9px;
   margin-right: 15px;
+}
+/* =Add to cart responsive state
+-------------------------------------------------------------- */
+.add-cart-responsive-state {
+  display: none;
+}
+.add-cart-responsive-state a {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  border-radius: 100px;
+  z-index: 9999;
+  background: #fff;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+.add-cart-responsive-state svg {
+  fill: #444444;
+  height: 16px;
+  -webkit-transform: translateY(2px);
+      -ms-transform: translateY(2px);
+          transform: translateY(2px);
+}
+.add-cart-responsive-state .mk-header-cart-count {
+  position: absolute;
+  top: 0px;
+  left: -7px;
+  border-radius: 50px;
+  height: 25px;
+  min-width: 25px;
+  padding: 0;
+  line-height: 25px;
+  color: #fff;
+  background: #f97352;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
 }
 .woocommerce {
   /* =Checkout
@@ -2786,19 +2798,8 @@ form.checkout_coupon #coupon_code.input-text {
 }
 .widget_price_filter .price_slider_amount .button {
   float: left;
-  background: none !important;
-  text-shadow: none !important;
-  outline: none;
   margin-top: 5px;
-  border: 1px solid #252525;
-  color: #252525;
-  padding: 8px 14px !important;
   font-size: 12px;
-  letter-spacing: 2px;
-}
-.widget_price_filter .price_slider_amount .button:hover {
-  background-color: #252525 !important;
-  color: #ffffff;
 }
 .widget_price_filter .ui-slider-horizontal {
   height: 4px !important;

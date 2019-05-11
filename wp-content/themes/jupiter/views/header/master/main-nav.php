@@ -3,9 +3,10 @@
 /**
  * template part for Main Navigation. views/header/master
  *
- * @author 		Artbees
- * @package 	jupiter/views
- * @version     5.0.0
+ * @author  Artbees
+ * @package jupiter/views
+ * @since   5.0.0
+ * @since   5.9.1 Fixed empty menu locations undefined index in centered menu.
  */
 
 global $mk_options;
@@ -28,6 +29,11 @@ $menu_html = wp_nav_menu(array(
 // Send logo to the middle of logo
 if(isset($view_params['logo_middle']) && $view_params['logo_middle'] == 'true') {
 	$menu_id = mk_get_nav_id_by_location($menu_location);
+    
+    if ( empty( $menu_id ) ) {
+        echo $menu_html;
+        return;
+    }
 
 	$logo = mk_get_header_view('master', 'logo', ['is_nav_item' => true], true);
 

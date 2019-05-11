@@ -3,6 +3,7 @@
 vc_map(array(
     'name'        => __( 'Image', 'mk_framework' ),
     'base'        => 'mk_image',
+	'html_template' => dirname( __FILE__ ) . '/mk_image.php',
     'category'    => __( 'General', 'mk_framework' ),
     'description' => __( 'Adds Image element with many styles.', 'mk_framework' ),
     'icon'        => 'icon-mk-image vc_mk_element-icon',
@@ -152,6 +153,19 @@ vc_map(array(
             "description" => __("", "mk_framework")
         ) ,
         array(
+            "type"        => "toggle",
+            "heading"     => __( "Image Hover Overlay", "mk_framework" ) ,
+            "param_name"  => "hover_image_overlay",
+            "value"       => "true",
+            "description" => __( "", "mk_framework" ),
+            "dependency" => array(
+                'element' => "lightbox",
+                'value' => array(
+                    'true'
+                )
+            )
+        ) ,
+        array(
             "type" => "dropdown",
             "heading" => __("Align", "mk_framework") ,
             "param_name" => "align",
@@ -184,16 +198,32 @@ vc_map(array(
             "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "mk_framework")
         ),
         array(
-            'type'        => 'toggle',
+            'type'        => 'message',
             'heading'     => __( 'Drop Shadow', 'mk_framework' ),
-            'param_name'  => 'drop_shadow',
-            'value'       => 'false',
-            'description' => __( 'Enable drop shadow for the image. It applies only to <strong>Border with Shadow</strong> and <strong>Shadow Only</strong> Image Frame Style.', 'mk_framework' ),
+            'param_name'  => 'drop_shadow_placeholder',
+            'description' => __( 'Set <strong>Image Frame Style</strong> option to <strong>No Frame</strong>, <strong>Rounded Frame</strong>, <strong>Single Line Frame</strong> or <strong>Gray Border Frame</strong> to enable drop shadow.', 'mk_framework' ),
             'dependency'  => array(
                 'element' => 'frame_style',
                 'value'   => array( 
                     'border_shadow', 
                     'shadow_only'
+                )
+            ),
+            'group'      => __( 'Styles & Colors', 'mk_framework' )
+        ),
+        array(
+            'type'        => 'toggle',
+            'heading'     => __( 'Drop Shadow', 'mk_framework' ),
+            'param_name'  => 'drop_shadow',
+            'value'       => 'false',
+            'description' => __( 'Enable drop shadow for the image.', 'mk_framework' ),
+            'dependency'  => array(
+                'element' => 'frame_style',
+                'value'   => array( 
+                    'simple',
+                    'rounded',
+                    'single_line',
+                    'gray_border'
                 )
             ),
             'group'      => __( 'Styles & Colors', 'mk_framework' )
@@ -253,7 +283,7 @@ vc_map(array(
             'group'      => __( 'Styles & Colors', 'mk_framework' )
         ),
         array(
-            'type'       => 'colorpicker',
+            'type'       => 'alpha_colorpicker',
             'heading'    => __( 'color', 'mk_framework' ),
             'param_name' => 'drop_shadow_color',
             'value'      => 'rgba(0,0,0,0.5)',
@@ -265,21 +295,10 @@ vc_map(array(
             ),
             'group'      => __( 'Styles & Colors', 'mk_framework' )
         ),
-        array(
-            'type'        => 'message',
-            'heading'     => __( 'Drop Shadow', 'mk_framework' ),
-            'param_name'  => 'drop_shadow_placeholder',
-            'description' => __( 'Set <strong>Image Frame Style</strong> setting to Border with Shadow/Shadow Only to enable drop shadow.', 'mk_framework' ),
-            'dependency'  => array(
-                'element' => 'frame_style',
-                'value'   => array( 
-                    'simple',
-                    'rounded',
-                    'single_line',
-                    'gray_border'
-                )
-            ),
-            'group'      => __( 'Styles & Colors', 'mk_framework' )
-        )
-    )
+		$mk_vc_map_parallax_scroll['pxs'],
+		$mk_vc_map_parallax_scroll['pxs_x'],
+		$mk_vc_map_parallax_scroll['pxs_y'],
+		$mk_vc_map_parallax_scroll['pxs_z'],
+		$mk_vc_map_parallax_scroll['pxs_smoothness'],
+	)
 ));

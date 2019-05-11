@@ -15,7 +15,7 @@ class Abb_Logic_Helpers {
 
 	/**
 	 * method that is resposible to unzip compress files .
-	 * it used native wordpress functions.
+	 * it used native WordPress functions.
 	 *
 	 * @since       1.0.0
 	 * @author Reza Marandi <ross@artbees.net>
@@ -26,31 +26,34 @@ class Abb_Logic_Helpers {
 	 * @return bool will return boolean status of action
 	 */
 	static function unZip( $zip_path, $dest_path ) {
-		
+
 		$zip_path  = realpath( $zip_path );
 		$dest_path = realpath( $dest_path );
 
-		$mkfs = new Mk_Fs( array( 'context' => $dest_path ) ) ;
+		$mkfs = new Mk_Fs(
+			array(
+				'context' => $dest_path,
+			)
+		);
 
-		if( $mkfs->get_error_code() ){
+		if ( $mkfs->get_error_code() ) {
 			throw new Exception( $mkfs->get_error_message() );
 			return false;
 		}
 
-		if ( !$mkfs->exists( $zip_path ) ) {
+		if ( ! $mkfs->exists( $zip_path ) ) {
 			throw new Exception( __( 'Zip file that you are looking for is not exist' , 'mk_framework' ) );
 			return false;
 		}
 
-
-		if ( !$mkfs->exists( $dest_path ) ) {
-			if ( !$mkfs->mkdir( $dest_path ) ) {
+		if ( ! $mkfs->exists( $dest_path ) ) {
+			if ( ! $mkfs->mkdir( $dest_path ) ) {
 				throw new Exception( __( 'Unzip destination path not exist' , 'mk_framework' ) );
 				return false;
 			}
 		}
 
-		if ( !$mkfs->is_writable( $dest_path ) ) {
+		if ( ! $mkfs->is_writable( $dest_path ) ) {
 			throw new Exception( __( 'Unzip destination is not writable , Please resolve this issue first.' , 'mk_framework' ) );
 			return false;
 		}
@@ -77,21 +80,25 @@ class Abb_Logic_Helpers {
 	 */
 	static function checkPermAndCreate( $path, $perm = 0775 ) {
 
-		$mkfs = new Mk_Fs( array( 'context' => $path ) ) ;
+		$mkfs = new Mk_Fs(
+			array(
+				'context' => $path,
+			)
+		);
 
-		if( $mkfs->get_error_code() ){
+		if ( $mkfs->get_error_code() ) {
 			throw new Exception( $mkfs->get_error_message() );
 			return false;
 		}
 
-		if( $mkfs->exists( $path ) ){
-			if( !$mkfs->is_writable( $path ) ){
+		if ( $mkfs->exists( $path ) ) {
+			if ( ! $mkfs->is_writable( $path ) ) {
 				throw new Exception( sprintf( __( '%s directory is not writable', 'mk_framework' ) , $path ) );
 				return false;
 			}
 			return true;
-		}else{
-			if( !$mkfs->mkdir( $path, $perm ) ){
+		} else {
+			if ( ! $mkfs->mkdir( $path, $perm ) ) {
 				throw new Exception( sprintf( __( 'Can\'t create directory %s', 'mk_framework' ) , $path ) );
 				return false;
 			}
@@ -117,14 +124,14 @@ class Abb_Logic_Helpers {
 
 		try {
 			self::checkPermAndCreate( $dest_directory );
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			throw new Exception( sprintf( __( 'Destination directory is not ready for upload . {%s}',  'mk_framework' ) , $dest_directory ) );
 			return false;
 		}
 
-		$response = wp_remote_get( $url );
+		$response = wp_remote_get( $url, array( 'timeout' => 120 ) );
 
-		if( is_wp_error( $response ) ) {
+		if ( is_wp_error( $response ) ) {
 			throw new Exception( $response->get_error_message() );
 			return false;
 		}
@@ -137,14 +144,18 @@ class Abb_Logic_Helpers {
 			return false;
 		}
 
-		$mkfs = new Mk_Fs( array( 'context' => $dest_directory ) ) ;
+		$mkfs = new Mk_Fs(
+			array(
+				'context' => $dest_directory,
+			)
+		);
 
-		if( $mkfs->get_error_code() ){
+		if ( $mkfs->get_error_code() ) {
 			throw new Exception( $mkfs->get_error_message() );
 			return false;
 		}
 
-		if( !$mkfs->put_contents( $dest_directory . $file_name, $response_body ) ){
+		if ( ! $mkfs->put_contents( $dest_directory . $file_name, $response_body ) ) {
 			throw new Exception( sprintf( __( "Can't write file to {%s}", 'mk_framework' ) , $dest_directory . $file_name ) );
 			return false;
 		}
@@ -165,9 +176,13 @@ class Abb_Logic_Helpers {
 	 */
 	static function writableOwnerCheck( $path ) {
 
-		$mkfs = new Mk_Fs( array( 'context' => $path ) ) ;
+		$mkfs = new Mk_Fs(
+			array(
+				'context' => $path,
+			)
+		);
 
-		if( $mkfs->get_error_code() ){
+		if ( $mkfs->get_error_code() ) {
 			return false;
 		}
 
@@ -193,9 +208,13 @@ class Abb_Logic_Helpers {
 
 		$dir = realpath( $dir );
 
-		$mkfs = new Mk_Fs( array( 'context' => $dir ) ) ;
+		$mkfs = new Mk_Fs(
+			array(
+				'context' => $dir,
+			)
+		);
 
-		if( $mkfs->get_error_code() ){
+		if ( $mkfs->get_error_code() ) {
 			return false;
 		}
 
@@ -205,14 +224,14 @@ class Abb_Logic_Helpers {
 
 		if ( $mkfs->is_dir( $dir ) ) {
 			return $mkfs->rmdir( $dir, true );
-		}else{
+		} else {
 			return $mkfs->delete( $dir );
 		}
 
 	}
 	/**
 	 * Safely and securely get file from server.
-	 * It attempts to read file using Wordpress native file read functions
+	 * It attempts to read file using WordPress native file read functions
 	 * If it fails, we use wp_remote_get. if the site is ssl enabled, we try to convert it http as some servers may fail to get file
 	 *
 	 * @author Reza Marandi <ross@artbees.net>
@@ -226,9 +245,13 @@ class Abb_Logic_Helpers {
 
 		$file_dir = realpath( $file_dir );
 
-		$mkfs = new Mk_Fs( array( 'context' => $file_dir ) ) ;
+		$mkfs = new Mk_Fs(
+			array(
+				'context' => $file_dir,
+			)
+		);
 
-		if( $mkfs->get_error_code() ){
+		if ( $mkfs->get_error_code() ) {
 			throw new Exception( $mkfs->get_error_message() );
 			return false;
 		}
@@ -240,7 +263,7 @@ class Abb_Logic_Helpers {
 			if ( is_array( $wp_remote_get_file ) and array_key_exists( 'body', $wp_remote_get_file ) ) {
 				$wp_remote_get_file_body = $wp_remote_get_file['body'];
 
-			} else if ( is_numeric( strpos( $file_uri, 'https://' ) ) ) {
+			} elseif ( is_numeric( strpos( $file_uri, 'https://' ) ) ) {
 
 				$file_uri           = str_replace( 'https://', 'http://', $file_uri );
 				$wp_remote_get_file = wp_remote_get( $file_uri );
@@ -292,14 +315,18 @@ class Abb_Logic_Helpers {
 	 */
 	static function zip( $files = array(), $destination = '', $overwrite = false ) {
 
-		$mkfs = new Mk_Fs( array( 'context' => $destination ) ) ;
+		$mkfs = new Mk_Fs(
+			array(
+				'context' => $destination,
+			)
+		);
 
-		if( $mkfs->get_error_code() ){
+		if ( $mkfs->get_error_code() ) {
 			return false;
 		}
 
 		// if the zip file already exists and overwrite is false, return false
-		if ( $mkfs->exists($destination) && !$overwrite ){
+		if ( $mkfs->exists( $destination ) && ! $overwrite ) {
 			return false;
 		}
 
@@ -312,7 +339,7 @@ class Abb_Logic_Helpers {
 			foreach ( $files as $file_name => $file_path ) {
 				// make sure the file exists
 				if ( $mkfs->exists( $file_path ) ) {
-					$valid_files[$file_name] = $file_path;
+					$valid_files[ $file_name ] = $file_path;
 				}
 			}
 		}
@@ -321,10 +348,34 @@ class Abb_Logic_Helpers {
 
 			$temp_file = tempnam( sys_get_temp_dir(), 'zip' );
 
-			$zip = new ZipArchive();
+			if ( class_exists( 'ZipArchive', false ) ) {
+				$zip = new ZipArchive();
 
-			// Try open the temp file.
-			$zip->open( $temp_file );
+				// Try open the temp file.
+				$zip->open( $temp_file );
+
+				// add the files to archive.
+				foreach ( $valid_files as $file_name => $file_path ) {
+					$zip->addFile( $file_path, $file_name );
+				}
+
+				// close the zip -- done!
+				$zip->close();
+
+			} else {
+
+				mbstring_binary_safe_encoding();
+
+				require_once( ABSPATH . 'wp-admin/includes/class-pclzip.php' );
+
+				$zip = new PclZip( $temp_file );
+
+				foreach ( $valid_files as $file_name => $file_path ) {
+					$zip->create( $file_path, $file_name );
+				}
+
+				reset_mbstring_encoding();
+			}
 
 			// add the files to archive.
 			foreach ( $valid_files as $file_name => $file_path ) {
@@ -343,7 +394,7 @@ class Abb_Logic_Helpers {
 			@$mkfs->delete( $temp_file );
 
 			// check to make sure the file exists.
-			return $mkfs->exists(  $destination );
+			return $mkfs->exists( $destination );
 
 		} else {
 			return false;
@@ -354,7 +405,7 @@ class Abb_Logic_Helpers {
 	}
 	/**
 	 * It will check wether wordpress-importer plugin is exist in plugin directory or not.
-	 * if exist it will return the wordpress importer file
+	 * if exist it will return the WordPress importer file
 	 * if not it will use jupiter version
 	 *
 	 * @author      Reza Marandi <ross@artbees.net>
@@ -364,22 +415,23 @@ class Abb_Logic_Helpers {
 	 */
 
 	static function include_wordpress_importer() {
+		// Avoid redeclare WP_Importer class.
+		if ( ! class_exists( 'WP_Importer' ) ) {
+			defined( 'WP_LOAD_IMPORTERS' ) || define( 'WP_LOAD_IMPORTERS', true );
+			include ABSPATH . '/wp-admin/includes/class-wp-importer.php';
+		}
 
-		if ( class_exists( 'WP_Import' ) === true ) {
+		// Avoid redeclare WXR_Importer class and others.
+		if ( class_exists( 'WXR_Importer' ) ) {
 			return true;
 		}
 
-		if ( is_plugin_active( 'wordpress-importer' ) ) {
-			$plugins_data = get_plugins();
-			$result = preg_grep( "/\bwordpress-importer\b/i", array_keys( $plugins_data ) );
-			if ( is_array( $result ) && count( $result ) > 0 ) {
-				$keys = array_keys( $plugins_data );
-				include WP_PLUGIN_DIR . '/' . $keys[ key( $result ) ];
-				return true;
-			}
-		}
+		// Load all needed class.
+		include THEME_CONTROL_PANEL . '/logic/importer/class-logger.php';
+		include THEME_CONTROL_PANEL . '/logic/importer/class-logger-serversentevents.php';
+		include THEME_CONTROL_PANEL . '/logic/importer/class-wxr-import-info.php';
+		include THEME_CONTROL_PANEL . '/logic/importer/class-wxr-importer.php';
 
-		include THEME_CONTROL_PANEL . '/logic/wordpress-importer.php';
 		return true;
 	}
 	/**
@@ -410,20 +462,20 @@ class Abb_Logic_Helpers {
 
 		$output = false;
 
-		$encrypt_method = "AES-256-CBC";
+		$encrypt_method = 'AES-256-CBC';
 		$secret_key = SECURE_AUTH_SALT;
 		$secret_iv = NONCE_SALT;
 
 		// hash
-		$key = hash('sha256', $secret_key);
-		
+		$key = hash( 'sha256', $secret_key );
+
 		// iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
 		$iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
 
 		if ( $action == 'e' ) {
 			$output = openssl_encrypt( $string, $encrypt_method, $key, 0, $iv );
 			$output = base64_encode( $output );
-		} else if( $action == 'd' ) {
+		} elseif ( $action == 'd' ) {
 			$output = base64_decode( $string );
 			$output = openssl_decrypt( $output, $encrypt_method, $key, 0, $iv );
 		}

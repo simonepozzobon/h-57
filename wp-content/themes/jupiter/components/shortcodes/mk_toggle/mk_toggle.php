@@ -13,7 +13,7 @@ if(!empty( $icon )) {
 }
 ?>
 
-<div id="mk-toggle-<?php echo $id;?>" class="mk-toggle <?php echo $style;?>-style <?php echo $el_class;?>">
+<div id="mk-toggle-<?php echo $id;?>" class="mk-toggle <?php echo $style;?>-style <?php echo $el_class . ' ' . $visibility;?>">
 	<?php if( $icon && $style != 'simple' ) : ?>
 		<span class="mk-toggle-title">
 			<?php Mk_SVG_Icons::get_svg_icon_by_class_name(true, $icon, 13); ?>

@@ -26,7 +26,9 @@
 .ajax-controls svg {
   height: 16px;
   fill: #bbbbbb;
-  transform:translateY(10px);
+  -webkit-transform:translateY(8px);
+          -ms-transform:translateY(8px);
+      transform:translateY(8px);
 }
 .ajax-controls a:hover svg{
   fill: #222222;
@@ -35,7 +37,6 @@
   .ajax-portfolio-share.portfolio-social-share {
     text-align: center;
   }
-  .ajax-portfolio-share.portfolio-social-share .mk-love-holder,
   .ajax-portfolio-share.portfolio-social-share .blog-share-container {
     float: none !important;
   }
@@ -184,6 +185,12 @@
   width: 49.96%;
 }
 
+/* Lazyload */
+.portfolio-grid-lazyload .portfolio-image {
+  background-color: #e0e0e0;
+}
+
+
 /* I'm comment this because if we are using 
 /* with dashboard it's showing empty space on right side.
 /*******************************/
@@ -296,9 +303,9 @@
     width: 100%;
   }
 }
-@media handheld, only screen and (max-width: 600px) {
+@media handheld, only screen and (max-width: 767px) {
   .mk-portfolio-masonry-item {
-    width: 100%;
+    width: 100% !important;
   }
 }
 .mk-portfolio-masonry-item .featured-image {
@@ -511,4 +518,16 @@
   border: 2px solid transparent;
   letter-spacing: 1px;
   position: relative;
+}
+
+/* AM-2597 */
+.compose-mode .mk-portfolio-item .project-load,
+.compose-mode .portfolio-meta-wrapper a,
+.compose-mode .portfolio-meta a {
+  cursor: not-allowed;
+}
+.compose-mode .mk-portfolio-item .project-load:active,
+.compose-mode .portfolio-meta-wrapper a:active,
+.compose-mode .portfolio-meta a:active {
+  pointer-events: none;
 }

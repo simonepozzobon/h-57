@@ -40,11 +40,19 @@ function mk_icon_selector_param_field($settings, $value) {
         $icons = new Mk_SVG_Icons();
         $icon_class = $icons->get_class_name_by_unicode($font_family, $value);
     }
+
+    if ( !empty( $value ) ) {
+        $button_text = __( 'Replace Icon', 'mk_framework' );
+        $icon_view_class = '';
+    } else {
+        $button_text = __( 'Select Icon', 'mk_framework' );
+        $icon_view_class = 'mka-hidden';
+    }
     
-    $output.= '<div class="mk-vc-icon-selector ' . $class . '" id="icon-selector' . $uniqeID . '">';
+    $output.= '<div class="mka-wrap mk-vc-icon-selector ' . $class . '" id="icon-selector' . $uniqeID . '">';
         $output .= '<input name="' . $param_name  . '" class="wpb_vc_param_value ' . $param_name  . ' ' . $type  . '_field" type="hidden" value="' . $value. '" />';
-        $output .= '<div class="mk-vc-icon-selector-view-wrap"><span class="mk-vc-icon-selector-view">' . Mk_SVG_Icons::get_svg_icon_by_class_name(false, $icon_class) . '</span></div>';
-        $output .= '<a href="#" class="mk-vc-icon-selector-btn">' . __( 'Select Icon', 'mk_framework' )  . '</a>';
+        $output .= '<div class="mk-vc-icon-selector-view-wrap ' . $icon_view_class . '"><span class="mk-vc-icon-selector-view">' . Mk_SVG_Icons::get_svg_icon_by_class_name(false, $icon_class) . '</span><a href="#" class="mk-vc-icon-selector-view-remove"></a></div>';
+        $output .= '<a href="#" class="mk-vc-icon-selector-btn mka-button mka-button--gray mka-button--small">' . $button_text  . '</a>';
     $output.= '</div>';
     
     return $output;

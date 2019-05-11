@@ -2,6 +2,7 @@
     vc_map(array(
         "name" => __("Image Switch", "mk_framework") ,
         "base" => "mk_image_switch",
+		'html_template' => dirname( __FILE__ ) . '/mk_image_switch.php',
         "category" => __('General', 'mk_framework') ,
         'description' => __('', 'mk_framework') ,
         'icon' => 'icon-mk-image vc_mk_element-icon',
@@ -96,6 +97,7 @@
                 "description" => __("", "mk_framework")
             ) ,
             $add_css_animations,
+            $add_device_visibility,
             array(
                 "type" => "textfield",
                 "heading" => __("Extra class name", "mk_framework") ,

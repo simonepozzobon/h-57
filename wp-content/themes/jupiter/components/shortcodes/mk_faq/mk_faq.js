@@ -1,32 +1,37 @@
 (function ($) {
 	'use strict';
 
-$('.mk-faq-wrapper').each( function() {
-	var $this = $(this);
-	var $filter = $this.find('.filter-faq');
-	var $filterItem = $filter.find('a');
-	var $faq = $this.find('.mk-faq-container > div');
-	var currentFilter = '';
-
-	$filterItem.on('click', function(e) {
+var init = function init() {
+	$('.mk-faq-wrapper').each( function() {
 		var $this = $(this);
+		var $filter = $this.find('.filter-faq');
+		var $filterItem = $filter.find('a');
+		var $faq = $this.find('.mk-faq-container > div');
+		var currentFilter = '';
 
-		currentFilter = $this.data('filter');
-		$filterItem.removeClass('current');
-		$this.addClass('current');
+		$filterItem.on('click', function(e) {
+			var $this = $(this);
 
-		filterItems( currentFilter );
+			currentFilter = $this.data('filter');
+			$filterItem.removeClass('current');
+			$this.addClass('current');
 
-		e.preventDefault();
-	});
+			filterItems( currentFilter );
 
-	function filterItems( cat ) {
-		if( cat === '' ) {
-			$faq.slideDown(200).removeClass('hidden');
-			return;
+			e.preventDefault();
+		});
+
+		function filterItems( cat ) {
+			if( cat === '' ) {
+				$faq.slideDown(200).removeClass('hidden');
+				return;
+			}
+			$faq.not( '.' + cat ).slideUp(200).addClass('hidden');
+			$faq.filter( '.' + cat ).slideDown(200).removeClass('hidden');
 		}
-		$faq.not( '.' + cat ).slideUp(200).addClass('hidden');
-		$faq.filter( '.' + cat ).slideDown(200).removeClass('hidden');
-	}
-});
+	});
+}
+init();
+$(window).on('vc_reload', init);
+
 }( jQuery ));

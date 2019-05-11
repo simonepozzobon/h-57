@@ -22,6 +22,7 @@
         $last_selected_icon = '',
         $vc_value_input = '',
         $vc_value_view = '',
+        $vc_value_view_wrap = '',
         $current_svg = '',
         $spinner = $('.mk-ip-spinner'),
         all_icons = '',
@@ -32,7 +33,8 @@
     $('body').on('click', '.mk-vc-icon-selector-btn', function(e) {
         e.preventDefault();
         $vc_value_input = $(this).siblings('.icon_selector_field');
-        $vc_value_view = $(this).siblings('.mk-vc-icon-selector-view-wrap').find('.mk-vc-icon-selector-view');
+        $vc_value_view_wrap = $(this).siblings('.mk-vc-icon-selector-view-wrap');
+        $vc_value_view = $vc_value_view_wrap.find('.mk-vc-icon-selector-view');
         $current_svg = $vc_value_view.children('svg').clone();
         $icon_selector.fadeIn(300);
         $search_input.focus();
@@ -43,12 +45,15 @@
     });
 
     // Save Icon Selector
-    $save_btn.on('click', function() {
+    $save_btn.on('click', function(e) {
+        e.preventDefault();
         $lib_container.off('scroll');
         is_inf_scroll_initiated = false;
         var icon_class_name = $last_selected_icon.find('svg').attr('data-name'),
             $icon_srouce = $last_selected_icon.find('svg').clone();
         $vc_value_input.val(icon_class_name);
+        $vc_value_view_wrap.removeClass('mka-hidden');
+        $vc_value_view_wrap.siblings('.mk-vc-icon-selector-btn').text( icon_selector_locolized_data.replace_icon_string );
         $vc_value_view.empty().append($icon_srouce);
         $icon_selector.fadeOut(300);
         setTimeout(function() {
@@ -57,13 +62,19 @@
     });
 
     // Close Icon Selector
-    $close_btn.add( $cancel_btn ).on('click', function() {
+    $close_btn.add( $cancel_btn ).on('click', function(e) {
+        e.preventDefault();
         $lib_container.off('scroll');
         is_inf_scroll_initiated = false;
         $icon_selector.fadeOut(300);
         setTimeout(function() {
             $lib.empty();
         }, 400);
+    });
+
+    // On VC window close
+    $('body').on('click', '.vc_ui-close-button', function(e) {
+        $close_btn.trigger('click');
     });
 
     // Search Icon Selector
@@ -97,10 +108,17 @@
         display_list_of_icons(true);
     });
 
-
     // Select Icon
     $lib.on('click', '.mk-ip-lib-item', function() {
         handle_selected_icon( this );
+    });
+
+    // Remove Icon in VC
+    $('body').on('click', '.mk-vc-icon-selector-view-remove', function(e) {
+        e.preventDefault();
+        $(this).closest('.mk-vc-icon-selector-view-wrap').siblings('.wpb_vc_param_value').val('');
+        $(this).closest('.mk-vc-icon-selector-view-wrap').siblings('.mk-vc-icon-selector-btn').text( icon_selector_locolized_data.select_icon_string );
+        $(this).closest('.mk-vc-icon-selector-view-wrap').addClass('mka-hidden');
     });
 
 

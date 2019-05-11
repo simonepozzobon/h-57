@@ -10,6 +10,7 @@ extract( shortcode_atts( array(
 	'faq_cat'   => '',
 	'posts'		=> '',
 	'background_color' => '',
+	'visibility' => '',
 	'el_class'	=> ''
 ), $atts ) );
 Mk_Static_Files::addAssets('mk_faq');

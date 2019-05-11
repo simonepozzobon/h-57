@@ -68,7 +68,7 @@
 
         ?>
         <div class="featured-image js-taphover">
-            <img alt="<?php the_title(); ?>" title="<?php the_title(); ?>" src="<?php echo $featured_image_src['dummy']; ?>" <?php echo $featured_image_src['data-set']; ?> width="<?php echo esc_attr($image_size_atts['width']); ?>" height="<?php echo esc_attr($image_size_atts['height']); ?>"  />
+            <img class="portfolio-image" alt="<?php the_title(); ?>" title="<?php the_title(); ?>" src="<?php echo $featured_image_src['dummy']; ?>" <?php echo $featured_image_src['data-set']; ?> width="<?php echo esc_attr($image_size_atts['width']); ?>" height="<?php echo esc_attr($image_size_atts['height']); ?>"  />
             <div class="image-hover-overlay"></div>
             <?php
                 echo mk_get_shortcode_view('mk_portfolio', 'components/permalink-icon', true, ['permalink_icon' => $view_params['permalink_icon'],'permalink_icon_name' => $view_params['permalink_icon_name'],'target' => $view_params['target']]);

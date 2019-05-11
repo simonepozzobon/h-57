@@ -2,10 +2,12 @@
     vc_map(array(
         "name" => __("Custom Box", "mk_framework") ,
         "base" => "mk_custom_box",
+		'html_template' => dirname( __FILE__ ) . '/mk_custom_box.php',
         "as_parent" => array(
             'except' => 'mk_page_section'
         ) ,
         "admin_enqueue_js" => THEME_COMPONENTS . "/shortcodes/mk_custom_box/vc_admin.js",
+		'front_enqueue_js' => THEME_COMPONENTS . '/shortcodes/mk_custom_box/vc_front.js',
         "content_element" => true,
         "show_settings_on_create" => false,
         "description" => __("Custom Box For your contents.", "mk_framework") ,
@@ -96,7 +98,7 @@
              * ==================================================================================
              */
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Background Color", "mk_framework") ,
                 "param_name" => "bg_color",
                 "value" => "",
@@ -116,7 +118,7 @@
              */
 
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("From", "mk_framework") ,
                 "param_name" => "bg_grandient_color_from",
 
@@ -132,7 +134,7 @@
                 ) ,
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("To", "mk_framework") ,
                 "param_name" => "bg_grandient_color_to",
                 //"edit_field_class" => "vc_col-sm-3",
@@ -185,7 +187,7 @@
                 ) ,
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Gradient Fallback Color", "mk_framework") ,
                 "param_name" => "bg_grandient_color_fallback",
 
@@ -311,7 +313,7 @@
              * ==================================================================================
              */
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Border Color", "mk_framework") ,
                 "param_name" => "border_color",
                 "value" => "",
@@ -368,7 +370,7 @@
              * ==================================================================================
              */
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("From", "mk_framework") ,
                 "param_name" => "border_grandient_color_from",
 
@@ -384,7 +386,7 @@
                 ) ,
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("To", "mk_framework") ,
                 "param_name" => "border_grandient_color_to",
 
@@ -438,7 +440,7 @@
                 ) ,
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Gradient Fallback Color", "mk_framework") ,
                 "param_name" => "border_grandient_color_fallback",
 
@@ -455,7 +457,7 @@
             ) ,
 
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Overlay Color", "mk_framework") ,
                 "param_name" => "overlay_color",
 
@@ -525,7 +527,7 @@
                 ) ,
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Color", "mk_framework") ,
                 "param_name" => "drop_shadow_color",
                 "group" => __('Styles & Colors', 'mk_framework') ,
@@ -545,7 +547,7 @@
              * ==================================================================================
              */
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Background Color", "mk_framework") ,
                 "param_name" => "bg_hov_color",
                 "value" => "",
@@ -565,7 +567,7 @@
              */
 
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("From", "mk_framework") ,
                 "param_name" => "bg_grandient_hov_color_from",
 
@@ -581,7 +583,7 @@
                 ) ,
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("To", "mk_framework") ,
                 "param_name" => "bg_grandient_hov_color_to",
 
@@ -635,7 +637,7 @@
                 ) ,
             ) ,
             array(
-                "type" => "colorpicker",
+                "type" => "alpha_colorpicker",
                 "heading" => __("Gradient Fallback Color", "mk_framework") ,
                 "param_name" => "bg_grandient_hov_color_fallback",
 
