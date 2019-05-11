@@ -16,7 +16,7 @@ if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 	<article id="<?php the_ID(); ?>" <?php post_class(array('mk-blog-single')); ?> <?php echo get_schema_markup('blog_posting'); ?>>
 
 	<?php
-	
+
 	do_action('blog_single_before_featured_image');
 
 	if ( mk_get_blog_single_style() !== 'bold' ) {

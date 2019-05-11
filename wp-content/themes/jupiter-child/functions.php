@@ -198,3 +198,67 @@
     remove_action( 'wp_head', 'start_post_rel_link', 10, 0 ); // start link
     remove_action( 'wp_head', 'adjacent_posts_rel_link', 10, 0 ); // Display relational links for the posts adjacent to the current post.
     remove_action('wp_head', 'wp_generator');
+
+
+    function rewrite_clients_route() {
+        add_rewrite_rule(
+            '^properties/([0-9]+)/?',
+            'index.php?clients=$matches[1]',
+            'top'
+        );
+        // add_rewrite_tag( '%clients%', '([^&]+)' );
+    }
+    add_action( 'init', 'rewrite_clients_route', 10, 0 );
+
+    function clients_route_query_var( $query_vars ){
+        $query_vars[] = 'clients';
+        return $query_vars;
+    }
+    add_filter( 'query_vars', 'clients_route_query_var' );
+
+    function custom_wpquery( $query ){
+        // the main query
+        global $wp_the_query;
+
+        if ($wp_the_query->get( 'post_type' ) == 'clients') {
+            $query->is_main_query = true;
+            $query->set('tax_query', array(
+                array(
+                    'taxonomy' => 'post_tag',
+                    'field' => 'slug',
+                    'terms' => 'dal-negro',
+                )
+            ));
+
+        }
+        // var_dump($wp_the_query->get( 'post_type' ));
+    };
+
+    function prefix_url_redirect_template() {
+        if ( get_query_var( 'clients' ) && is_singular( 'clients' ) ) {
+            add_filter( 'pre_get_posts', 'custom_wpquery' );
+            add_filter( 'template_include', function() {
+                return get_stylesheet_directory() . '/views/singular/wp-single-client.php';
+            });
+        }
+    }
+
+    add_action( 'template_redirect', 'prefix_url_redirect_template', 20 );
+
+    function my_query_args($query_args, $grid_name) {
+
+        if ($grid_name == 'clients') {
+            // all query parameters can be modified (https://codex.wordpress.org/Class_Reference/WP_Query)
+            $query_args['tax_query'] = [
+                [
+                    'taxonomy' => 'post_tag',
+                    'field' => 'slug',
+                    'terms' => 'dal-negro',
+                ],
+            ];
+        }
+        return $query_args;
+
+    }
+
+    add_filter('tg_wp_query_args', 'my_query_args', 10, 2);
