@@ -221,17 +221,16 @@
         global $wp_the_query;
 
         if ($wp_the_query->get( 'post_type' ) == 'clients') {
+            $slug = $wp_the_query->get('clients');
             $query->is_main_query = true;
             $query->set('tax_query', array(
                 array(
                     'taxonomy' => 'post_tag',
                     'field' => 'slug',
-                    'terms' => 'dal-negro',
+                    'terms' => $slug,
                 )
             ));
-
         }
-        // var_dump($wp_the_query->get( 'post_type' ));
     };
 
     function prefix_url_redirect_template() {
@@ -246,16 +245,18 @@
     add_action( 'template_redirect', 'prefix_url_redirect_template', 20 );
 
     function my_query_args($query_args, $grid_name) {
+        global $wp_the_query;
 
         if ($grid_name == 'clients') {
             // all query parameters can be modified (https://codex.wordpress.org/Class_Reference/WP_Query)
-            $query_args['tax_query'] = [
-                [
+            $slug = $wp_the_query->get('clients');
+            $query_args['tax_query'] = array(
+                array(
                     'taxonomy' => 'post_tag',
                     'field' => 'slug',
-                    'terms' => 'dal-negro',
-                ],
-            ];
+                    'terms' => $slug,
+                )
+            );
         }
         return $query_args;
 

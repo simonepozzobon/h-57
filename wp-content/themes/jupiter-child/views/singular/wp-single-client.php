@@ -1,5 +1,10 @@
 <?php
+global $mk_options;
+
 get_header();
+
+echo "<pre>";
+var_dump($post);
 ?>
 
 <div id="theme-page" class="master-holder  clearfix animation-load" itemscope="itemscope" itemtype="https://schema.org/Blog">
